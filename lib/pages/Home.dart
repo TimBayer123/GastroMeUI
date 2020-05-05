@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
       child: Padding(
         padding: const EdgeInsets.all(18.0),
         child: Container(
-          color: Colors.deepOrangeAccent,
+          color: Colors.red,
           alignment: Alignment.center,
           child: Column(
             children: <Widget>[
