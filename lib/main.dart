@@ -24,8 +24,12 @@ void main() {
     ),
     initialRoute: '/home',
     routes: {
-      '/': (context) => Home(),
-      '/home': (context) => Home(),
+      '/': (context) => Home(
+        i: 5,
+      ),
+      '/home': (context) => Home(
+        i: 5,
+      ),
 
     },
   ));
