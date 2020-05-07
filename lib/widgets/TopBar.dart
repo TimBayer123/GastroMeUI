@@ -9,7 +9,7 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
   final Size preferredSize;
 
   TopBar({@required this.foodAreaActive})
-      : preferredSize = Size(double.infinity, 100);
+      : preferredSize = Size(double.infinity, 90);
 
   @override
   _TopBarState createState() => _TopBarState();
@@ -24,7 +24,7 @@ class _TopBarState extends State<TopBar> {
       child: Container(
         color: Theme.of(context).primaryColor,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

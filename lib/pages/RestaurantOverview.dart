@@ -16,11 +16,11 @@ class _RestaurantOverviewState extends State<RestaurantOverview> {
 
   @override
   Widget build(BuildContext context) {
-    return MainLayout(
-      foodAreaAcive: false,
-      child: Container(
-        color: Colors.white,
-      ),
+    return Container(
+      color: Colors.white,
+          child: Center(
+        child: Text('NavBar Test'),
+    ),
     );
 
 
