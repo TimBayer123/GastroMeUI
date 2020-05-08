@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gastrome/widgets/MainLayout.dart';
 
 class RestaurantOverview extends StatefulWidget {
   @override
@@ -7,8 +6,6 @@ class RestaurantOverview extends StatefulWidget {
 }
 
 class _RestaurantOverviewState extends State<RestaurantOverview> {
-  @override
-  void initState() {}
 
   @override
   Widget build(BuildContext context) {

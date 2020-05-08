@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gastrome/MainLayout.dart';
 import 'package:gastrome/pages/Loading.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
-import 'package:gastrome/widgets/MainLayout.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
