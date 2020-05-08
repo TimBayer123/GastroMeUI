@@ -24,7 +24,7 @@ void main() {
     initialRoute: '/main',
     routes: {
       '/': (context) => Loading(),
-      '/main': (context) => MainLayout(),
+      '/main': (context) => MainLayout(loggedIn: false),
     },
   ));
 }

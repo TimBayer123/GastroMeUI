@@ -2,14 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
+import 'package:gastrome/widgets/LoginWidget.dart';
 
 import 'package:gastrome/widgets/PlaceholderWidget.dart';
 import 'package:gastrome/settings/globals.dart' as globals;
 
 class MainLayout extends StatefulWidget {
-  Widget child;
+  int navBarindex;
+  bool loggedIn;
 
-  MainLayout({@required this.child});
+  MainLayout({this.loggedIn, this.navBarindex});
 
   static _MainLayoutState of(BuildContext context) =>
       context.findAncestorStateOfType();
@@ -20,17 +22,15 @@ class MainLayout extends StatefulWidget {
 
 class _MainLayoutState extends State<MainLayout>
     with SingleTickerProviderStateMixin {
+  bool loggedIn;
   bool showNavBar = true;
-  int currentNavIndex = 0;
-  int currentTabIndex = 0;
-  int oldTabIndex = 0;
+  int currentNavIndex;
   TabController tabController;
-  TabController tabClickController;
   bool changeTab;
 
   //In dieser Liste sind alle Seiten aufgeführt, die über die Navbar erreichbar sind
   final List<Widget> listOfPages = [
-    RestaurantOverview(),
+    PlaceholderWidget(Colors.teal),
     PlaceholderWidget(Colors.blueGrey),
     PlaceholderWidget(Colors.green),
     PlaceholderWidget(Colors.pink)
@@ -39,6 +39,8 @@ class _MainLayoutState extends State<MainLayout>
   @override
   void initState() {
     super.initState();
+    currentNavIndex = widget.navBarindex!=null ? widget.navBarindex : 0;
+    loggedIn = widget.loggedIn!=null ? widget.loggedIn : false;
     changeTab = false;
     tabController = TabController(vsync: this, initialIndex: 0, length: 2);
     //Der AnimationListener prüft ob
@@ -74,7 +76,7 @@ class _MainLayoutState extends State<MainLayout>
                   },
                   tabs: [
                     Tab(
-                        icon: Icon(Icons.menu,
+                        icon: Icon(Icons.fastfood,
                             color: !showNavBar
                                 ? Theme.of(context).primaryIconTheme.color
                                 : Theme.of(context).accentIconTheme.color)),
@@ -88,7 +90,7 @@ class _MainLayoutState extends State<MainLayout>
           ),
         ),
         bottomNavigationBar: showNavBar
-            ? BottomNavigationBar(
+            ? (loggedIn ? BottomNavigationBar(
                 type: BottomNavigationBarType.shifting,
                 backgroundColor: Theme.of(context).primaryColor,
                 selectedItemColor: Theme.of(context).accentIconTheme.color,
@@ -113,13 +115,13 @@ class _MainLayoutState extends State<MainLayout>
                     title: Text('Feedback'),
                   ),
                 ],
-              )
+              ):LoginWidget())
             : null,
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           controller: tabController,
           children: [
-            listOfPages[currentNavIndex],
+            loggedIn ? listOfPages[ currentNavIndex] : RestaurantOverview(),
             PlaceholderWidget(Colors.amber),
           ],
         ));
@@ -130,4 +132,5 @@ class _MainLayoutState extends State<MainLayout>
       currentNavIndex = index;
     });
   }
+
 }
