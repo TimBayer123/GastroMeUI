@@ -12,7 +12,8 @@ class _RestaurantOverviewState extends State<RestaurantOverview> {
     return Container(
       color: Colors.white,
       child: Center(
-        child: Text('NavBar Test'),
+        child: Text('NavBar Test',
+        style: Theme.of(context).textTheme.bodyText1),
       ),
     );
   }

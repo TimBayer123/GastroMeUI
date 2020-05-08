@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
 
@@ -21,9 +23,10 @@ class _MainLayoutState extends State<MainLayout>
   bool showNavBar = true;
   int currentNavIndex = 0;
   int currentTabIndex = 0;
+  int oldTabIndex = 0;
   TabController tabController;
   TabController tabClickController;
-  bool clickListenerActive;
+  bool changeTab;
 
   //In dieser Liste sind alle Seiten aufgeführt, die über die Navbar erreichbar sind
   final List<Widget> listOfPages = [
@@ -36,36 +39,16 @@ class _MainLayoutState extends State<MainLayout>
   @override
   void initState() {
     super.initState();
-    clickListenerActive = false;
+    changeTab = false;
     tabController = TabController(vsync: this, initialIndex: 0, length: 2);
-    //Der AnimationListener prüft das Swipen der TabBar und passt die Tabs sehr agil an
+    //Der AnimationListener prüft ob
     tabController.animation.addListener(() {
-      setState(() {
-        if (clickListenerActive) {
-          if (tabController.indexIsChanging) {
-            currentTabIndex == 0 ? showNavBar = true : showNavBar = false;
-            print(currentTabIndex);
-            clickListenerActive = false;
-          }
-        } else {
-          int activeTabIndex = (tabController.animation.value)
-              .round(); //_tabController.animation.value returns double
-          if(activeTabIndex != currentTabIndex)
-              currentTabIndex = activeTabIndex;
-          currentTabIndex == 0 ? showNavBar = true : showNavBar = false;
-          print(currentTabIndex);
-          clickListenerActive = false;
-
-        }
-      });
+      if (changeTab) {
+        tabController.index == 0 ? showNavBar = true : showNavBar = false;
+          changeTab=false;
+        setState(() {});
+      }
     });
-    // tabClickController = TabController(vsync: this, initialIndex: 0, length: 2);
-    /*  tabClickController.addListener(() {
-      setState(() {
-        if(tabController.indexIsChanging || tabController.index != tabController.previousIndex)
-          tabController.index == 0 ? showNavBar = true : showNavBar = false;
-      });
-    });*/
   }
 
   @override
@@ -84,10 +67,10 @@ class _MainLayoutState extends State<MainLayout>
               child: TabBar(
                   controller: tabController,
                   indicatorColor: Theme.of(context).primaryIconTheme.color,
+                  indicatorPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   //indicatorColor: Colors.transparent,
                   onTap: (int index) {
-                    clickListenerActive = true;
-                    currentTabIndex = index;
+                    changeTab = true;
                   },
                   tabs: [
                     Tab(
@@ -133,6 +116,7 @@ class _MainLayoutState extends State<MainLayout>
               )
             : null,
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           controller: tabController,
           children: [
             listOfPages[currentNavIndex],
