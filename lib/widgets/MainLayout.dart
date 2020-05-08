@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
-import 'package:gastrome/widgets/TopBar.dart';
 
 import 'PlaceholderWidget.dart';
 import 'package:gastrome/settings/globals.dart' as globals;
 
 class MainLayout extends StatefulWidget {
-  bool foodAreaAcive;
   Widget child;
 
-  MainLayout({@required this.foodAreaAcive, @required this.child});
+  MainLayout({@required this.child});
 
   static _MainLayoutState of(BuildContext context) =>
       context.findAncestorStateOfType();
@@ -19,10 +17,13 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
+  bool showNavBar = true;
   int currentIndex = 0;
-  final List<Widget> children = [
-    PlaceholderWidget(Colors.white),
-    PlaceholderWidget(Colors.deepOrange),
+
+  //In dieser Liste sind alle Seiten aufgeführt, die über die Navbar erreichbar sind
+  final List<Widget> listOfPages = [
+    RestaurantOverview(),
+    PlaceholderWidget(Colors.blueGrey),
     PlaceholderWidget(Colors.green),
     PlaceholderWidget(Colors.pink)
   ];
@@ -38,14 +39,21 @@ class _MainLayoutState extends State<MainLayout> {
       length: 2,
       child: Scaffold(
           appBar: AppBar(
+              automaticallyImplyLeading: false,
             flexibleSpace: SafeArea(
-              child: TabBar(tabs: [
-                Tab(icon: Icon(Icons.menu)),
-                Tab(icon: Icon(Icons.person)),
+              child: TabBar(
+                indicatorColor: Theme.of(context).primaryIconTheme.color,
+                onTap: (int index){ setState(() {
+                  index==0 ? showNavBar = true : showNavBar = false;
+                });
+                },
+                  tabs: [
+                Tab(icon: Icon(Icons.menu, color: !showNavBar ? Theme.of(context).primaryIconTheme.color : Theme.of(context).accentIconTheme.color)),
+                Tab(icon: Icon(Icons.person, color: showNavBar ? Theme.of(context).primaryIconTheme.color : Theme.of(context).accentIconTheme.color)),
               ]),
             ),
           ),
-          bottomNavigationBar: BottomNavigationBar(
+          bottomNavigationBar: showNavBar ? BottomNavigationBar(
             type: BottomNavigationBarType.shifting,
             backgroundColor: Theme.of(context).primaryColor,
             selectedItemColor: Theme.of(context).accentIconTheme.color,
@@ -70,8 +78,13 @@ class _MainLayoutState extends State<MainLayout> {
                 title: Text('Feedback'),
               ),
             ],
-          ),
-          body:  children[currentIndex],
+          ): null,
+          body:  TabBarView(
+            children: [
+              listOfPages[currentIndex],
+              PlaceholderWidget(Colors.amber),
+            ],
+          )
 
           ),
     );
