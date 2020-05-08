@@ -1,32 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:gastrome/pages/Home.dart';
+import 'package:gastrome/pages/Loading.dart';
+import 'package:gastrome/pages/RestaurantOverview.dart';
+import 'package:gastrome/widgets/MainLayout.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     theme: ThemeData(
-      // Define the default brightness and colors.
-      textSelectionHandleColor: Colors.red,
-      brightness: Brightness.dark,
-      primaryColor: Colors.green,
-      accentColor: Colors.deepOrangeAccent,
-
-      // Define the default font family.
-      fontFamily: 'CrimsonText',
-
-      // Define the default TextTheme. Use this to specify the default
-      // text styling for headlines, titles, bodies of text, and more.
-      /*textTheme: TextTheme(
-        headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-        title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-        body1: TextStyle(fontSize: 16.0, fontFamily: 'Hind'),
-      ),*/
+      primaryColor: Color(0xfff29f05),
+      accentColor: Color(0xfff2f2f2),
+      primaryIconTheme: IconThemeData(color: Color(0xfff2f2f2).withOpacity(0.60)),
+      accentIconTheme: IconThemeData(color: Color(0xfff2f2f2)),
+      canvasColor: Color(0xfff29f05),
     ),
-    initialRoute: '/home',
+    initialRoute: '/main',
     routes: {
-      '/': (context) => Home(),
-      '/home': (context) => Home(),
-
+      '/': (context) => Loading(),
+      '/main': (context) => MainLayout(),
     },
   ));
 }
