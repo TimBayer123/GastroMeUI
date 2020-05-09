@@ -13,6 +13,16 @@ class Speise extends SpeisekartenItem {
       : super(itemId, name, beschreibung, preis, bild, vegie, vegan);
 
   factory Speise.fromJson(Map<String, dynamic> json){
-    return Speise(json['id'],json['speisekarte'], json['allergene'], json['id'], json['name'], json['beschreibung'], json['preis'], json['bild'], json['vegie'], json['vegan']);
-
+    return Speise(
+        json['id'],
+        json['speisekarte'],
+        json['allergene'],
+        json['id'],
+        json['name'],
+        json['beschreibung'],
+        json['preis'],
+        json['bild'],
+        json['vegie'],
+        json['vegan']);
+  }
 }
