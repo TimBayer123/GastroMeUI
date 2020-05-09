@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gastrome/entities/Speise.dart';
 import 'package:gastrome/widgets/HeadlineWidget.dart';
 
 class Menu extends StatefulWidget {
