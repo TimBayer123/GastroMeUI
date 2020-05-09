@@ -73,6 +73,10 @@ flutter:
          - asset: fonts/Lato-Regular.ttf
          - asset: fonts/Lato-Italic.ttf
            style: italic
+         - asset: fonts/Lato-Semibold.ttf
+           weight: 500
+         - asset: fonts/Lato-SemiboldItalic.ttf
+           style: italic
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

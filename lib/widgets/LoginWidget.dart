@@ -15,6 +15,7 @@ class LoginWidget extends StatelessWidget {
         );
       },
       child: Container(
+        color: Theme.of(context).accentColor,
         height: 80,
         width: MediaQuery.of(context).size.width,
         child: Row(
@@ -22,17 +23,16 @@ class LoginWidget extends StatelessWidget {
           children: [
             Icon(
               Icons.settings_overscan,
-              color: Theme.of(context).accentColor,
-              size: 30,
+              color: Theme.of(context).primaryColor,
+              size: 40,
             ),
             SizedBox(width: 20),
             Text('Check-In',
                 style: TextStyle(
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).primaryColor,
                   fontFamily: 'Lato',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 1.5
+                  fontSize: 32,
+                  fontWeight: FontWeight.w500,
                 )),
           ],
         ),

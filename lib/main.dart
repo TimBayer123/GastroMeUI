@@ -9,14 +9,17 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     theme: ThemeData(
-      primaryColor: Color(0xfff29f05),
-      accentColor: Color(0xfff2f2f2),
+      accentColor: Color(0xfff29f05),
+      primaryColor: Color(0xfff2f2f2),
       primaryIconTheme: IconThemeData(color: Color(0xfff2f2f2).withOpacity(0.60)),
       accentIconTheme: IconThemeData(color: Color(0xfff2f2f2)),
+      backgroundColor: Color(0xfff2f2f2),
+      appBarTheme: AppBarTheme(color: Color(0xfff29f05)),
       canvasColor: Color(0xfff29f05),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.white),
 
       textTheme: TextTheme(
-        headline1: TextStyle(fontSize: 72.0, fontFamily: 'Lato', fontWeight: FontWeight.bold),
+        headline1: TextStyle(fontSize: 32.0, fontFamily: 'Lato', fontWeight: FontWeight.w500),
         headline6: TextStyle(fontSize: 36.0, fontFamily: 'Lato', fontStyle: FontStyle.italic),
         bodyText1: TextStyle(fontSize: 16.0, fontFamily: 'Lato',),
       ),
