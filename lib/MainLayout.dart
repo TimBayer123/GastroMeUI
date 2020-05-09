@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:gastrome/pages/Menu.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
 import 'package:gastrome/widgets/LoginWidget.dart';
 
@@ -30,10 +31,10 @@ class _MainLayoutState extends State<MainLayout>
 
   //In dieser Liste sind alle Seiten aufgeführt, die über die Navbar erreichbar sind
   final List<Widget> listOfPages = [
-    PlaceholderWidget(Colors.teal),
+    Menu(),
     PlaceholderWidget(Colors.blueGrey),
     PlaceholderWidget(Colors.green),
-    PlaceholderWidget(Colors.pink)
+    PlaceholderWidget(Colors.teal)
   ];
 
   @override
@@ -62,6 +63,7 @@ class _MainLayoutState extends State<MainLayout>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Center(
@@ -92,7 +94,7 @@ class _MainLayoutState extends State<MainLayout>
         bottomNavigationBar: showNavBar
             ? (loggedIn ? BottomNavigationBar(
                 type: BottomNavigationBarType.shifting,
-                backgroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).accentColor,
                 selectedItemColor: Theme.of(context).accentIconTheme.color,
                 unselectedItemColor: Theme.of(context).primaryIconTheme.color,
                 currentIndex: currentNavIndex,
@@ -117,13 +119,16 @@ class _MainLayoutState extends State<MainLayout>
                 ],
               ):LoginWidget())
             : null,
-        body: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: tabController,
-          children: [
-            loggedIn ? listOfPages[ currentNavIndex] : RestaurantOverview(),
-            PlaceholderWidget(Colors.amber),
-          ],
+        body: Padding(
+          padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+          child: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: tabController,
+            children: [
+              loggedIn ? listOfPages[ currentNavIndex] : RestaurantOverview(),
+              PlaceholderWidget(Colors.amber),
+            ],
+          ),
         ));
   }
 
