@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Speise.dart';
-import 'package:gastrome/entities/Speisekarte.dart' as speisekarteFetch;
 import 'package:gastrome/entities/Speisekarte.dart';
+import 'package:gastrome/widgets/FoodCardWidget.dart';
 import 'package:gastrome/widgets/HeadlineWidget.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,7 +16,7 @@ class _MenuState extends State<Menu> {
   Future<Speisekarte> futureSpeisekarte;
   @override
   void initState() {
-    futureSpeisekarte = speisekarteFetch.fetchSpeisekarte();
+    futureSpeisekarte = fetchSpeisekarte();
     super.initState();
   }
 
@@ -25,7 +25,7 @@ class _MenuState extends State<Menu> {
     return Container(
       child: Column(
         children: [
-          HeadlineWidget(restaurantName: 'Cafe Simple', callWaiterButton: true),
+          HeadlineWidget(restaurantName: 'Café Simple', callWaiterButton: true),
           Expanded(
             child: Container(
               child: FutureBuilder(
@@ -40,14 +40,7 @@ class _MenuState extends State<Menu> {
                           itemCount: speisekarte.speisen.length,
                           itemBuilder: (context, index) {
                             Speise speise = speisekarte.speisen[index];
-                            return Card(
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(10,40,10,40),
-                                child: Text(speise.name+ '  -  ' + speise.preis.toString()+' €'),
-                              )
-                            );
-
+                            return FoodCardWidget(item: speise);
 
                           },
                         ),
@@ -67,4 +60,22 @@ class _MenuState extends State<Menu> {
     );
   }
 
+  Future<Speisekarte> fetchSpeisekarte() async {
+    final response =
+    await http.get('http://GastromeApi-env.eba-gdpwc2as.us-east-2.elasticbeanstalk.com/speisekarteByRestaurantId/3aa6de1b-3451-4378-bb67-bfa406322ddd',
+        //await http.get('https://jsonplaceholder.typicode.com/albums/1',
+        headers: {
+          'gastrome-api-auth-token': '4df6d7b9-ba79-4ae7-8a1c-cffbb657610a',
+        });
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return Speisekarte.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Speisekarte laden fehlgeschlagen');
+    }
+  }
 }
