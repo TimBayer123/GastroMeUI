@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 class SpeisekartenItem{
-  final int id;
+  final String id;
   String name;
   String beschreibung;
   double preis;
