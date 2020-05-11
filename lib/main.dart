@@ -16,7 +16,7 @@ void main() {
       backgroundColor: Color(0xfff2f2f2),
       appBarTheme: AppBarTheme(color: Color(0xfff29f05)),
       canvasColor: Color(0xfff29f05),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.white),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.white,foregroundColor: Color(0xfff29f05)),
 
       textTheme: TextTheme(
         headline1: TextStyle(fontSize: 32.0, fontFamily: 'Lato', fontWeight: FontWeight.w500),
