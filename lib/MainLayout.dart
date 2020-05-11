@@ -119,16 +119,19 @@ class _MainLayoutState extends State<MainLayout>
                 ],
               ):LoginWidget())
             : null,
-        body: Padding(
-          padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
-          child: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
-            controller: tabController,
-            children: [
-              loggedIn ? listOfPages[ currentNavIndex] : RestaurantOverview(),
-              PlaceholderWidget(Color(0xfff2f2f2)),
-            ],
-          ),
+        body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
+          controller: tabController,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+              child: loggedIn ? listOfPages[ currentNavIndex] : RestaurantOverview(),
+            ),
+            Padding(
+                padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                child: PlaceholderWidget(Color(0xfff2f2f2))
+            ),
+          ],
         ));
   }
 
