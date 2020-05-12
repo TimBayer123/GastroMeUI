@@ -14,7 +14,8 @@ class Getraenk extends SpeisekartenItem{
 
 
     factory Getraenk.fromJson(Map<String, dynamic> json){
-      return Getraenk(
+      if(json != null)
+       return Getraenk(
           json['id'],
           json['speisekarte'],
           json['allergene'],
@@ -24,5 +25,6 @@ class Getraenk extends SpeisekartenItem{
           json['bild'],
           json['vegie'],
           json['vegan']);
+      return null;
     }
 }
