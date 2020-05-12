@@ -15,11 +15,13 @@ class Speisekarte{
   factory Speisekarte.fromJson(Map<String, dynamic> json){
     var speisenJson = json['speisen'] as List;
     List<Speise> _speisen = speisenJson.map((tagJson) => Speise.fromJson(tagJson)).toList();
+    var getraenkeJson = json['getraenke'] as List;
+    List<Getraenk> _getraenke = getraenkeJson.map((tagJson) => Getraenk.fromJson(tagJson)).toList();
     return Speisekarte(
       id: json['id'],
       restaurant: json['restaurant'],
       speisen: _speisen,
-      getraenke: json['getraenke'],
+      getraenke: _getraenke,
     );
   }
 

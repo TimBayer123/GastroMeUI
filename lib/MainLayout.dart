@@ -31,8 +31,8 @@ class _MainLayoutState extends State<MainLayout>
 
   //In dieser Liste sind alle Seiten aufgeführt, die über die Navbar erreichbar sind
   final List<Widget> listOfPages = [
-    Menu(),
-    PlaceholderWidget(Color(0xfff2f2f2)),
+    Menu(showFoodNotDrinks: true),
+    Menu(showFoodNotDrinks: false),
     PlaceholderWidget(Color(0xfff2f2f2)),
     PlaceholderWidget(Color(0xfff2f2f2))
   ];
