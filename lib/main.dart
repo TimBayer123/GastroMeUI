@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gastrome/MainLayout.dart';
 import 'package:gastrome/pages/Loading.dart';
-import 'package:gastrome/pages/RestaurantOverview.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,10 +19,11 @@ void main() {
       floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Colors.white,foregroundColor: Color(0xfff29f05)),
 
       textTheme: TextTheme(
-        headline1: TextStyle(fontSize: 32.0, fontFamily: 'Lato', fontWeight: FontWeight.w500),
-        headline5: TextStyle(fontSize: 20.0, fontFamily: 'Lato', fontWeight: FontWeight.w500),
-        headline6: TextStyle(fontSize: 16.0, fontFamily: 'Lato', color: Color(0xfff29f05)),
-        bodyText1: TextStyle(fontSize: 11.0, fontFamily: 'Lato',),
+          headline1: TextStyle(fontSize: 32.0, fontFamily: 'Lato', fontWeight: FontWeight.w500),
+          headline5: TextStyle(fontSize: 20.0, fontFamily: 'Lato', fontWeight: FontWeight.w500),
+          headline6: TextStyle(fontSize: 16.0, fontFamily: 'Lato', color: Color(0xfff29f05)),
+          bodyText1: TextStyle(fontSize: 11.0, fontFamily: 'Lato',),
+          bodyText2: TextStyle(fontSize: 11.0, fontFamily: 'Lato', color: Colors.black54),
       ),
     ),
     initialRoute: '/main',
