@@ -25,7 +25,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> {
     return Container(
       child: Column(
         children: [
-          HeadlineWidget(restaurantName: 'Restaurants\nfür dich', callWaiterButton: false),
+          HeadlineWidget(title: 'Restaurants', subtitle: "für dich", callWaiterButton: false),
           Expanded(
             child: Container(
               child: FutureBuilder(

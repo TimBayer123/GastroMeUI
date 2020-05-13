@@ -48,31 +48,52 @@ class _RestaurantCardWidgetState extends State<RestaurantCardWidget>{
                 flex: 10,
                 child: Container(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 8, 4, 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            widget.item.name,
-                            style: Theme.of(context).textTheme.headline6,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,),
-                        SizedBox(height: 5),
-                        Text(
-                            widget.item.beschreibung.replaceAll("\n", " ").replaceAll("\r", ""),
-                            style: Theme.of(context).textTheme.bodyText1,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,),
+                    padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                    child: Row(
+                      children: <Widget>[
                         Expanded(
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              distance,
-                              style: Theme.of(context).textTheme.bodyText2,),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    widget.item.name,
+                                    style: Theme.of(context).textTheme.headline6,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,),
+                                  Container(
+                                    alignment: Alignment.topRight,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(widget.item.getGesamtbewertung(), style: Theme.of(context).textTheme.headline6),
+                                        Icon(Icons.star_border, size: 18, color: Theme.of(context).accentColor,),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 3),
+                              Text(
+                                widget.item.beschreibung.replaceAll("\n", " ").replaceAll("\r", ""),
+                                style: Theme.of(context).textTheme.bodyText1,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,),
+                              SizedBox(height: 3),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text(
+                                    distance,
+                                    style: Theme.of(context).textTheme.bodyText2,),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
-                    ),
+                    )
                   ),
                 ),
               ),

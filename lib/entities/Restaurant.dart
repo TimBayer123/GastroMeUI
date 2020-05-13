@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:math';
 
 import 'package:gastrome/entities/Rezession.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
@@ -17,6 +18,19 @@ class Restaurant{
 
   Restaurant({this.id, this.name, this.beschreibung, this.standort,
       this.rezessionen, this.speisekarte, this.bild});
+
+  String getGesamtbewertung(){
+    double gesamtbwertung = 0;
+    rezessionen.forEach((rezession) {
+      if(rezession.bewertung != null){
+        int rezessionPunkte = rezession.bewertung.essen + rezession.bewertung.atmosphaere + rezession.bewertung.preise + rezession.bewertung.service + rezession.bewertung.sonderwuensche;
+        gesamtbwertung+=(rezessionPunkte/5);
+      }
+    });
+    if(rezessionen.length > 0)
+      return (gesamtbwertung/rezessionen.length).round().toString();
+    return "-";
+  }
 
   factory Restaurant.fromJson(Map<String, dynamic> json) {
     if(json != null){

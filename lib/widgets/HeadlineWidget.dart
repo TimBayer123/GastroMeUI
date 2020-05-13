@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HeadlineWidget extends StatelessWidget {
-  String restaurantName;
+  String title;
+  String subtitle;
   bool callWaiterButton;
 
-  HeadlineWidget({this.restaurantName, this.callWaiterButton});
+  HeadlineWidget({this.title, this.subtitle, this.callWaiterButton});
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +19,23 @@ class HeadlineWidget extends StatelessWidget {
             Expanded(
                 child: Container(
                     alignment: Alignment.centerLeft,
-                    child: Text(restaurantName,
-                    style: Theme.of(context).textTheme.headline1,)
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(title,
+                          style: Theme.of(context).textTheme.headline1, textAlign: TextAlign.left,),
+                        Text(subtitle,
+                          style: Theme.of(context).textTheme.headline2, textAlign: TextAlign.left,)
+                      ],
+                    ),
                 )
             ),
-            Container(
+            if(callWaiterButton) Container(
                 alignment: Alignment.centerRight,
                 child: FloatingActionButton(
                   elevation: 0,
-                  child: Icon(callWaiterButton ? Icons.directions_run : null, color: Theme.of(context).accentColor),
+                  child: Icon(Icons.directions_run, color: Theme.of(context).accentColor),
                 ),
             ),
           ],

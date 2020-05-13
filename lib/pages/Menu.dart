@@ -25,7 +25,7 @@ class _MenuState extends State<Menu> {
     return Container(
       child: Column(
         children: [
-          HeadlineWidget(restaurantName: 'Café Simple', callWaiterButton: true),
+          HeadlineWidget(title: 'Café Simple', callWaiterButton: true),
           Expanded(
             child: Container(
               child: FutureBuilder(
