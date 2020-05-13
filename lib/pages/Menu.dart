@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/src/scheduler/ticker.dart';
 import 'package:gastrome/entities/Getraenk.dart';
 import 'package:gastrome/entities/Speise.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
@@ -8,7 +9,7 @@ import 'package:gastrome/widgets/MenuCardWidget.dart';
 import 'package:gastrome/widgets/HeadlineWidget.dart';
 import 'package:http/http.dart' as http;
 
-class Menu extends StatefulWidget {
+class Menu extends StatefulWidget{
   bool showFoodNotDrinks;
 
   Menu({this.showFoodNotDrinks});
@@ -16,8 +17,9 @@ class Menu extends StatefulWidget {
   _MenuState createState() => _MenuState();
 }
 
-class _MenuState extends State<Menu> {
+class _MenuState extends State<Menu>{
   Future<Speisekarte> futureSpeisekarte;
+  AnimationController animationController;
   @override
   void initState() {
     futureSpeisekarte = fetchSpeisekarte();
@@ -87,4 +89,5 @@ class _MenuState extends State<Menu> {
       throw Exception('Speisekarte laden fehlgeschlagen');
     }
   }
+
 }

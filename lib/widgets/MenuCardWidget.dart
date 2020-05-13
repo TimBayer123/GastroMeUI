@@ -5,6 +5,7 @@ import 'package:gastrome/pages/MenuItemDetails.dart';
 import 'package:gastrome/widgets/PlaceholderWidget.dart';
 
 class MenuCardWidget extends StatelessWidget {
+
   SpeisekartenItem item;
   MenuCardWidget({this.item});
 
