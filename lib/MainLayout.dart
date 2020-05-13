@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gastrome/pages/Menu.dart';
+import 'package:gastrome/pages/MenuItemDetails.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
 import 'package:gastrome/widgets/LoginWidget.dart';
 
@@ -31,8 +32,8 @@ class _MainLayoutState extends State<MainLayout>
 
   //In dieser Liste sind alle Seiten aufgeführt, die über die Navbar erreichbar sind
   final List<Widget> listOfPages = [
-    Menu(),
-    PlaceholderWidget(Color(0xfff2f2f2)),
+    Menu(showFoodNotDrinks: true),
+    Menu(showFoodNotDrinks: false),
     PlaceholderWidget(Color(0xfff2f2f2)),
     PlaceholderWidget(Color(0xfff2f2f2))
   ];
@@ -136,6 +137,10 @@ class _MainLayoutState extends State<MainLayout>
   }
 
   void onTabTapped(index) {
+    if(MenuItemDetails.overlayEntry!=null){
+      MenuItemDetails.overlayEntry.remove();
+      MenuItemDetails.overlayEntry=null;
+    }
     setState(() {
       currentNavIndex = index;
     });
