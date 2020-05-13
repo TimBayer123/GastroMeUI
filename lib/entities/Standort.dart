@@ -2,17 +2,31 @@ import 'package:gastrome/entities/PLZ.dart';
 import 'package:gastrome/entities/Restaurant.dart';
 
 class Standort {
-  final int id;
+  final String id;
   Restaurant restaurant;
   PLZ plz;
   String strasse;
   String hausnummer;
-  String laengengrad;
-  String breitengrad;
+  double laengengrad;
+  double breitengrad;
   String beschreibung;
 
 
   Standort({this.id, this.restaurant, this.plz, this.strasse, this.hausnummer,
     this.laengengrad, this.breitengrad, this.beschreibung});
+
+  factory Standort.fromJson(dynamic json){
+    if(json != null)
+      return Standort(
+        id: json['id'],
+        restaurant: json['restaurant'],
+        plz: PLZ.fromJson(json['plz']),
+        strasse: json['strasse'],
+        hausnummer: json['hausnummer'],
+        laengengrad: json['laengengrad'],
+        breitengrad: json['breitengrad'],
+        beschreibung: json['beschreibung']);
+    return null;
+  }
 
 }
