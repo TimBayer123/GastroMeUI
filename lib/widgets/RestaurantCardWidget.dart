@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Restaurant.dart';
-import 'package:geolocator/geolocator.dart';
 
 class RestaurantCardWidget extends StatefulWidget {
   final Restaurant item;
@@ -12,15 +11,9 @@ class RestaurantCardWidget extends StatefulWidget {
 }
 
 class _RestaurantCardWidgetState extends State<RestaurantCardWidget>{
-  String distance = "";
-  Geolocator geolocator = Geolocator();
-  var locationOptions = LocationOptions(accuracy: LocationAccuracy.high,
-      distanceFilter: 10);
-
   @override
   void initState() {
     super.initState();
-    getDistanceBetweenItemAndDevice(widget.item);
   }
 
   @override
@@ -85,7 +78,7 @@ class _RestaurantCardWidgetState extends State<RestaurantCardWidget>{
                                 child: Align(
                                   alignment: Alignment.bottomLeft,
                                   child: Text(
-                                    distance,
+                                    widget.item.getEntfernungAsString(),
                                     style: Theme.of(context).textTheme.bodyText2,),
                                 ),
                               ),
@@ -101,36 +94,4 @@ class _RestaurantCardWidgetState extends State<RestaurantCardWidget>{
           ),
         ));
   }
-
-  Future<void> getDistanceBetweenItemAndDevice(Restaurant item) async {
-    //TODO Optimieren und verschönern
-    try {
-      GeolocationStatus geolocationStatus = await geolocator.checkGeolocationPermissionStatus();
-      if(geolocationStatus == GeolocationStatus.granted && item.standort != null){
-        geolocator.getPositionStream((locationOptions)).listen((position) async {
-          double _distance = await Geolocator().distanceBetween(item.standort.breitengrad, item.standort.laengengrad, position.latitude, position.longitude);
-          setState(() {
-            if(_distance > 999.99)
-              this.distance = double.parse((_distance/1000).toStringAsFixed(2)).toString().replaceAll(".", ",") + " km entfernt";
-            else
-              this.distance = (_distance).round().toString() + " m entfernt";
-          });
-        });
-      }
-      else{
-        await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-        GeolocationStatus geolocationStatus = await geolocator.checkGeolocationPermissionStatus();
-        if(geolocationStatus != GeolocationStatus.granted){
-          //TODO Meldung: Standort aktivieren
-        }
-        else{
-          //TODO Handle
-        }
-      }
-
-    } catch (e) {
-      print(e);
-    }
-  }
-
 }

@@ -15,6 +15,7 @@ class Restaurant{
   List<Rezession> rezessionen;
   Speisekarte speisekarte;
   Uint8List bild;
+  double entfernung;
 
   Restaurant({this.id, this.name, this.beschreibung, this.standort,
       this.rezessionen, this.speisekarte, this.bild});
@@ -30,6 +31,13 @@ class Restaurant{
     if(rezessionen.length > 0)
       return (gesamtbwertung/rezessionen.length).round().toString();
     return "-";
+  }
+
+  String getEntfernungAsString(){
+    if(entfernung != null && entfernung > 999.99)
+      return double.parse((entfernung/1000).toStringAsFixed(2)).toString().replaceAll(".", ",") + " km entfernt";
+    else
+      return entfernung != null ? (entfernung).round().toString() + " m entfernt" : "";
   }
 
   factory Restaurant.fromJson(Map<String, dynamic> json) {
