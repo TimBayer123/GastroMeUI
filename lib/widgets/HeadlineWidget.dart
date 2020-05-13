@@ -25,7 +25,7 @@ class HeadlineWidget extends StatelessWidget {
                       children: <Widget>[
                         Text(title,
                           style: Theme.of(context).textTheme.headline1, textAlign: TextAlign.left,),
-                        Text(subtitle,
+                        if(subtitle != null) Text(subtitle,
                           style: Theme.of(context).textTheme.headline2, textAlign: TextAlign.left,)
                       ],
                     ),
