@@ -80,11 +80,11 @@ class MenuItemDetails extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 30, 0, 30),
-                            child: Text(item.beschreibung, style: Theme.of(context).textTheme.bodyText2,),
+                            child: Text(item.beschreibung, style: Theme.of(context).textTheme.headline4,),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                            child: Text('Allergene', style: Theme.of(context).textTheme.bodyText2),
+                            child: Text('Allergene', style: Theme.of(context).textTheme.headline4),
                           ),
                           Row(
                             children: [
