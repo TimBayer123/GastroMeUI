@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Getraenk.dart';
 import 'package:gastrome/entities/Speise.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
-import 'package:gastrome/widgets/FoodCardWidget.dart';
+import 'package:gastrome/widgets/MenuCardWidget.dart';
 import 'package:gastrome/widgets/HeadlineWidget.dart';
 import 'package:http/http.dart' as http;
 
@@ -46,12 +46,12 @@ class _MenuState extends State<Menu> {
                                     ? (context, index) {
                                         Speise speise =
                                             speisekarte.speisen[index];
-                                        return FoodCardWidget(item: speise);
+                                        return MenuCardWidget(item: speise);
                                       }
                                     : (context, index) {
                                         Getraenk getraenk =
                                             speisekarte.getraenke[index];
-                                        return FoodCardWidget(item: getraenk);
+                                        return MenuCardWidget(item: getraenk);
                                       })
 
                       );

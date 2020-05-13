@@ -4,17 +4,16 @@ import 'package:gastrome/entities/SpeisekartenItem.dart';
 import 'package:gastrome/pages/MenuItemDetails.dart';
 import 'package:gastrome/widgets/PlaceholderWidget.dart';
 
-class FoodCardWidget extends StatelessWidget {
+class MenuCardWidget extends StatelessWidget {
   SpeisekartenItem item;
-  FoodCardWidget({this.item});
+  MenuCardWidget({this.item});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        OverlayEntry overlayEntry;
-        overlayEntry = OverlayEntry(builder: (context) => MenuItemDetails(item: item, overlayEntry: overlayEntry));
-        Overlay.of(context).insert(overlayEntry);
+        MenuItemDetails.overlayEntry = OverlayEntry(builder: (context) => MenuItemDetails(item: item));
+        Overlay.of(context).insert(MenuItemDetails.overlayEntry);
       },
         child: Card(
             margin: EdgeInsets.fromLTRB(2.0, 0.0, 4.0, 16.0),
