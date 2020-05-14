@@ -11,7 +11,6 @@ class LoginWidget extends StatelessWidget {
       onTap: (){
         globals.loggedIn=true;
         Navigator.push(context, ScaleRoute(page: MainLayout(navBarindex: 0,loggedIn: true)),
-
         );
       },
       child: Container(
