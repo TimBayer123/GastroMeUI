@@ -132,13 +132,14 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
           controller: tabController,
           children: [
             loggedIn
-                ? Padding(
-                    padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
-                    child: Column(
+                ? Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        HeadlineWidget(
-                            title: 'Café Simple', callWaiterButton: true),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+                          child: HeadlineWidget(
+                              title: 'Café Simple', callWaiterButton: true),
+                        ),
                         Expanded(
                           child: PageView(
                               controller: pageController,
@@ -154,9 +155,11 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
                               ]),
                         ),
                       ],
-                    ),
+                    
                   )
-                : RestaurantOverview(),
+                : Padding(
+                padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                child: RestaurantOverview()),
             Padding(
                 padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
                 child: PlaceholderWidget(Color(0xfff2f2f2))),
