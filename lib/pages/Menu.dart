@@ -35,22 +35,25 @@ class _MenuState extends State<Menu>{
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               Speisekarte speisekarte = snapshot.data;
-              return Container(
-                child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: speisekarte.speisen.length,
-                        itemBuilder: widget.showFoodNotDrinks
-                            ? (context, index) {
-                                Speise speise =
-                                    speisekarte.speisen[index];
-                                return MenuCardWidget(item: speise);
-                              }
-                            : (context, index) {
-                                Getraenk getraenk =
-                                    speisekarte.getraenke[index];
-                                return MenuCardWidget(item: getraenk);
-                              })
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                child: Container(
+                  child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: speisekarte.speisen.length,
+                          itemBuilder: widget.showFoodNotDrinks
+                              ? (context, index) {
+                                  Speise speise =
+                                      speisekarte.speisen[index];
+                                  return MenuCardWidget(item: speise);
+                                }
+                              : (context, index) {
+                                  Getraenk getraenk =
+                                      speisekarte.getraenke[index];
+                                  return MenuCardWidget(item: getraenk);
+                                })
 
+                ),
               );
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
