@@ -27,32 +27,29 @@ class _RestaurantOverviewState extends State<RestaurantOverview> {
         children: [
           HeadlineWidget(title: 'Restaurants', subtitle: "für dich", callWaiterButton: false),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-              child: Container(
-                child: FutureBuilder(
-                    future: futureRestaurantsNearby,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        List<Restaurant> restaurants = snapshot.data;
-                        return Container(
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: restaurants.length,
-                            itemBuilder: (context, index) {
-                              Restaurant restaurant = restaurants[index];
-                              return RestaurantCardWidget(item: restaurant);
-                              //return new Text(restaurant.name);
-                            },
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      // By default, show a loading spinner.
-                      return Center(child: CircularProgressIndicator());
+            child: Container(
+              child: FutureBuilder(
+                  future: futureRestaurantsNearby,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Restaurant> restaurants = snapshot.data;
+                      return Container(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: restaurants.length,
+                          itemBuilder: (context, index) {
+                            Restaurant restaurant = restaurants[index];
+                            return RestaurantCardWidget(item: restaurant);
+                            //return new Text(restaurant.name);
+                          },
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
                     }
-                ),
+                    // By default, show a loading spinner.
+                    return Center(child: CircularProgressIndicator());
+                  }
               ),
             ),
           )
