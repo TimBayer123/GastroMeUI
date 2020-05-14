@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:gastrome/pages/Menu.dart';
 import 'package:gastrome/pages/MenuItemDetails.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
@@ -12,10 +13,11 @@ import 'package:gastrome/widgets/PlaceholderWidget.dart';
 import 'package:gastrome/settings/globals.dart' as globals;
 
 class MainLayout extends StatefulWidget {
+  Speisekarte speisekarte;
   int navBarindex;
   bool loggedIn;
 
-  MainLayout({this.loggedIn, this.navBarindex});
+  MainLayout({this.loggedIn, this.navBarindex, this.speisekarte});
 
   static _MainLayoutState of(BuildContext context) =>
       context.findAncestorStateOfType();
@@ -33,15 +35,16 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
   bool changeTab;
 
   //In dieser Liste sind alle Seiten aufgeführt, die über die Navbar erreichbar sind
-  final List<Widget> listOfPages = [
-    Menu(showFoodNotDrinks: true),
-    Menu(showFoodNotDrinks: false),
-    PlaceholderWidget(Color(0xfff2f2f2)),
-    PlaceholderWidget(Color(0xfff2f2f2))
-  ];
+  List<Widget> listOfPages;
 
   @override
   void initState() {
+    listOfPages = [
+      Menu(showFoodNotDrinks: true, speisekarte: widget.speisekarte),
+      Menu(showFoodNotDrinks: false, speisekarte: widget.speisekarte),
+      PlaceholderWidget(Color(0xfff2f2f2)),
+      PlaceholderWidget(Color(0xfff2f2f2))
+    ];
     pageController = PageController();
     super.initState();
     currentNavIndex = widget.navBarindex != null ? widget.navBarindex : 0;

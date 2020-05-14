@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gastrome/MainLayout.dart';
 import 'package:gastrome/animations/ScaleRoute.dart';
 import 'package:gastrome/animations/SlideRightRoute.dart';
+import 'package:gastrome/pages/CheckInAndLoadData.dart';
 import 'package:gastrome/settings/globals.dart'as globals;
 
 class LoginWidget extends StatelessWidget {
@@ -10,7 +11,7 @@ class LoginWidget extends StatelessWidget {
     return InkWell(
       onTap: (){
         globals.loggedIn=true;
-        Navigator.push(context, ScaleRoute(page: MainLayout(navBarindex: 0,loggedIn: true)),
+        Navigator.push(context, ScaleRoute(page: CheckInAndLoadData()),
         );
       },
       child: Container(
