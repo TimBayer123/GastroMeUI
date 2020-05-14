@@ -11,7 +11,7 @@ class HeadlineWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+      padding: const EdgeInsets.fromLTRB(30, 30, 30, 20),
       child: Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

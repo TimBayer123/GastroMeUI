@@ -1,0 +1,73 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:gastrome/MainLayout.dart';
+import 'package:gastrome/animations/ScaleRoute.dart';
+import 'package:gastrome/entities/Speisekarte.dart';
+import 'package:http/http.dart' as http;
+import 'package:gastrome/settings/globals.dart';
+
+
+class CheckInAndLoadData extends StatefulWidget {
+  @override
+  _CheckInAndLoadDataState createState() => _CheckInAndLoadDataState();
+}
+
+class _CheckInAndLoadDataState extends State<CheckInAndLoadData> {
+  Future<Speisekarte> futureSpeisekarte;
+  Speisekarte loadedSpeisekarte;
+
+  @override
+  void initState() {
+    futureSpeisekarte = fetchSpeisekarte();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      child: FutureBuilder<Speisekarte>(
+          future: futureSpeisekarte,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              loadedSpeisekarte = snapshot.data;
+              goToMain();
+              return Container(
+                  color: Colors.green,
+              );
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            print('Laden noch nicht funktioniert');
+            return Center(child: CircularProgressIndicator());
+          }),
+    );
+  }
+
+  void goToMain(){
+    print('Laden funktioniert');
+    loggedIn=true;
+    Navigator.push(context, ScaleRoute(page: MainLayout(navBarindex: 0,loggedIn: true, speisekarte: loadedSpeisekarte)),
+    );
+  }
+
+  Future<Speisekarte> fetchSpeisekarte() async {
+    final response = await http.get(
+        'http://GastromeApi-env.eba-gdpwc2as.us-east-2.elasticbeanstalk.com/speisekarteByRestaurantId/3aa6de1b-3451-4378-bb67-bfa406322ddd',
+        //await http.get('https://jsonplaceholder.typicode.com/albums/1',
+        headers: {
+          'gastrome-api-auth-token': '4df6d7b9-ba79-4ae7-8a1c-cffbb657610a',
+        });
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return Speisekarte.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Speisekarte laden fehlgeschlagen');
+    }
+  }
+}
