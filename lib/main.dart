@@ -21,7 +21,7 @@ void main() {
       textTheme: TextTheme(
           headline1: TextStyle(fontSize: 32.0, fontFamily: 'Lato', fontWeight: FontWeight.w700, color: Colors.black),
           headline2: TextStyle(fontSize: 32.0, fontFamily: 'Lato', fontWeight: FontWeight.w500, color: Colors.black),
-          headline3: TextStyle(fontSize: 28.0, fontFamily: 'Lato', fontWeight: FontWeight.w500),
+          headline3: TextStyle(fontSize: 20.0, fontFamily: 'Lato', fontWeight: FontWeight.w500, color: Colors.white),
           headline4: TextStyle(fontSize: 16.0, fontFamily: 'Lato', fontWeight: FontWeight.w500),
           headline5: TextStyle(fontSize: 20.0, fontFamily: 'Lato', fontWeight: FontWeight.w500),
           headline6: TextStyle(fontSize: 16.0, fontFamily: 'Lato', color: Color(0xfff29f05)),
