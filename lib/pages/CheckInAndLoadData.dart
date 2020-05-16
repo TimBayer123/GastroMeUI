@@ -4,12 +4,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gastrome/MainLayout.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
+import 'package:gastrome/pages/QrCodeScanner.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:gastrome/settings/globals.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 
 class CheckInAndLoadData extends StatefulWidget {
+  String restaurantId;
+  String tischNr;
+  CheckInAndLoadData({this.restaurantId, this.tischNr});
   @override
   _CheckInAndLoadDataState createState() => _CheckInAndLoadDataState();
 }
@@ -33,7 +38,10 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).primaryColor,
-      child: FutureBuilder<Speisekarte>(
+      child: !loggedIn ? Navigator.push(context, MaterialPageRoute(
+        builder: (context) => QrCodeScan(),
+      )):
+      FutureBuilder<Speisekarte>(
           future: futureSpeisekarte,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -52,7 +60,7 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
                     ),
                     SizedBox(height: 40),
                     FadingText(
-                      'Sie werden eingecheckt...',
+                      'Wir bereiten ihren Tisch vor...',
                       style: Theme.of(context).textTheme.headline4,
                     )
 
@@ -65,7 +73,7 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
   Future<Speisekarte> fetchSpeisekarte() async {
     //await Future.delayed(Duration(seconds: 2));
     final response = await http.get(
-        gastroMeApiUrl + '/speisekarteByRestaurantId/0da85d23-185d-460a-ba10-690850997017',
+        gastroMeApiUrl + '/speisekarteByRestaurantId/' + widget.restaurantId,
         headers: {
           gastroMeApiAuthTokenName : gastroMeApiAuthTokenValue,
         });
@@ -80,4 +88,6 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
       throw Exception('Speisekarte laden fehlgeschlagen');
     }
   }
+
+
 }
