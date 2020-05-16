@@ -7,13 +7,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:gastrome/widgets/RestaurantCardWidget.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 
 class RestaurantOverview extends StatefulWidget {
   @override
   _RestaurantOverviewState createState() => _RestaurantOverviewState();
 }
 
-class _RestaurantOverviewState extends State<RestaurantOverview> {
+class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTickerProviderStateMixin  {
   Future<List<Restaurant>> futureRestaurantsNearby;
 
   final Geolocator geolocator = Geolocator();
@@ -22,13 +23,21 @@ class _RestaurantOverviewState extends State<RestaurantOverview> {
 
   Position lastSavedPosition;
 
+  AnimationController controller;
+
   @override
   void initState() {
     futureRestaurantsNearby = fetchRestaurantsNearby();
+
     geolocator.getPositionStream((locationOptions)).listen((position) async {
       updateDistanceBetweenRestaurantsAndDevice(position);
       updateRestaurantsList(position);
     });
+
+    controller = AnimationController(
+        duration: const Duration(milliseconds: 2000), vsync: this);
+
+    controller.repeat(reverse: true);
     super.initState();
   }
 
@@ -45,7 +54,8 @@ class _RestaurantOverviewState extends State<RestaurantOverview> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<Restaurant> restaurants = snapshot.data;
-                      restaurants.sort((a,b) => a.entfernung.compareTo(b.entfernung));
+                      restaurants.sort((a, b) =>
+                          a.entfernung.compareTo(b.entfernung));
                       return Container(
                         child: ListView.builder(
                           scrollDirection: Axis.vertical,
@@ -58,7 +68,8 @@ class _RestaurantOverviewState extends State<RestaurantOverview> {
                       );
                     } else if (snapshot.hasError) {
                       print(snapshot.error.toString());
-                      if(snapshot.error.toString() == 'Exception: ' + keinZugriffAufStandort){
+                      if (snapshot.error.toString() ==
+                          'Exception: ' + keinZugriffAufStandort) {
                         return Column(
                           children: <Widget>[
                             Text(snapshot.error.toString() + "\n" +
@@ -74,7 +85,24 @@ class _RestaurantOverviewState extends State<RestaurantOverview> {
                       }
                     }
                     // By default, show a loading spinner.
-                    return Center(child: CircularProgressIndicator());
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        HeartbeatProgressIndicator(
+                          child: AnimatedIcon(
+                            icon: AnimatedIcons.search_ellipsis,
+                            progress: controller,
+                            color: Theme.of(context).accentColor,
+                            size: 40,
+                          ),
+                          duration: new Duration(seconds: 1),
+                        ),
+                        SizedBox(height: 40),
+                        FadingText(
+                          'Wir suchen Gasstätten in deiner Nähe...',
+                          style: Theme.of(context).textTheme.headline4,)
+                      ],
+                    );
                   }
               ),
             ),
