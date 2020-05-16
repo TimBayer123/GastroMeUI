@@ -64,11 +64,12 @@ class _RestaurantOverviewState extends State<RestaurantOverview> {
   }
 
   Future<List<Restaurant>> fetchRestaurantsNearby() async {
-    Position position = await (Geolocator().getCurrentPosition());
+    //Position position = await (Geolocator().getCurrentPosition());
+    Position position = Position(latitude: 49, longitude: 8);
     GeolocationStatus geolocationStatus = await geolocator.checkGeolocationPermissionStatus();
     if(geolocationStatus == GeolocationStatus.granted) {
         final response =
-        await http.get(gastroMeApiUrl + '/restaurant/all?lat=' +
+        await http.get(gastroMeApiUrl + '/restaurant/all?lat='+
             position.latitude.toString() + "&lng=" +
             position.longitude.toString(),
             headers: {

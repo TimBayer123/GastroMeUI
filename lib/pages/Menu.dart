@@ -37,11 +37,11 @@ class _MenuState extends State<Menu> {
                 itemBuilder: widget.showFoodNotDrinks
                     ? (context, index) {
                         Speise speise = widget.speisekarte.speisen[index];
-                        return MenuCardWidget(item: speise);
+                        return MenuCardWidget(speise: speise);
                       }
                     : (context, index) {
                         Getraenk getraenk = widget.speisekarte.getraenke[index];
-                        return MenuCardWidget(item: getraenk);
+                        return MenuCardWidget(getraenk: getraenk);
                       })));
   }
 }

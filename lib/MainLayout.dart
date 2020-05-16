@@ -178,7 +178,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
     setState(() {
       currentNavIndex = index;
       pageController.animateToPage(index,
-          duration: Duration(milliseconds: 200), curve: Curves.linear);
+          duration: Duration(milliseconds: 370), curve: Curves.linear);
     });
   }
 }
