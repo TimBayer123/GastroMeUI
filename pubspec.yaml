@@ -26,7 +26,8 @@ dependencies:
   http: ^0.11.3+16
   geolocator: ^5.3.1
   permission_handler: ^5.0.0+hotfix.6
-
+  progress_indicators: ^0.1.5
+  font_awesome_flutter: ^8.8.1
 
 
   # The following adds the Cupertino Icons font to your application.

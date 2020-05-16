@@ -9,7 +9,7 @@ import 'package:image/image.dart' as I;
 class Speise extends SpeisekartenItem {
   final String id;
   Speisekarte speisekarte;
-  List<dynamic> allergene;
+  List<Allergen> allergene;
 
   Speise(this.id, this.speisekarte, this.allergene, String name,
       String beschreibung, double preis, Uint8List bild, bool vegie, bool vegan)
@@ -23,10 +23,12 @@ class Speise extends SpeisekartenItem {
       vegan);
 
   factory Speise.fromJson(Map<String, dynamic> json){
+    var allergeneJson = json['allergene'] as List;
+    List<Allergen> _allergene = allergeneJson.map((tagJson) => Allergen.fromJson(tagJson)).toList();
     return Speise(
         json['id'],
         json['speisekarte'],
-        json['allergene'],
+        _allergene,
         json['name'],
         json['beschreibung'],
         json['preis'],

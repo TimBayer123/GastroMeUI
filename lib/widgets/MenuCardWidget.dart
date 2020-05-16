@@ -1,21 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:gastrome/entities/Getraenk.dart';
 import 'package:gastrome/entities/Speise.dart';
 import 'package:gastrome/entities/SpeisekartenItem.dart';
 import 'package:gastrome/pages/MenuItemDetails.dart';
 import 'package:gastrome/widgets/PlaceholderWidget.dart';
+import 'package:gastrome/widgets/VeganVegieIcons.dart';
 
-class MenuCardWidget extends StatelessWidget {
+class MenuCardWidget extends StatefulWidget {
 
-  SpeisekartenItem item;
-  MenuCardWidget({this.item});
+  Speise speise;
+  Getraenk getraenk;
 
+  MenuCardWidget({this.speise, this.getraenk});
+
+  @override
+  _MenuCardWidgetState createState() => _MenuCardWidgetState();
+}
+
+class _MenuCardWidgetState extends State<MenuCardWidget> {
+  var item;
+
+  @override
+  void initState() {
+    if(widget.speise!=null)
+      item=widget.speise;
+    else if(widget.getraenk!=null)
+      item=widget.getraenk;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        MenuItemDetails.overlayEntry = OverlayEntry(builder: (context) => MenuItemDetails(item: item));
-        Overlay.of(context).insert(MenuItemDetails.overlayEntry);
+        showDetailsOverlay(context);
       },
+        onDoubleTap:(){
+          showDetailsOverlay(context);
+        },
         child: Card(
             margin: EdgeInsets.fromLTRB(2.0, 0.0, 4.0, 16.0),
             elevation: 3,
@@ -60,7 +81,11 @@ class MenuCardWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(null),
+                            item.vegan
+                                ? VeganIcon()
+                                : item.vegie
+                                ? VegieIcon()
+                                : SizedBox(width: 50),
                             Text(item.preis.toString()+'0 €', style: Theme.of(context).textTheme.headline6)
                           ],
                         ),
@@ -73,5 +98,13 @@ class MenuCardWidget extends StatelessWidget {
         )
 
     );
+  }
+
+  void showDetailsOverlay(BuildContext context){
+    if(widget.speise!=null)
+      MenuItemDetails.overlayEntry = OverlayEntry(builder: (context) => MenuItemDetails(speise: item));
+    else if(widget.getraenk!=null)
+      MenuItemDetails.overlayEntry = OverlayEntry(builder: (context) => MenuItemDetails(getraenk: item));
+    Overlay.of(context).insert(MenuItemDetails.overlayEntry);
   }
 }

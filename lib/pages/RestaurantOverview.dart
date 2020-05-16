@@ -91,7 +91,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> {
         lastSavedPosition = currentPosition;
       });
 
-      final response = await http.get(gastroMeApiUrl + '/restaurant/all?' +
+      final response = await http.get(gastroMeApiUrlLocal + '/restaurant/all?' +
           'lat=' + currentPosition.latitude.toString() +
           "&lng=" + currentPosition.longitude.toString(),
           headers: {

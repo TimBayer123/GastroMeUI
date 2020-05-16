@@ -1,19 +1,23 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:gastrome/pages/Menu.dart';
 import 'package:gastrome/pages/MenuItemDetails.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
+import 'package:gastrome/widgets/HeadlineWidget.dart';
 import 'package:gastrome/widgets/LoginWidget.dart';
 
 import 'package:gastrome/widgets/PlaceholderWidget.dart';
 import 'package:gastrome/settings/globals.dart' as globals;
 
 class MainLayout extends StatefulWidget {
+  Speisekarte speisekarte;
   int navBarindex;
   bool loggedIn;
 
-  MainLayout({this.loggedIn, this.navBarindex});
+  MainLayout({this.loggedIn, this.navBarindex, this.speisekarte});
 
   static _MainLayoutState of(BuildContext context) =>
       context.findAncestorStateOfType();
@@ -22,8 +26,8 @@ class MainLayout extends StatefulWidget {
   _MainLayoutState createState() => _MainLayoutState();
 }
 
-class _MainLayoutState extends State<MainLayout>
-    with SingleTickerProviderStateMixin {
+class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
+  PageController pageController;
   bool loggedIn;
   bool showNavBar = true;
   int currentNavIndex;
@@ -31,25 +35,27 @@ class _MainLayoutState extends State<MainLayout>
   bool changeTab;
 
   //In dieser Liste sind alle Seiten aufgeführt, die über die Navbar erreichbar sind
-  final List<Widget> listOfPages = [
-    Menu(showFoodNotDrinks: true),
-    Menu(showFoodNotDrinks: false),
-    PlaceholderWidget(Color(0xfff2f2f2)),
-    PlaceholderWidget(Color(0xfff2f2f2))
-  ];
+  List<Widget> listOfPages;
 
   @override
   void initState() {
+    listOfPages = [
+      Menu(showFoodNotDrinks: true, speisekarte: widget.speisekarte),
+      Menu(showFoodNotDrinks: false, speisekarte: widget.speisekarte),
+      PlaceholderWidget(Color(0xfff2f2f2)),
+      PlaceholderWidget(Color(0xfff2f2f2))
+    ];
+    pageController = PageController();
     super.initState();
-    currentNavIndex = widget.navBarindex!=null ? widget.navBarindex : 0;
-    loggedIn = widget.loggedIn!=null ? widget.loggedIn : false;
+    currentNavIndex = widget.navBarindex != null ? widget.navBarindex : 0;
+    loggedIn = widget.loggedIn != null ? widget.loggedIn : false;
     changeTab = false;
     tabController = TabController(vsync: this, initialIndex: 0, length: 2);
     //Der AnimationListener prüft ob
     tabController.animation.addListener(() {
       if (changeTab) {
         tabController.index == 0 ? showNavBar = true : showNavBar = false;
-          changeTab=false;
+        changeTab = false;
         setState(() {});
       }
     });
@@ -57,6 +63,7 @@ class _MainLayoutState extends State<MainLayout>
 
   @override
   void dispose() {
+    pageController.dispose();
     tabController.dispose();
     super.dispose();
   }
@@ -64,7 +71,7 @@ class _MainLayoutState extends State<MainLayout>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Center(
@@ -93,57 +100,85 @@ class _MainLayoutState extends State<MainLayout>
           ),
         ),
         bottomNavigationBar: showNavBar
-            ? (loggedIn ? BottomNavigationBar(
-                type: BottomNavigationBarType.shifting,
-                backgroundColor: Theme.of(context).accentColor,
-                selectedItemColor: Theme.of(context).accentIconTheme.color,
-                unselectedItemColor: Theme.of(context).primaryIconTheme.color,
-                currentIndex: currentNavIndex,
-                onTap: onTabTapped,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.restaurant),
-                    title: Text('Essen'),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.free_breakfast),
-                    title: Text('Getränke'),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.credit_card),
-                    title: Text('Bezahlen'),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.speaker_notes),
-                    title: Text('Feedback'),
-                  ),
-                ],
-              ):LoginWidget())
+            ? (loggedIn
+                ? BottomNavigationBar(
+                    type: BottomNavigationBarType.shifting,
+                    backgroundColor: Theme.of(context).accentColor,
+                    selectedItemColor: Theme.of(context).accentIconTheme.color,
+                    unselectedItemColor:
+                        Theme.of(context).primaryIconTheme.color,
+                    currentIndex: currentNavIndex,
+                    onTap: onTabTapped,
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.restaurant),
+                        title: Text('Essen'),
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.free_breakfast),
+                        title: Text('Getränke'),
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.credit_card),
+                        title: Text('Bezahlen'),
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.speaker_notes),
+                        title: Text('Feedback'),
+                      ),
+                    ],
+                  )
+                : LoginWidget())
             : null,
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           controller: tabController,
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
-              child: loggedIn ? listOfPages[ currentNavIndex] : RestaurantOverview(),
-            ),
+            loggedIn
+                ? Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+                          child: HeadlineWidget(
+                              title: 'Café Simple', callWaiterButton: true),
+                        ),
+                        Expanded(
+                          child: PageView(
+                              controller: pageController,
+                              onPageChanged: (index) {
+                                setState(() => currentNavIndex = index);
+                              },
+                              children: [
+                                // listOfPages[ currentNavIndex]
+                                listOfPages[0],
+                                listOfPages[1],
+                                listOfPages[2],
+                                listOfPages[3],
+                              ]),
+                        ),
+                      ],
+                    
+                  )
+                : Padding(
+                padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                child: RestaurantOverview()),
             Padding(
                 padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
-                child: PlaceholderWidget(Color(0xfff2f2f2))
-            ),
+                child: PlaceholderWidget(Color(0xfff2f2f2))),
           ],
         ));
   }
 
   void onTabTapped(index) {
-    if(MenuItemDetails.overlayEntry!=null){
+    if (MenuItemDetails.overlayEntry != null) {
       MenuItemDetails.overlayEntry.remove();
-      MenuItemDetails.overlayEntry=null;
+      MenuItemDetails.overlayEntry = null;
     }
     setState(() {
       currentNavIndex = index;
+      pageController.animateToPage(index,
+          duration: Duration(milliseconds: 370), curve: Curves.linear);
     });
   }
-
 }
