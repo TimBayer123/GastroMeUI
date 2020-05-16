@@ -18,7 +18,7 @@ class Restaurant{
   double entfernung;
 
   Restaurant({this.id, this.name, this.beschreibung, this.standort,
-      this.rezessionen, this.speisekarte, this.bild});
+      this.rezessionen, this.speisekarte, this.bild, this.entfernung});
 
   String getGesamtbewertung(){
     double gesamtbwertung = 0;
@@ -51,7 +51,8 @@ class Restaurant{
         beschreibung: json['beschreibung'],
         standort: Standort.fromJson(json['standort']),
         rezessionen: _rezessionen,
-        bild: base64Decode(json['bild']),
+        bild: base64Decode(json['bild'],),
+        entfernung: 0,
       );
     }
     return null;
