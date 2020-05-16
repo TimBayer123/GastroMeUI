@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gastrome/MainLayout.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_indicators/progress_indicators.dart';
+import 'package:gastrome/settings/globals.dart';
 
 
 class CheckInAndLoadData extends StatefulWidget {
@@ -38,7 +40,7 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
               loadedSpeisekarte = snapshot.data;
               return MainLayout(navBarindex: 0,loggedIn: true, speisekarte: loadedSpeisekarte);
             } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
+              return Center(child: Text("${snapshot.error}", style:Theme.of(context).textTheme.headline4));
             }
             print('Laden noch nicht funktioniert');
             return Center(
@@ -61,11 +63,11 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
   }
 
   Future<Speisekarte> fetchSpeisekarte() async {
+    //await Future.delayed(Duration(seconds: 2));
     final response = await http.get(
-        'http://GastromeApi-env.eba-gdpwc2as.us-east-2.elasticbeanstalk.com/speisekarteByRestaurantId/3aa6de1b-3451-4378-bb67-bfa406322ddd',
-        //await http.get('https://jsonplaceholder.typicode.com/albums/1',
+        gastroMeApiUrl + '/speisekarteByRestaurantId/0da85d23-185d-460a-ba10-690850997017',
         headers: {
-          'gastrome-api-auth-token': '4df6d7b9-ba79-4ae7-8a1c-cffbb657610a',
+          gastroMeApiAuthTokenName : gastroMeApiAuthTokenValue,
         });
 
     if (response.statusCode == 200) {
