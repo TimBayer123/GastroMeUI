@@ -111,6 +111,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                         child: GestureDetector(
                                           onTap: () {
                                             animationController.reverse();
+                                            MenuItemDetails.overlayEntry=null;
                                           },
                                           child: Container(
                                             color: Colors.transparent,

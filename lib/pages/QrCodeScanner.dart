@@ -16,6 +16,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
   QRViewController qrViewController;
   String qrText;
   String hintText= 'Bitte scannen sie den QR Code auf ihrem Tisch';
+  bool blitzAn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +76,46 @@ class _QrCodeScanState extends State<QrCodeScan> {
                   ),
                 ),
               ),
-            )
+            ),
+            Positioned.fill(
+              bottom: 85,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: GestureDetector(
+                  onTap: (){
+                    if( blitzAn == false ){
+                      blitzAn = true;
+                      qrViewController.toggleFlash();
+                    } else{
+                      blitzAn = false;
+                      qrViewController.toggleFlash();
+                    }
+                    setState(() {});
+                  },
+                  child: Container(
+                    //width: 250,
+                    decoration: BoxDecoration(
+                      color: blitzAn ? Theme.of(context).primaryColor :
+                           qrText == null ? Theme.of(context).accentColor : Colors.green,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: <BoxShadow>[
+                        new BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 2.0
+                        )
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.highlight,
+                        size: 35,
+                        color: blitzAn ? Theme.of(context).accentColor : Theme.of(context).accentIconTheme.color,)
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
     );
