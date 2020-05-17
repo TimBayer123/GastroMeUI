@@ -38,11 +38,8 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     super.initState();
-    //animationController.forward();
-    print('show Overlay init');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
-        print('start animation');
         animationController.forward();
       });
     });

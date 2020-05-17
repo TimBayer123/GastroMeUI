@@ -95,11 +95,15 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
     );
   }
 
-  void showDetailsOverlay(BuildContext context){
-    if(widget.speise!=null && MenuItemDetails.overlayEntry==null)
+  void showDetailsOverlay(BuildContext context) {
+    if(widget.speise!=null && MenuItemDetails.overlayEntry==null){
       MenuItemDetails.overlayEntry = OverlayEntry(builder: (context) => MenuItemDetails(speise: item));
-    else if(widget.getraenk!=null && MenuItemDetails.overlayEntry==null)
+      Overlay.of(context).insert(MenuItemDetails.overlayEntry);
+    }
+    else if(widget.getraenk!=null && MenuItemDetails.overlayEntry==null){
       MenuItemDetails.overlayEntry = OverlayEntry(builder: (context) => MenuItemDetails(getraenk: item));
-    Overlay.of(context).insert(MenuItemDetails.overlayEntry);
+      Overlay.of(context).insert(MenuItemDetails.overlayEntry);
+    }
+
   }
 }
