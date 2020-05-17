@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Getraenk.dart';
 import 'package:gastrome/entities/Speise.dart';
-import 'package:gastrome/entities/SpeisekartenItem.dart';
 import 'package:gastrome/pages/MenuItemDetails.dart';
-import 'package:gastrome/widgets/PlaceholderWidget.dart';
 import 'package:gastrome/widgets/VeganVegieIcons.dart';
 
 class MenuCardWidget extends StatefulWidget {
@@ -31,12 +29,9 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: (){
         showDetailsOverlay(context);
       },
-        onDoubleTap:(){
-          showDetailsOverlay(context);
-        },
         child: Card(
             margin: EdgeInsets.fromLTRB(2.0, 0.0, 4.0, 16.0),
             elevation: 3,
@@ -101,9 +96,9 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
   }
 
   void showDetailsOverlay(BuildContext context){
-    if(widget.speise!=null)
+    if(widget.speise!=null && MenuItemDetails.overlayEntry==null)
       MenuItemDetails.overlayEntry = OverlayEntry(builder: (context) => MenuItemDetails(speise: item));
-    else if(widget.getraenk!=null)
+    else if(widget.getraenk!=null && MenuItemDetails.overlayEntry==null)
       MenuItemDetails.overlayEntry = OverlayEntry(builder: (context) => MenuItemDetails(getraenk: item));
     Overlay.of(context).insert(MenuItemDetails.overlayEntry);
   }
