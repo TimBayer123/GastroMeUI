@@ -27,13 +27,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
 
   @override
   void initState() {
-    futureRestaurantsNearby = fetchRestaurantsNearby();
-
-    geolocator.getPositionStream((locationOptions)).listen((position) async {
-      updateDistanceBetweenRestaurantsAndDevice(position);
-      updateRestaurantsList(position);
-    });
-
+    fetchRestaurantsAndListenOnPositionChange();
     controller = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
 
@@ -62,7 +56,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
                           itemCount: restaurants.length,
                           itemBuilder: (context, index) {
                             Restaurant restaurant = restaurants[index];
-                            return RestaurantCardWidget(item: restaurant);
+                            return RestaurantCardWidget(restaurant: restaurant);
                           },
                         ),
                       );
@@ -112,34 +106,44 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
     );
   }
 
-  Future<List<Restaurant>> fetchRestaurantsNearby() async {
+  Future<void> fetchRestaurantsAndListenOnPositionChange() async {
     if (await Permission.location.request().isGranted) {
-      Position currentPosition = await (Geolocator().getCurrentPosition());
-      setState(() {
-        lastSavedPosition = currentPosition;
-      });
+    Position currentPosition = await (Geolocator().getCurrentPosition());
+    setState(() {
+    lastSavedPosition = currentPosition;
+    });
 
-      final response = await http.get(gastroMeApiUrlLocal + '/restaurant/all?' +
-          'lat=' + currentPosition.latitude.toString() +
-          "&lng=" + currentPosition.longitude.toString(),
-          headers: {
-            gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue
-          });
+    futureRestaurantsNearby = fetchRestaurantsNearby(currentPosition);
 
-      if(response.statusCode == 200){
-        List<Restaurant> restaurants = new List();
-        List<dynamic> restaurantsJSON = json.decode(utf8.decode(response.bodyBytes));
+    geolocator.getPositionStream((locationOptions)).listen((position) async {
+      updateDistanceBetweenRestaurantsAndDevice(position);
+      updateRestaurantsList(position);
+    });
 
-        restaurantsJSON.forEach((restaurantJson) async {
-          restaurants.add(Restaurant.fromJson(restaurantJson));
+    } else {
+    throw Exception(keinZugriffAufStandort);
+    }
+  }
+
+  Future<List<Restaurant>> fetchRestaurantsNearby(Position currentPosition) async {
+    final response = await http.get(gastroMeApiUrlLocal + '/restaurant/all?' +
+        'lat=' + currentPosition.latitude.toString() +
+        "&lng=" + currentPosition.longitude.toString(),
+        headers: {
+          gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue
         });
 
-        return restaurants;
-      } else {
-        throw Exception("Error: " + response.statusCode.toString() + "\n" + "Restaurants laden fehlgeschlagen!");
-      }
+    if(response.statusCode == 200){
+      List<Restaurant> restaurants = new List();
+      List<dynamic> restaurantsJSON = json.decode(utf8.decode(response.bodyBytes));
+
+      restaurantsJSON.forEach((restaurantJson) async {
+        restaurants.add(Restaurant.fromJson(restaurantJson));
+      });
+
+      return restaurants;
     } else {
-      throw Exception(keinZugriffAufStandort);
+      throw Exception("Error: " + response.statusCode.toString() + "\n" + "Restaurants laden fehlgeschlagen!");
     }
   }
 
@@ -172,8 +176,9 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
           position.latitude,
           position.longitude);
       if(currentDistanceToLastSavedLocation > maxDistanceReloadRestaurants){
+        Position currentPosition = await (Geolocator().getCurrentPosition());
         setState(() {
-          futureRestaurantsNearby = fetchRestaurantsNearby();
+          futureRestaurantsNearby = fetchRestaurantsNearby(currentPosition);
           updateDistanceBetweenRestaurantsAndDevice(position);
         });
       }

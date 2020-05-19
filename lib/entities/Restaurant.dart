@@ -33,6 +33,61 @@ class Restaurant{
     return "-";
   }
 
+  int getEssensBewertung(){
+    double bewertung = 0;
+    rezessionen.forEach((rezession) {
+      if(rezession.bewertung != null)
+        bewertung+=rezession.bewertung.essen;
+    });
+    if(rezessionen.length > 0)
+      return (bewertung/rezessionen.length).round();
+    return 0;
+  }
+
+  int getAtmosphaereBewertung(){
+    double bewertung = 0;
+    rezessionen.forEach((rezession) {
+      if(rezession.bewertung != null)
+        bewertung+=rezession.bewertung.atmosphaere;
+    });
+    if(rezessionen.length > 0)
+      return (bewertung/rezessionen.length).round();
+    return 0;
+  }
+
+  int getPreiseBewertung(){
+    double bewertung = 0;
+    rezessionen.forEach((rezession) {
+      if(rezession.bewertung != null)
+        bewertung+=rezession.bewertung.preise;
+    });
+    if(rezessionen.length > 0)
+      return (bewertung/rezessionen.length).round();
+    return 0;
+  }
+
+  int getServiceBewertung(){
+    double bewertung = 0;
+    rezessionen.forEach((rezession) {
+      if(rezession.bewertung != null)
+        bewertung+=rezession.bewertung.service;
+    });
+    if(rezessionen.length > 0)
+      return (bewertung/rezessionen.length).round();
+    return 0;
+  }
+
+  int getSonderwuenscheBewertung(){
+    double bewertung = 0;
+    rezessionen.forEach((rezession) {
+      if(rezession.bewertung != null)
+        bewertung+=rezession.bewertung.sonderwuensche;
+    });
+    if(rezessionen.length > 0)
+      return (bewertung/rezessionen.length).round();
+    return 0;
+  }
+
   String getEntfernungAsString(){
     if(entfernung != null && entfernung > 999.99)
       return double.parse((entfernung/1000).toStringAsFixed(2)).toString().replaceAll(".", ",") + " km entfernt";
