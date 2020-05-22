@@ -12,7 +12,7 @@ class Speise extends SpeisekartenItem {
   List<Allergen> allergene;
 
   Speise(this.id, this.speisekarte, this.allergene, String name,
-      String beschreibung, double preis, Uint8List bild, bool vegie, bool vegan)
+      String beschreibung, double preis, Uint8List bild, bool vegie, bool vegan, String erlaeuterung)
       : super(
       id,
       name,
@@ -20,7 +20,8 @@ class Speise extends SpeisekartenItem {
       preis,
       bild,
       vegie,
-      vegan);
+      vegan,
+  erlaeuterung);
 
   factory Speise.fromJson(Map<String, dynamic> json){
     var allergeneJson = json['allergene'] as List;
@@ -34,7 +35,8 @@ class Speise extends SpeisekartenItem {
         json['preis'],
         base64Decode(json['bild']),
         json['vegie'],
-        json['vegan']);
+        json['vegan'],
+        json['erlaeuterung']);
   }
 }
 // Diese Methode ist zur Orientierung hier notiert, benutzt wird dieses Code snippet am Verwendungsort

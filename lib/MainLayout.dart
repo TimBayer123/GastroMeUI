@@ -6,6 +6,7 @@ import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:gastrome/pages/Menu.dart';
 import 'package:gastrome/pages/MenuItemDetails.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
+import 'package:gastrome/widgets/CheckOutDialog.dart';
 import 'package:gastrome/widgets/HeadlineWidget.dart';
 import 'package:gastrome/widgets/LoginWidget.dart';
 
@@ -16,8 +17,9 @@ class MainLayout extends StatefulWidget {
   Speisekarte speisekarte;
   int navBarindex;
   bool loggedIn;
+  String tischNr;
 
-  MainLayout({this.loggedIn, this.navBarindex, this.speisekarte});
+  MainLayout({this.loggedIn, this.navBarindex, this.speisekarte, this.tischNr});
 
   static _MainLayoutState of(BuildContext context) =>
       context.findAncestorStateOfType();
@@ -56,6 +58,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
       if (changeTab) {
         tabController.index == 0 ? showNavBar = true : showNavBar = false;
         changeTab = false;
+        currentNavIndex = 0;
         setState(() {});
       }
     });
@@ -70,104 +73,107 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: Center(
-            child: SafeArea(
-              child: TabBar(
-                  controller: tabController,
-                  indicatorColor: Theme.of(context).primaryIconTheme.color,
-                  indicatorPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  //indicatorColor: Colors.transparent,
-                  onTap: (int index) {
-                    changeTab = true;
-                  },
-                  tabs: [
-                    Tab(
-                        icon: Icon(Icons.fastfood,
-                            color: !showNavBar
-                                ? Theme.of(context).primaryIconTheme.color
-                                : Theme.of(context).accentIconTheme.color)),
-                    Tab(
-                        icon: Icon(Icons.person,
-                            color: showNavBar
-                                ? Theme.of(context).primaryIconTheme.color
-                                : Theme.of(context).accentIconTheme.color)),
-                  ]),
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+          backgroundColor: Theme.of(context).backgroundColor,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            flexibleSpace: Center(
+              child: SafeArea(
+                child: TabBar(
+                    controller: tabController,
+                    indicatorColor: Theme.of(context).primaryIconTheme.color,
+                    indicatorPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    //indicatorColor: Colors.transparent,
+                    onTap: (int index) {
+                      changeTab = true;
+                    },
+                    tabs: [
+                      Tab(
+                          icon: Icon(Icons.fastfood,
+                              color: !showNavBar
+                                  ? Theme.of(context).primaryIconTheme.color
+                                  : Theme.of(context).accentIconTheme.color)),
+                      Tab(
+                          icon: Icon(Icons.person,
+                              color: showNavBar
+                                  ? Theme.of(context).primaryIconTheme.color
+                                  : Theme.of(context).accentIconTheme.color)),
+                    ]),
+              ),
             ),
           ),
-        ),
-        bottomNavigationBar: showNavBar
-            ? (loggedIn
-                ? BottomNavigationBar(
-                    type: BottomNavigationBarType.shifting,
-                    backgroundColor: Theme.of(context).accentColor,
-                    selectedItemColor: Theme.of(context).accentIconTheme.color,
-                    unselectedItemColor:
-                        Theme.of(context).primaryIconTheme.color,
-                    currentIndex: currentNavIndex,
-                    onTap: onTabTapped,
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.restaurant),
-                        title: Text('Essen'),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.free_breakfast),
-                        title: Text('Getränke'),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.credit_card),
-                        title: Text('Bezahlen'),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.speaker_notes),
-                        title: Text('Feedback'),
-                      ),
-                    ],
-                  )
-                : LoginWidget())
-            : null,
-        body: TabBarView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: tabController,
-          children: [
-            loggedIn
-                ? Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
-                          child: HeadlineWidget(
-                              title: 'Café Simple', callWaiterButton: true),
+          bottomNavigationBar: showNavBar
+              ? (loggedIn
+                  ? BottomNavigationBar(
+                      type: BottomNavigationBarType.shifting,
+                      backgroundColor: Theme.of(context).accentColor,
+                      selectedItemColor: Theme.of(context).accentIconTheme.color,
+                      unselectedItemColor:
+                          Theme.of(context).primaryIconTheme.color,
+                      currentIndex: currentNavIndex,
+                      onTap: onTabTapped,
+                      items: [
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.restaurant),
+                          title: Text('Essen'),
                         ),
-                        Expanded(
-                          child: PageView(
-                              controller: pageController,
-                              onPageChanged: (index) {
-                                setState(() => currentNavIndex = index);
-                              },
-                              children: [
-                                // listOfPages[ currentNavIndex]
-                                listOfPages[0],
-                                listOfPages[1],
-                                listOfPages[2],
-                                listOfPages[3],
-                              ]),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.free_breakfast),
+                          title: Text('Getränke'),
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.credit_card),
+                          title: Text('Bezahlen'),
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.speaker_notes),
+                          title: Text('Feedback'),
                         ),
                       ],
-                    
-                  )
-                : Padding(
-                padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
-                child: RestaurantOverview()),
-            Padding(
-                padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
-                child: PlaceholderWidget(Color(0xfff2f2f2))),
-          ],
-        ));
+                    )
+                  : LoginWidget())
+              : null,
+          body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: tabController,
+            children: [
+              loggedIn
+                  ? Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+                            child: HeadlineWidget(
+                                title: 'Café Simple', callWaiterButton: true),
+                          ),
+                          Expanded(
+                            child: PageView(
+                                controller: pageController,
+                                onPageChanged: (index) {
+                                  setState(() => currentNavIndex = index);
+                                },
+                                children: [
+                                  // listOfPages[ currentNavIndex]
+                                  listOfPages[0],
+                                  listOfPages[1],
+                                  listOfPages[2],
+                                  listOfPages[3],
+                                ]),
+                          ),
+                        ],
+
+                    )
+                  : Padding(
+                  padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                  child: RestaurantOverview()),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                  child: PlaceholderWidget(Color(0xfff2f2f2))),
+            ],
+          )),
+    );
   }
 
   void onTabTapped(index) {
@@ -180,5 +186,18 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
       pageController.animateToPage(index,
           duration: Duration(milliseconds: 370), curve: Curves.linear);
     });
+  }
+
+  Future<bool> _onBackPressed() {
+    return showDialog(
+      context: context,
+      builder: (context) => CheckOutDialog(
+        text: "Möchtest du wirklich vorzeitig aus dem Restaurant auschecken?",
+        textNein: "Nein, ich habe doch Hunger",
+        textJa: "Ja, so sei es",
+        tischNr: widget.tischNr,
+      )
+    ) ??
+        false;
   }
 }

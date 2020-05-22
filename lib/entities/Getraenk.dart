@@ -11,7 +11,7 @@ class Getraenk extends SpeisekartenItem{
     Speisekarte speisekarte;
     List<Allergen> allergene;
 
-  Getraenk(this.id, this.speisekarte, this.allergene, String name, String beschreibung, double preis, Uint8List bild, bool vegie, bool vegan) : super(id, name, beschreibung, preis, bild, vegie, vegan);
+  Getraenk(this.id, this.speisekarte, this.allergene, String name, String beschreibung, double preis, Uint8List bild, bool vegie, bool vegan, String erlaeuterung) : super(id, name, beschreibung, preis, bild, vegie, vegan, erlaeuterung);
 
 
     factory Getraenk.fromJson(Map<String, dynamic> json){
@@ -27,7 +27,8 @@ class Getraenk extends SpeisekartenItem{
           json['preis'],
           base64Decode(json['bild']),
           json['vegie'],
-          json['vegan']);
+          json['vegan'],
+       json['erlaeuterung']);
       return null;
     }
 }

@@ -159,7 +159,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                           padding: const EdgeInsets.fromLTRB(
                                               0, 30, 0, 30),
                                           child: Text(
-                                            item.beschreibung,
+                                            item.erlaeuterung!=null ? item.erlaeuterung : item.beschreibung,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline4,
