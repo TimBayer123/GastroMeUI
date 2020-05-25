@@ -109,6 +109,8 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                                 ),
                                               )
                                           ),
+                                          RestaurantMapsWidget(widget.restaurant),
+
                                           Positioned(
                                             top: 30,
                                             left: 30,
@@ -130,8 +132,8 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                                   ),
                                                   Text(
                                                     widget.restaurant.beschreibung.replaceAll("\r", "").replaceAll("\n", ""),
-                                                    overflow: TextOverflow.fade,
-                                                    style: Theme.of(context).textTheme.headline4,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: Theme.of(context).textTheme.bodyText1,
                                                     maxLines: 4,
                                                   ),
                                                   Icon(
@@ -140,22 +142,15 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                                     color: Colors.black54,
                                                   ),
                                                   SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Expanded(
-                                                    flex: 0,
-                                                    child: Text("Placeholder for Maps-Widget"),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
+                                                    height: 200,
                                                   ),
                                                   Row(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     crossAxisAlignment: CrossAxisAlignment.end,
                                                     children: <Widget>[
                                                       Text(
-                                                        "Speisekarte einsehen",
-                                                        style: Theme.of(context).textTheme.headline4,
+                                                        "Speisekarte einsehen ",
+                                                        style: Theme.of(context).textTheme.bodyText1,
                                                       ),
                                                       Icon(
                                                         Icons.keyboard_arrow_down,

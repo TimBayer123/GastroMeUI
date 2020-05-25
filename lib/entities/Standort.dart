@@ -29,4 +29,8 @@ class Standort {
     return null;
   }
 
+  String asText(){
+    return plz.plz.toString() + " " + plz.stadt + "\n" + strasse + " " + hausnummer;
+  }
+
 }

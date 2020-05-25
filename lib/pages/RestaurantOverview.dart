@@ -121,7 +121,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
     });
 
     } else {
-    throw Exception(keinZugriffAufStandort);
+      throw Exception(keinZugriffAufStandort);
     }
   }
 
