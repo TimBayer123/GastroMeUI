@@ -67,7 +67,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
                         return Column(
                           children: <Widget>[
                             Text(snapshot.error.toString() + "\n" +
-                                'Mit einem Klick auf den Button "App-Einstellungen" kannst du diese Einstellung ändern und GastroMe die Erlaubnis erteilen, auf deinen Standort zuzugreifenn.'),
+                                'Mit einem Klick auf den Button "App-Einstellungen" kannst du diese Einstellung ändern und GastroMe die Erlaubnis erteilen, auf deinen Standort zuzugreifen.'),
                             SizedBox(height: 20),
                             RaisedButton.icon(
                                 onPressed: openAppSettings,

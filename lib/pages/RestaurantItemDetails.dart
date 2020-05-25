@@ -134,7 +134,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                                     widget.restaurant.beschreibung.replaceAll("\r", "").replaceAll("\n", ""),
                                                     overflow: TextOverflow.ellipsis,
                                                     style: Theme.of(context).textTheme.bodyText1,
-                                                    maxLines: 4,
+                                                    maxLines: 5,
                                                   ),
                                                   Icon(
                                                     Icons.keyboard_arrow_down,
@@ -142,7 +142,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                                     color: Colors.black54,
                                                   ),
                                                   SizedBox(
-                                                    height: 200,
+                                                    height: 210,
                                                   ),
                                                   Row(
                                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +150,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                                     children: <Widget>[
                                                       Text(
                                                         "Speisekarte einsehen ",
-                                                        style: Theme.of(context).textTheme.bodyText1,
+                                                        style: Theme.of(context).textTheme.headline4,
                                                       ),
                                                       Icon(
                                                         Icons.keyboard_arrow_down,

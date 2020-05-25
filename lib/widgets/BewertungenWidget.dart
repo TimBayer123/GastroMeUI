@@ -18,7 +18,7 @@ class BewertungenWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               "Essen",
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.headline4,
             ),
             Column(
               children: <Widget>[
@@ -33,7 +33,7 @@ class BewertungenWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               "Atmosphäre",
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.headline4,
             ),
             Column(
               children: <Widget>[
@@ -48,7 +48,7 @@ class BewertungenWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               "Service",
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.headline4,
             ),
             Column(
               children: <Widget>[
@@ -63,7 +63,7 @@ class BewertungenWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               "Preise",
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.headline4,
             ),
             Column(
               children: <Widget>[
@@ -78,7 +78,7 @@ class BewertungenWidget extends StatelessWidget {
           children: <Widget>[
             Text(
               "Sonderwünsche",
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.headline4,
             ),
             Column(
               children: <Widget>[

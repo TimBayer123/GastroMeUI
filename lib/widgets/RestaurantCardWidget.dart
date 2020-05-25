@@ -77,7 +77,7 @@ class _RestaurantCardWidgetState extends State<RestaurantCardWidget>{
                                       widget.restaurant.beschreibung.replaceAll("\n", " ").replaceAll("\r", ""),
                                       style: Theme.of(context).textTheme.bodyText1,
                                       overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,),
+                                      maxLines: 3,),
                                     SizedBox(height: 3),
                                     Expanded(
                                       child: Align(
