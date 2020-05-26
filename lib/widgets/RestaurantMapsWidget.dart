@@ -5,12 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Restaurant.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 import 'package:vector_math/vector_math.dart';
 
 class RestaurantMapsWidget extends StatefulWidget {
   Restaurant restaurant;
-  Position currentPosition;
   RestaurantMapsWidget(this.restaurant);
 
   @override
@@ -37,7 +35,12 @@ class _RestaurantMapsWidget extends State<RestaurantMapsWidget> with SingleTicke
     controller = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
     controller.repeat(reverse: true);
+  }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   Future<CameraPosition> setCameraPosition() async {
@@ -124,14 +127,8 @@ class _RestaurantMapsWidget extends State<RestaurantMapsWidget> with SingleTicke
               );
             }
             else
-              return HeartbeatProgressIndicator(
-                child: AnimatedIcon(
-                  icon: AnimatedIcons.search_ellipsis,
-                  progress: controller,
-                  color: Theme.of(context).accentColor,
-                  size: 10,
-                ),
-                duration: new Duration(seconds: 1),
+              return Container(
+                child: CircularProgressIndicator(),
               );
           }
         ),

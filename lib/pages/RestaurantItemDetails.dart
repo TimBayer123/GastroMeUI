@@ -93,6 +93,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                               child: GestureDetector(
                                                 onTap: () {
                                                   animationController.reverse();
+                                                  RestaurantItemDetails.overlayEntry.remove();
                                                   RestaurantItemDetails.overlayEntry=null;
                                                 },
                                                 child: Container(

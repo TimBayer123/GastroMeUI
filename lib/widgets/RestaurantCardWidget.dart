@@ -103,6 +103,7 @@ class _RestaurantCardWidgetState extends State<RestaurantCardWidget>{
   }
 
   void showDetailsOverlay(BuildContext context) {
+    print(RestaurantItemDetails.overlayEntry);
     if(widget.restaurant!=null && RestaurantItemDetails.overlayEntry==null){
       RestaurantItemDetails.overlayEntry = OverlayEntry(builder: (context) => RestaurantItemDetails(restaurant: widget.restaurant));
       Overlay.of(context).insert(RestaurantItemDetails.overlayEntry);
