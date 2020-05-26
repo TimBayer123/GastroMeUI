@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
+import 'package:gastrome/pages/FeedbackSelection.dart';
 import 'package:gastrome/pages/Menu.dart';
 import 'package:gastrome/pages/MenuItemDetails.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
 import 'package:gastrome/widgets/CheckOutDialog.dart';
+import 'package:gastrome/widgets/FeedbackOverlay.dart';
 import 'package:gastrome/widgets/HeadlineWidget.dart';
 import 'package:gastrome/widgets/LoginWidget.dart';
 
@@ -18,6 +20,7 @@ class MainLayout extends StatefulWidget {
   int navBarindex;
   bool loggedIn;
   String tischNr;
+  String restaurantName = 'Café Simple';
 
   MainLayout({this.loggedIn, this.navBarindex, this.speisekarte, this.tischNr});
 
@@ -45,7 +48,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
       Menu(showFoodNotDrinks: true, speisekarte: widget.speisekarte),
       Menu(showFoodNotDrinks: false, speisekarte: widget.speisekarte),
       PlaceholderWidget(Color(0xfff2f2f2)),
-      PlaceholderWidget(Color(0xfff2f2f2))
+      FeedbackSelection(restaurantName: widget.restaurantName,),
     ];
     pageController = PageController();
     super.initState();
@@ -146,7 +149,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
                             child: HeadlineWidget(
-                                title: 'Café Simple', callWaiterButton: true),
+                                title: widget.restaurantName, callWaiterButton: true),
                           ),
                           Expanded(
                             child: PageView(
@@ -180,6 +183,10 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
     if (MenuItemDetails.overlayEntry != null) {
       MenuItemDetails.overlayEntry.remove();
       MenuItemDetails.overlayEntry = null;
+    }
+    if (FeedbackOverlay.overlayEntry != null) {
+      FeedbackOverlay.overlayEntry.remove();
+      FeedbackOverlay.overlayEntry = null;
     }
     setState(() {
       currentNavIndex = index;
