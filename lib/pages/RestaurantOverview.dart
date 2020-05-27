@@ -108,8 +108,8 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
 
   Future<void> fetchRestaurantsAndListenOnPositionChange() async {
     if (await Permission.location.request().isGranted) {
-    //Position currentPosition = await (Geolocator().getCurrentPosition());
-    Position currentPosition = new Position(latitude: 49, longitude: 8);
+    Position currentPosition = await (Geolocator().getCurrentPosition());
+    //Position currentPosition = new Position(latitude: 49, longitude: 8);
       setState(() {
     lastSavedPosition = currentPosition;
     });
@@ -127,7 +127,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
   }
 
   Future<List<Restaurant>> fetchRestaurantsNearby(Position currentPosition) async {
-    final response = await http.get(gastroMeApiUrl + '/restaurant/all?' +
+    final response = await http.get(gastroMeApiUrlLocal + '/restaurant/all?' +
         'lat=' + currentPosition.latitude.toString() +
         "&lng=" + currentPosition.longitude.toString(),
         headers: {
@@ -177,8 +177,8 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
           position.latitude,
           position.longitude);
       if(currentDistanceToLastSavedLocation > maxDistanceReloadRestaurants){
-       // Position currentPosition = await (Geolocator().getCurrentPosition());
-        Position currentPosition = new Position(latitude: 49, longitude: 8);
+        Position currentPosition = await (Geolocator().getCurrentPosition());
+       // Position currentPosition = new Position(latitude: 49, longitude: 8);
         setState(() {
           futureRestaurantsNearby = fetchRestaurantsNearby(currentPosition);
           updateDistanceBetweenRestaurantsAndDevice(position);
