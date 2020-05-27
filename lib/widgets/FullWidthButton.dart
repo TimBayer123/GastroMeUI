@@ -12,7 +12,7 @@ class FullWidthButton extends StatelessWidget {
       onTap: function,
       child: Container(
         width: double.infinity,
-        height: 71,
+        height: 60,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Theme.of(context).accentColor,
