@@ -12,106 +12,107 @@ class DirectFeedback extends StatefulWidget {
   _DirectFeedbackState createState() => _DirectFeedbackState();
 }
 
-class _DirectFeedbackState extends State<DirectFeedback> {
+class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProviderStateMixin{
   TextEditingController textController;
   FocusNode textfieldNode = FocusNode();
+  TabController tabController;
 
 
   @override
   void initState() {
     textController = new TextEditingController();
+    tabController = new TabController(vsync: this, length: 3, initialIndex: 1);
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: DefaultTabController(
-        initialIndex: 1,
-        length: 3,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-          child: KeyboardActions(
-            config: _buildConfig(context),
-            child: ListView(
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+        child: KeyboardActions(
+          config: _buildConfig(context),
+          child: ListView(
 
-             // crossAxisAlignment: CrossAxisAlignment.start,
-             // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
-                  child: Text(widget.restaurantName, style: Theme.of(context).textTheme.headline1),
+           // crossAxisAlignment: CrossAxisAlignment.start,
+           // mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
+                child: Text(widget.restaurantName, style: Theme.of(context).textTheme.headline1),
+              ),
+              Text('Feedback an Personal', style: Theme.of(context).textTheme.headline2),
+              SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: <BoxShadow>[
+                    new BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 3,
+                      offset: new Offset(0.0, 2.0),
+                    ),
+                  ],
                 ),
-                Text('Feedback an Personal', style: Theme.of(context).textTheme.headline2),
-                SizedBox(height: 20),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: <BoxShadow>[
-                      new BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 3,
-                        offset: new Offset(0.0, 2.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white,
+                      border:Border.all(
+                        color: Theme.of(context).accentColor,
+                        width: 1
                       ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Container(
-                      height: 42,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.white,
-                        border:Border.all(
+                    ),
+                    child: TabBar(
+                      controller: tabController,
+                      unselectedLabelColor: Colors.black,
+                      labelStyle: Theme.of(context).textTheme.headline6,
+                      labelColor: Colors.white,
+                      indicator: BoxDecoration(
                           color: Theme.of(context).accentColor,
-                          width: 1
-                        ),
+                          //borderRadius: BorderRadius.circular(10)
                       ),
-                      child: TabBar(
-                        unselectedLabelColor: Colors.black,
-                        labelStyle: Theme.of(context).textTheme.headline6,
-                        labelColor: Colors.white,
-                        indicator: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            //borderRadius: BorderRadius.circular(10)
-                        ),
-                        tabs: [
-                          Tab(text: 'Service',),
-                          Tab(text: 'Essen'),
-                          Tab(text: 'Sonstiges'),
-                        ],
-                      ),
+                      tabs: [
+                        Tab(text: 'Service',),
+                        Tab(text: 'Essen'),
+                        Tab(text: 'Sonstiges'),
+                      ],
                     ),
                   ),
                 ),
+              ),
 
-                SizedBox(height: 20),
-                Text('Anmerkung', style: Theme.of(context).textTheme.headline5),
-                SizedBox(height: 10),
-                Card(
-                  color: Colors.white,
-                  elevation: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      controller: textController,
-                      autocorrect: true,
-                      minLines: 6,
-                      maxLines: 6,
-                      decoration: InputDecoration.collapsed(hintText: "Gebe hier dein Feedback ab"),
-                      keyboardType: TextInputType.text,
-                      focusNode: textfieldNode,
-                    ),
+              SizedBox(height: 20),
+              Text('Anmerkung', style: Theme.of(context).textTheme.headline5),
+              SizedBox(height: 10),
+              Card(
+                color: Colors.white,
+                elevation: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: textController,
+                    autocorrect: true,
+                    minLines: 6,
+                    maxLines: 6,
+                    decoration: InputDecoration.collapsed(hintText: "Gebe hier dein Feedback ab"),
+                    keyboardType: TextInputType.multiline,
+                    focusNode: textfieldNode,
                   ),
                 ),
-                SizedBox(height: 20),
-                FullWidthButton(
-                  buttonText: 'Absenden',
-                  function: (){},
-                )
+              ),
+              SizedBox(height: 20),
+              FullWidthButton(
+                buttonText: 'Absenden',
+                function: (){
+                  textController.text='tab: ' + tabController.index.toString();
+                },
+              )
 
-              ],
-            ),
+            ],
           ),
         ),
       ),
@@ -120,6 +121,7 @@ class _DirectFeedbackState extends State<DirectFeedback> {
 
   @override
   void dispose() {
+    tabController.dispose();
     textController.dispose();
     super.dispose();
   }
@@ -138,11 +140,16 @@ class _DirectFeedbackState extends State<DirectFeedback> {
               onTap: () => node.unfocus(),
               child: Container(
                 width: 100,
-                height: 80,
+                height: 100,
                 child: Center(
                   child: Padding(
                     padding: EdgeInsets.all(12.0),
-                    child: Text('Fertig', style: Theme.of(context).textTheme.headline4)
+                    child: Text('Fertig', style: TextStyle(
+                      fontFamily: 'lato',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white
+                    ))
                   ),
                 ),
               ),
@@ -151,6 +158,11 @@ class _DirectFeedbackState extends State<DirectFeedback> {
         ]),
       ],
     );
+  }
+
+  Future<void> sendFeedback(int index, String text){
+
+
   }
 
 }
