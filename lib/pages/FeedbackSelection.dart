@@ -22,7 +22,7 @@ class FeedbackSelection extends StatelessWidget {
             FullWidthButton(
                 buttonText: 'Direkt an Personal',
                 function: () {
-                  showDirectFeedbackOverlay(context, DirectFeedback(), restaurantName);
+                  showDirectFeedbackOverlay(context, DirectFeedback(restaurantName: restaurantName));
                 }),
             SizedBox(height: 15),
             FullWidthButton(
@@ -34,10 +34,10 @@ class FeedbackSelection extends StatelessWidget {
   }
 }
 
-void showDirectFeedbackOverlay(BuildContext context, Widget widget, String restaurantName) {
+void showDirectFeedbackOverlay(BuildContext context, Widget widget) {
   if (FeedbackOverlay.overlayEntry == null) {
     FeedbackOverlay.overlayEntry =
-        OverlayEntry(builder: (context) => FeedbackOverlay(child: widget, restaurantName: restaurantName,));
+        OverlayEntry(builder: (context) => FeedbackOverlay(child: widget));
     Overlay.of(context).insert(FeedbackOverlay.overlayEntry);
   }
 }

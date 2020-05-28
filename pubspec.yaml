@@ -31,6 +31,7 @@ dependencies:
   qr_code_scanner: ^0.0.13
   google_maps_flutter: ^0.5.28+1
   vector_math: ^2.0.8
+  keyboard_actions: ^3.2.1+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
