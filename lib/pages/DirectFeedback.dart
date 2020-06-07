@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gastrome/widgets/FeedbackOverlay.dart';
 import 'package:gastrome/widgets/FullWidthButton.dart';
+import 'package:gastrome/widgets/WarningDialog.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
 class DirectFeedback extends StatefulWidget {
   String restaurantName;
@@ -108,7 +112,19 @@ class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProvid
               FullWidthButton(
                 buttonText: 'Absenden',
                 function: (){
-                  textController.text='tab: ' + tabController.index.toString();
+                  textController.text!="" ?
+                    sendFeedback(tabController.index, textController.text) :
+                  showDialog(
+                      context: context,
+                      builder: (context) => WarningDialog(
+                        text: "Du hast keine Anmerkung verfasst. Bitte verfasse zuerst eine Anmerkung vor dem Senden",
+                        textJa: "Okei",
+                        textNein: "",
+                      )
+                  )?? false;
+                  FeedbackOverlay.overlayEntry.remove();
+                  FeedbackOverlay.overlayEntry=null;
+
                 },
               )
 
@@ -160,9 +176,41 @@ class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProvid
     );
   }
 
-  Future<void> sendFeedback(int index, String text){
+  Future<void> sendFeedback(int index, String message) async {
+
+    String username = 'GastroMeWaiterTim@gmail.com';
+    String password = 'GastroMepwd';
+
+    String tag = index!=0 ? (index!=1 ? 'Sonstiges' : 'Essen') : 'Service';
+    String subject = 'Feedback zu '+tag;
 
 
+    final smtpServer = gmail(username, password);
+    // Use the SmtpServer class to configure an SMTP server:
+    // final smtpServer = SmtpServer('smtp.domain.com');
+    // See the named arguments of SmtpServer for further configuration
+    // options.
+
+    // Create our message.
+    final body = Message()
+      ..from = Address(username, 'Waiter Tim')
+      ..recipients.add('GastroMeWaiterTim@gmail.com')
+    //  ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
+    //  ..bccRecipients.add(Address('bccAddress@example.com'))
+      ..subject = subject
+     // ..text = 'This is the plain text.\nThis is line 2 of the text part.'
+      ..html = "<h1>Kategorie: "+tag+"</h1>\n<p>"+message+"</p>";
+
+    try {
+      final sendReport = await send(body, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+    }
+    // DONE
   }
 
 }

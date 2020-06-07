@@ -205,14 +205,14 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                             !item.allergene
                                                         .toString()
                                                         .contains('Erdnüsse') &&
-                                                    !item.allergene
+                                            !item.allergene
                                                         .toString()
                                                         .contains(
                                                             "Glutenhaltiges Getreide") &&
-                                                    !item.allergene
+                                            !item.allergene
                                                         .toString()
                                                         .contains('Eier') &&
-                                                !item.allergene
+                                            !item.allergene
                                                     .toString()
                                                     .contains('Milch und Milchprodukte')
                                                 ? Text(
