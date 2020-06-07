@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 class FeedbackOverlay extends StatefulWidget {
   Widget child;
   static OverlayEntry overlayEntry;
-  String restaurantName;
 
-  FeedbackOverlay({@required this.child, @required this.restaurantName});
+  FeedbackOverlay({@required this.child});
   @override
   _FeedbackOverlayState createState() => _FeedbackOverlayState();
 }
@@ -76,9 +75,9 @@ class _FeedbackOverlayState extends State<FeedbackOverlay>
                             children: [
                               Positioned.fill(
                                   child: Padding(
-                                    padding: const EdgeInsets.fromLTRB(30, 130, 30, 0),
-                                     child: widget.child,
-                              )),
+                                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                                    child: widget.child,
+                                  )),
                               Positioned(
                                   top: 10,
                                   right: 10,
@@ -100,13 +99,13 @@ class _FeedbackOverlayState extends State<FeedbackOverlay>
                                       ),
                                     ),
                                   )),
-                              Positioned(
-                                  top: 80,
+                             /* Positioned(
+                                top: 80,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                                   child: Text(widget.restaurantName, style: Theme.of(context).textTheme.headline1,),
                                 ),
-                              )
+                              )*/
                             ],
                           ),
                         ),
