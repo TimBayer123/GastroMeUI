@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gastrome/animations/ScaleRoute.dart';
+import 'package:gastrome/pages/RestaurantItemDetails.dart';
 import 'package:gastrome/settings/globals.dart'as globals;
 import 'package:gastrome/pages/QrCodeScanner.dart';
 
@@ -10,6 +11,10 @@ class LoginWidget extends StatelessWidget {
     return InkWell(
       onTap: (){
         globals.loggedIn=false;
+        if(RestaurantItemDetails.overlayEntry!=null){
+          RestaurantItemDetails.overlayEntry.remove();
+          RestaurantItemDetails.overlayEntry = null;
+        }
         Navigator.push(context, ScaleRoute(page: QrCodeScan()),
         );
       },
