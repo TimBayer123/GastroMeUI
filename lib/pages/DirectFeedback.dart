@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gastrome/settings/globals.dart';
 import 'package:gastrome/widgets/FeedbackOverlay.dart';
 import 'package:gastrome/widgets/FullWidthButton.dart';
 import 'package:gastrome/widgets/WarningDialog.dart';
@@ -194,7 +195,7 @@ class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProvid
     // Create our message.
     final body = Message()
       ..from = Address(username, 'Waiter Tim')
-      ..recipients.add('GastroMeWaiterTim@gmail.com')
+      ..recipients.add(restaurant.email)
     //  ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
     //  ..bccRecipients.add(Address('bccAddress@example.com'))
       ..subject = subject

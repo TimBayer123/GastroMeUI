@@ -16,9 +16,10 @@ class Restaurant{
   Speisekarte speisekarte;
   Uint8List bild;
   double entfernung;
+  String email;
 
   Restaurant({this.id, this.name, this.beschreibung, this.standort,
-      this.rezessionen, this.speisekarte, this.bild, this.entfernung});
+      this.rezessionen, this.speisekarte, this.bild, this.entfernung, this.email});
 
   String getGesamtbewertung(){
     double gesamtbwertung = 0;
@@ -108,6 +109,7 @@ class Restaurant{
         rezessionen: _rezessionen,
         bild: base64Decode(json['bild'],),
         entfernung: 0,
+        email: json['email']
       );
     }
     return null;
