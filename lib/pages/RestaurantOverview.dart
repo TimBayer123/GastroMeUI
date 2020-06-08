@@ -73,7 +73,14 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
                                 onPressed: openAppSettings,
                                 icon: Icon(Icons.settings),
                                 label: Text("App-Einstellungen")),
-
+                          ],
+                        );
+                      }
+                      else if (snapshot.error.toString() ==
+                          'Exception: ' + keineRestaurantsGefunden) {
+                        return Column(
+                          children: <Widget>[
+                            Text(snapshot.error.toString()),
                           ],
                         );
                       }
@@ -92,7 +99,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
                           duration: new Duration(seconds: 1),
                         ),
                         SizedBox(height: 40),
-                        FadingText(
+                        Text(
                           'Wir suchen Gasstätten in deiner Nähe...',
                           style: Theme.of(context).textTheme.headline4,)
                       ],
@@ -114,7 +121,11 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
     lastSavedPosition = currentPosition;
     });
 
-    futureRestaurantsNearby = fetchRestaurantsNearby(currentPosition);
+    futureRestaurantsNearby = fetchRestaurantsNearby(currentPosition)
+        .timeout(Duration(seconds: 15), onTimeout: (){
+          throw Exception(keineRestaurantsGefunden);
+        }
+    );
 
     geolocator.getPositionStream((locationOptions)).listen((position) async {
       updateDistanceBetweenRestaurantsAndDevice(position);
