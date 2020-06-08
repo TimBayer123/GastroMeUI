@@ -140,7 +140,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
       print("restaurant: "+restaurantId);
       String tischNr = qrText.substring(60,96);
       print("tischNr: "+tischNr);
-      loggedIn = true;
+      loggedIn=true;
       Navigator.pushReplacement(context, SlideRightRoute(page: CheckInAndLoadData(restaurantId: restaurantId, tischNr: tischNr,)));
       qrViewController.dispose();
     });

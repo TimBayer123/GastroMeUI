@@ -7,22 +7,20 @@ import 'package:gastrome/pages/FeedbackSelection.dart';
 import 'package:gastrome/pages/Menu.dart';
 import 'package:gastrome/pages/MenuItemDetails.dart';
 import 'package:gastrome/pages/RestaurantOverview.dart';
+import 'package:gastrome/settings/globals.dart';
 import 'package:gastrome/widgets/CheckOutDialog.dart';
 import 'package:gastrome/widgets/FeedbackOverlay.dart';
 import 'package:gastrome/widgets/HeadlineWidget.dart';
 import 'package:gastrome/widgets/LoginWidget.dart';
 
 import 'package:gastrome/widgets/PlaceholderWidget.dart';
-import 'package:gastrome/settings/globals.dart' as globals;
 
 class MainLayout extends StatefulWidget {
   Speisekarte speisekarte;
   int navBarindex;
-  bool loggedIn;
-  String tischNr;
   String restaurantName = 'Café Simple';
 
-  MainLayout({this.loggedIn, this.navBarindex, this.speisekarte, this.tischNr});
+  MainLayout({this.navBarindex, this.speisekarte});
 
   static _MainLayoutState of(BuildContext context) =>
       context.findAncestorStateOfType();
@@ -33,7 +31,6 @@ class MainLayout extends StatefulWidget {
 
 class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
   PageController pageController;
-  bool loggedIn;
   bool showNavBar = true;
   int currentNavIndex;
   TabController tabController;
@@ -53,7 +50,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
     pageController = PageController();
     super.initState();
     currentNavIndex = widget.navBarindex != null ? widget.navBarindex : 0;
-    loggedIn = widget.loggedIn != null ? widget.loggedIn : false;
+   // loggedIn = loggedIn != null ? loggedIn : false;
     changeTab = false;
     tabController = TabController(vsync: this, initialIndex: 0, length: 2);
     //Der AnimationListener prüft ob
@@ -149,7 +146,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
                             child: HeadlineWidget(
-                                title: widget.restaurantName, callWaiterButton: true),
+                                title: restaurant.name, callWaiterButton: true),
                           ),
                           Expanded(
                             child: PageView(
@@ -202,7 +199,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
         text: "Möchtest du wirklich vorzeitig aus dem Restaurant auschecken?",
         textNein: "Nein, ich habe doch Hunger",
         textJa: "Ja, so sei es",
-        tischNr: widget.tischNr,
+        tischNr: tischNr
       )
     ) ??
         false;
