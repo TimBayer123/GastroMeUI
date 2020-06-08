@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gastrome/MainLayout.dart';
 import 'package:gastrome/pages/Loading.dart';
+import 'package:gastrome/settings/globals.dart';
 
 void main() {
+  loggedIn=false;
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     theme: ThemeData(
@@ -32,7 +34,7 @@ void main() {
     initialRoute: '/main',
     routes: {
       '/': (context) => Loading(),
-      '/main': (context) => MainLayout(loggedIn: false),
+      '/main': (context) => MainLayout(),
     },
   ));
 }
