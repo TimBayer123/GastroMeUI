@@ -127,8 +127,16 @@ class _RestaurantMapsWidget extends State<RestaurantMapsWidget> with SingleTicke
               );
             }
             else
-              return Container(
-                child: CircularProgressIndicator(),
+              return Positioned(
+                height: 100,
+                width: 100,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    CircularProgressIndicator(),
+                  ],
+                ),
               );
           }
         ),
