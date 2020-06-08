@@ -1,13 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/scheduler/ticker.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:gastrome/entities/Allergen.dart';
 import 'package:gastrome/entities/Getraenk.dart';
 import 'package:gastrome/entities/Speise.dart';
-import 'package:gastrome/entities/SpeisekartenItem.dart';
 import 'package:gastrome/widgets/AllergeneIcons.dart';
 import 'package:gastrome/widgets/VeganVegieIcons.dart';
+import 'package:http/http.dart' as http;
+import 'package:gastrome/settings/globals.dart';
+import 'package:gastrome/entities/Rechnung.dart';
 
 class MenuItemDetails extends StatefulWidget {
   static OverlayEntry overlayEntry;
@@ -135,10 +136,8 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                 child: Container(
                                   color: Theme.of(context).primaryColor,
                                   child: Padding(
-                                    padding: EdgeInsets.all(30),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+                                    child: ListView(
                                       children: [
                                         Row(
                                           mainAxisAlignment:
@@ -225,7 +224,33 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                                     width: 0,
                                                   ),
                                           ],
-                                        )
+                                        ),
+                                        SizedBox(height: 20,),
+                                        item is Getraenk ?
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              RaisedButton(
+                                                color: Theme.of(context).accentColor,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                ),
+                                                padding: EdgeInsets.all(10),
+                                                onPressed: () => orderGetraenkDialogBox(item),
+                                                child: Row(
+                                                  children: <Widget>[
+                                                    Text(
+                                                      item.preis.toStringAsFixed(2).replaceAll(".", ",") + " € - bestellen ",
+                                                      style: Theme.of(context).textTheme.headline3,),
+                                                    Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      color: Theme.of(context).primaryColor,)
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ) : SizedBox(),
                                       ],
                                     ),
                                   ),
@@ -245,4 +270,67 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
       ],
     );
   }
+
+  void orderGetraenkDialogBox(Getraenk getraenk){
+    Widget cancelButton = FlatButton(
+      child: Text("Abbrechen"),
+      onPressed:  (){
+        animationController.forward();
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Bestellen"),
+      onPressed: () => orderGetraenk(getraenk),
+    );
+
+    // set up the AlertDialog
+    AlertDialog orderGetraenkDialog = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      title: Text(getraenk.name + " bestellen"),
+      content: Text("Möchtest Du wirklich einen " + getraenk.name + " für " + getraenk.preis.toStringAsFixed(2).replaceAll(".", ",") + " € bestellen?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        animationController.reverse();
+        return orderGetraenkDialog;
+      },
+    );
+  }
+
+  Future<Rechnung> getRechnungForTisch() async {
+    var response = await http.get(gastroMeApiUrlLocal + '/tisch/' + currentTischId + '/currentRechnung',
+        headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue });
+
+    if(response.statusCode == 200){
+      return  Rechnung.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+    } else {
+      //TODO Handle Error
+    }
+  }
+
+  void orderGetraenk(Getraenk getraenk) async {
+    var response = await http.patch(gastroMeApiUrlLocal + '/rechnung/' + (await getRechnungForTisch()).id + '/add/getraenk',
+        body: getraenk.id,
+        headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue });
+
+    if(response.statusCode == 200){
+      Rechnung rechnung = Rechnung.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      Navigator.pop(context);
+      //TODO Animation: Betrag zu Rechnung hinzugefügt.
+      print(rechnung.getraenke.length);
+    } else {
+      //TODO Handle Error
+    }
+  }
+
 }
