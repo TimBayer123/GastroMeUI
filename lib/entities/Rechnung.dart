@@ -22,4 +22,11 @@ class Rechnung{
     );
   }
 
+  double sum() {
+    double sum = 0;
+    getraenke.forEach((item) { sum += item.preis; });
+    speisen.forEach((item) { sum += item.preis; });
+    return sum;
+  }
+
 }

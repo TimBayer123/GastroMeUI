@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
+import 'package:gastrome/pages/BillOverview.dart';
 import 'package:gastrome/pages/FeedbackSelection.dart';
 import 'package:gastrome/pages/Menu.dart';
 import 'package:gastrome/pages/MenuItemDetails.dart';
@@ -44,7 +45,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
     listOfPages = [
       Menu(showFoodNotDrinks: true, speisekarte: widget.speisekarte),
       Menu(showFoodNotDrinks: false, speisekarte: widget.speisekarte),
-      PlaceholderWidget(Color(0xfff2f2f2)),
+      BillOverview(),
       FeedbackSelection(restaurantName: widget.restaurantName,),
     ];
     pageController = PageController();

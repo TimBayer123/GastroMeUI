@@ -36,6 +36,12 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
   }
 
   @override
+  void dispose(){
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(

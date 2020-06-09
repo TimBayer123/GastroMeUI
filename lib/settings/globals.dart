@@ -1,5 +1,6 @@
 library gastrome;
 
+import 'package:gastrome/entities/Rechnung.dart';
 import 'package:gastrome/entities/Restaurant.dart';
 
 int globalIndex = 2;
@@ -18,4 +19,4 @@ final String gastroMeApiAuthTokenValue = '4df6d7b9-ba79-4ae7-8a1c-cffbb657610a';
 
 Restaurant restaurant;
 String tischId;
-String rechnungId;
+Rechnung rechnungGlobal;

@@ -312,7 +312,9 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
         headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue });
 
     if(response.statusCode == 200){
-      return  Rechnung.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      Rechnung rechnung = Rechnung.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      rechnungGlobal = rechnung;
+      return  rechnung;
     } else {
       //TODO Handle Error
     }
@@ -325,6 +327,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
 
     if(response.statusCode == 200){
       Rechnung rechnung = Rechnung.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      animationController.forward();
       Navigator.pop(context);
       //TODO Animation: Betrag zu Rechnung hinzugefügt.
       print(rechnung.getraenke.length);
