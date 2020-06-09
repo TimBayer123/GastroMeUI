@@ -179,14 +179,11 @@ class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProvid
 
   Future<void> sendFeedback(int index, String message) async {
 
-    String username = 'GastroMeWaiterTim@gmail.com';
-    String password = 'GastroMepwd';
-
     String tag = index!=0 ? (index!=1 ? 'Sonstiges' : 'Essen') : 'Service';
     String subject = 'Feedback zu '+tag;
 
 
-    final smtpServer = gmail(username, password);
+    final smtpServer = gmail(EmailUsername, EmailPassword);
     // Use the SmtpServer class to configure an SMTP server:
     // final smtpServer = SmtpServer('smtp.domain.com');
     // See the named arguments of SmtpServer for further configuration
@@ -194,7 +191,7 @@ class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProvid
 
     // Create our message.
     final body = Message()
-      ..from = Address(username, 'Waiter Tim')
+      ..from = Address(EmailUsername, 'Waiter Tim')
       ..recipients.add(restaurant.email)
     //  ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
     //  ..bccRecipients.add(Address('bccAddress@example.com'))

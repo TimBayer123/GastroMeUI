@@ -19,4 +19,8 @@ final String gastroMeApiAuthTokenValue = '4df6d7b9-ba79-4ae7-8a1c-cffbb657610a';
 
 Restaurant restaurant;
 String tischId;
+
+final String EmailUsername = 'GastroMeWaiterTim@gmail.com';
+final String EmailPassword = 'GastroMepwd';
+
 Rechnung rechnungGlobal;
