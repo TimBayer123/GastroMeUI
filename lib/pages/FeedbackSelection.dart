@@ -3,6 +3,8 @@ import 'package:gastrome/pages/DirectFeedback.dart';
 import 'package:gastrome/widgets/FeedbackOverlay.dart';
 import 'package:gastrome/widgets/FullWidthButton.dart';
 
+import 'ExternalFeedback.dart';
+
 class FeedbackSelection extends StatelessWidget {
   static OverlayEntry FeedbackOverlay;
   String restaurantName;
@@ -22,22 +24,25 @@ class FeedbackSelection extends StatelessWidget {
             FullWidthButton(
                 buttonText: 'Direkt an Personal',
                 function: () {
-                  showDirectFeedbackOverlay(context, DirectFeedback(restaurantName: restaurantName));
+                  showFeedbackOverlay(context, DirectFeedback());
                 }),
             SizedBox(height: 15),
             FullWidthButton(
               buttonText: 'Externe Bewertung abgeben',
-              function: () {},
+              function: () {
+                showFeedbackOverlay(context, ExternalFeedback());
+              },
             ),
           ],
         ));
   }
 }
 
-void showDirectFeedbackOverlay(BuildContext context, Widget widget) {
+void showFeedbackOverlay(BuildContext context, Widget widget) {
   if (FeedbackOverlay.overlayEntry == null) {
     FeedbackOverlay.overlayEntry =
         OverlayEntry(builder: (context) => FeedbackOverlay(child: widget));
     Overlay.of(context).insert(FeedbackOverlay.overlayEntry);
   }
+
 }
