@@ -15,8 +15,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class CheckInAndLoadData extends StatefulWidget {
   String restaurantId;
-  String tischNr;
-  CheckInAndLoadData({this.restaurantId, this.tischNr});
+  String tischId;
+  CheckInAndLoadData({this.restaurantId, this.tischId});
   @override
   _CheckInAndLoadDataState createState() => _CheckInAndLoadDataState();
 }
@@ -116,7 +116,7 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
   Future<bool> addGuestToTable() async {
     //await Future.delayed(Duration(seconds: 2));
     final response = await http.patch(
-        gastroMeApiUrl + '/tisch/gaesteliste/add/' + widget.tischNr,
+        gastroMeApiUrl + '/tisch/gaesteliste/add/' + widget.tischId,
         headers: {
           gastroMeApiAuthTokenName : gastroMeApiAuthTokenValue,
         });
@@ -133,7 +133,7 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
   }
 
   void setGlobalDetails(Restaurant loadedRestaurant){
-    tischId = widget.tischNr;
+    tischId = widget.tischId;
     restaurant = loadedRestaurant;
   }
 

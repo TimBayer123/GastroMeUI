@@ -36,6 +36,12 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
   }
 
   @override
+  void dispose(){
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
@@ -138,7 +144,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
   }
 
   Future<List<Restaurant>> fetchRestaurantsNearby(Position currentPosition) async {
-    final response = await http.get(gastroMeApiUrlLocal + '/restaurant/all?' +
+    final response = await http.get(gastroMeApiUrl + '/restaurant/all?' +
         'lat=' + currentPosition.latitude.toString() +
         "&lng=" + currentPosition.longitude.toString(),
         headers: {

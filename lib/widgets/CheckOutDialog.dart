@@ -7,9 +7,9 @@ class CheckOutDialog extends StatefulWidget {
   String text = "";
   String textJa = "";
   String textNein = "";
-  String tischNr;
+  String tischId;
 
-  CheckOutDialog({this.text, this.textJa, this.textNein, this.tischNr});
+  CheckOutDialog({this.text, this.textJa, this.textNein, this.tischId});
 
   @override
   _CheckOutDialogState createState() => _CheckOutDialogState();
@@ -44,7 +44,7 @@ class _CheckOutDialogState extends State<CheckOutDialog> {
         new GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
-            widget.tischNr!=null ? clearGuests() : null;
+            widget.tischId!=null ? clearGuests() : null;
             loggedIn ? Navigator.of(context).pop(true) : SystemChannels.platform.invokeMethod('SystemNavigator.pop');
             loggedIn = false;
           },
@@ -63,7 +63,7 @@ class _CheckOutDialogState extends State<CheckOutDialog> {
   Future<bool> clearGuests() async {
     //await Future.delayed(Duration(seconds: 2));
     final response = await http.patch(
-        gastroMeApiUrl + '/tisch/gaesteliste/clear/' + widget.tischNr,
+        gastroMeApiUrl + '/tisch/gaesteliste/clear/' + widget.tischId,
         headers: {
           gastroMeApiAuthTokenName : gastroMeApiAuthTokenValue,
         });
