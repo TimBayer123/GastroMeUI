@@ -138,10 +138,10 @@ class _QrCodeScanState extends State<QrCodeScan> {
       }
       String restaurantId = qrText.substring(23,59);
       print("restaurant: "+restaurantId);
-      String tischNr = qrText.substring(60,96);
-      print("tischNr: "+tischNr);
+      String tischId = qrText.substring(60,96);
+      print("tischId: "+tischId);
       loggedIn=true;
-      Navigator.pushReplacement(context, SlideRightRoute(page: CheckInAndLoadData(restaurantId: restaurantId, tischNr: tischNr,)));
+      Navigator.pushReplacement(context, SlideRightRoute(page: CheckInAndLoadData(restaurantId: restaurantId, tischId: tischId,)));
       qrViewController.dispose();
     });
     return qrText;

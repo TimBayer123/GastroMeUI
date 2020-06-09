@@ -308,7 +308,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
   }
 
   Future<Rechnung> getRechnungForTisch() async {
-    var response = await http.get(gastroMeApiUrlLocal + '/tisch/' + tischNr + '/currentRechnung',
+    var response = await http.get(gastroMeApiUrl + '/tisch/' + tischId + '/currentRechnung',
         headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue });
 
     if(response.statusCode == 200){
@@ -319,7 +319,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
   }
 
   void orderGetraenk(Getraenk getraenk) async {
-    var response = await http.patch(gastroMeApiUrlLocal + '/rechnung/' + (await getRechnungForTisch()).id + '/add/getraenk',
+    var response = await http.patch(gastroMeApiUrl + '/rechnung/' + (await getRechnungForTisch()).id + '/add/getraenk',
         body: getraenk.id,
         headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue });
 
