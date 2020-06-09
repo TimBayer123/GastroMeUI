@@ -133,7 +133,7 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
   }
 
   void setGlobalDetails(Restaurant loadedRestaurant){
-    tischNr = widget.tischNr;
+    tischId = widget.tischNr;
     restaurant = loadedRestaurant;
   }
 

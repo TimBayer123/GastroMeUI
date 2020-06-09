@@ -199,7 +199,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
         text: "Möchtest du wirklich vorzeitig aus dem Restaurant auschecken?",
         textNein: "Nein, ich habe doch Hunger",
         textJa: "Ja, so sei es",
-        tischNr: tischNr
+        tischNr: tischId
       )
     ) ??
         false;

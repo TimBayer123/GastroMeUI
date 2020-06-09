@@ -54,7 +54,7 @@ class HeadlineWidget extends StatelessWidget {
   Future<void> callWaiter() async{
 
 
-      String subject = 'Kellner gerufen von Tisch Nr. '+tischNr;
+      String subject = 'Kellner gerufen von Tisch Nr. '+tischId;
 
 
       final smtpServer = gmail(EmailUsername, EmailPassword);
@@ -71,7 +71,7 @@ class HeadlineWidget extends StatelessWidget {
       //  ..bccRecipients.add(Address('bccAddress@example.com'))
         ..subject = subject
       // ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-        ..html = "<h1>Kellner gerufen</h1>\n<p>Tisch Nr: "+tischNr+"</p>";
+        ..html = "<h1>Kellner gerufen</h1>\n<p>Tisch Nr: "+tischId+"</p>";
 
       try {
         final sendReport = await send(body, smtpServer);
