@@ -16,3 +16,6 @@ final String gastroMeApiAuthTokenName = 'gastrome-api-auth-token';
 final String gastroMeApiAuthTokenValue = '4df6d7b9-ba79-4ae7-8a1c-cffbb657610a';
 Restaurant restaurant;
 String tischNr;
+
+final String EmailUsername = 'GastroMeWaiterTim@gmail.com';
+final String EmailPassword = 'GastroMepwd';
