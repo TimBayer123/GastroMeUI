@@ -9,6 +9,8 @@ import 'package:gastrome/widgets/VeganVegieIcons.dart';
 import 'package:http/http.dart' as http;
 import 'package:gastrome/settings/globals.dart';
 import 'package:gastrome/entities/Rechnung.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
 class MenuItemDetails extends StatefulWidget {
   static OverlayEntry overlayEntry;
@@ -327,12 +329,34 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
 
     if(response.statusCode == 200){
       Rechnung rechnung = Rechnung.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      sendMailGetraenkOrder(getraenk, rechnung);
       animationController.forward();
       Navigator.pop(context);
       //TODO Animation: Betrag zu Rechnung hinzugefügt.
       print(rechnung.getraenke.length);
     } else {
       //TODO Handle Error
+    }
+  }
+
+  void sendMailGetraenkOrder(Getraenk getraenk, Rechnung rechnung) async {
+    String subject = 'Bestellung von ' + getraenk.name + " für Tisch-Nr. " + tischId;
+    final smtpServer = gmail(EmailUsername, EmailPassword);
+
+    final body = Message()
+      ..from = Address(EmailUsername, 'Waiter Tim')
+      ..recipients.add(restaurant.email)
+      ..subject = subject
+      ..html = "<h1>Bestellung</h1>\n<p>Tisch Nr: "+tischId+"</p><p>Getraenk Nr: "+getraenk.id.toString()+" ( "+ getraenk.name + ")</p>"+"<p>Rechnung Nr: "+rechnung.id.toString()+"</p>";
+
+    try {
+      final sendReport = await send(body, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
     }
   }
 
