@@ -121,22 +121,22 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
 
   Future<void> fetchRestaurantsAndListenOnPositionChange() async {
     if (await Permission.location.request().isGranted) {
-    Position currentPosition = await (Geolocator().getCurrentPosition());
-    //Position currentPosition = new Position(latitude: 49, longitude: 8);
+      Position currentPosition = await (Geolocator().getCurrentPosition());
+      //Position currentPosition = new Position(latitude: 49, longitude: 8);
       setState(() {
-    lastSavedPosition = currentPosition;
-    });
+        lastSavedPosition = currentPosition;
+      });
 
-    futureRestaurantsNearby = fetchRestaurantsNearby(currentPosition)
-        .timeout(Duration(seconds: 15), onTimeout: (){
-          throw Exception(keineRestaurantsGefunden);
-        }
-    );
+      futureRestaurantsNearby = fetchRestaurantsNearby(currentPosition)
+          .timeout(Duration(seconds: 15), onTimeout: (){
+            throw Exception(keineRestaurantsGefunden);
+          }
+      );
 
-    geolocator.getPositionStream((locationOptions)).listen((position) async {
-      updateDistanceBetweenRestaurantsAndDevice(position);
-      updateRestaurantsList(position);
-    });
+      geolocator.getPositionStream((locationOptions)).listen((position) async {
+        updateDistanceBetweenRestaurantsAndDevice(position);
+        updateRestaurantsList(position);
+      });
 
     } else {
       throw Exception(keinZugriffAufStandort);
@@ -159,6 +159,9 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
         restaurants.add(Restaurant.fromJson(restaurantJson));
       });
 
+      restaurants.forEach((restaurant) {
+        updateRestaurantDistance(restaurant, currentPosition);
+      });
       return restaurants;
     } else {
       throw Exception("Error: " + response.statusCode.toString() + "\n" + "Restaurants laden fehlgeschlagen!");
@@ -195,6 +198,9 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
           position.longitude);
       if(currentDistanceToLastSavedLocation > maxDistanceReloadRestaurants){
         Position currentPosition = await (Geolocator().getCurrentPosition());
+        setState(() {
+          lastSavedPosition = currentPosition;
+        });
        // Position currentPosition = new Position(latitude: 49, longitude: 8);
         setState(() {
           futureRestaurantsNearby = fetchRestaurantsNearby(currentPosition);
