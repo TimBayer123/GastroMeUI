@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gastrome/entities/Getraenk.dart';
 import 'package:gastrome/entities/Rechnung.dart';
-import 'package:gastrome/entities/Restaurant.dart';
-import 'package:gastrome/entities/Speise.dart';
 import 'package:gastrome/entities/SpeisekartenItem.dart';
 import 'package:gastrome/settings/globals.dart';
+import 'package:gastrome/widgets/FullWidthButton.dart';
+import 'package:mailer/mailer.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:http/http.dart' as http;
+import 'package:mailer/smtp_server/gmail.dart';
 
 class BillOverview extends StatefulWidget {
   @override
@@ -26,7 +26,6 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
     loadRechnung();
     controller = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
-
     controller.repeat(reverse: true);
     super.initState();
   }
@@ -67,7 +66,7 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(item.name, style: Theme.of(context).textTheme.bodyText1,),
-                                  Text(item.preis.toStringAsFixed(2).replaceAll(".", ","), style: Theme.of(context).textTheme.bodyText1,),
+                                  Text(item.preis.toStringAsFixed(2).replaceAll(".", ",") + " €", style: Theme.of(context).textTheme.bodyText1,),
                                 ],
                               );
                             },
@@ -104,7 +103,7 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
                   children: <Widget>[
                     SizedBox(height: 10,),
                     SizedBox(
-                      height: 1,
+                      height: 2,
                       width: double.infinity,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
@@ -112,23 +111,27 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
                         ),
                       ),
                     ),
-                    SizedBox(height: 2,),
+                    SizedBox(height: 4,),
                     SizedBox(
-                      height: 1,
+                      height: 2,
                       width: double.infinity,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Colors.black54,
                         ),
                       ),
                     ),
-                    SizedBox(height: 4,),
+                    SizedBox(height: 6,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Text(sum.toStringAsFixed(2).replaceAll(".", ",") + " €", style: Theme.of(context).textTheme.headline4,)
                       ],
                     ),
+                    SizedBox(height: 10,),
+                    FullWidthButton(buttonText: "Rechnung bezahlen", function: () => {
+                      payBill()
+                    }),
                   ],
                 ),
               )
@@ -138,6 +141,9 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
   }
 
   Future<void> loadRechnung() async {
+    setState(() {
+      sum = 0;
+    });
     futureRechnung = fetchRechnung();
     var _sum = (await futureRechnung).sum();
     setState(() {
@@ -155,6 +161,41 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
       return Rechnung.fromJson(json.decode(utf8.decode(response.bodyBytes)));
     } else {
       throw Exception("Error: " + response.statusCode.toString() + "\n" + "Rechnung laden fehlgeschlagen!");
+    }
+  }
+
+  void payBill() async {
+    var response = await http.patch(gastroMeApiUrl + '/rechnung/' + rechnungGlobal.id + '/pay',
+      headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue });
+
+    if(response.statusCode == 200){
+      Rechnung rechnung = Rechnung.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      sendMailBillPayed();
+      loadRechnung();
+      print("Rechnung bezahlt: " + rechnung.billPayed.toString());
+    } else {
+      //TODO Handle Error
+    }
+  }
+
+  void sendMailBillPayed() async {
+    String subject = 'Rechnung von Tisch: ' + tischId + " bezahlt!";
+    final smtpServer = gmail(EmailUsername, EmailPassword);
+
+    final body = Message()
+      ..from = Address(EmailUsername, 'Waiter Tim')
+      ..recipients.add(restaurant.email)
+      ..subject = subject
+      ..html = "<h1>Rechnung bezahlt</h1>\n<p>Tisch Nr: "+tischId+"</p>";
+
+    try {
+      final sendReport = await send(body, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
     }
   }
 

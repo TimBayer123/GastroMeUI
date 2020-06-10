@@ -6,8 +6,9 @@ class Rechnung{
   List<Speise> speisen;
   List<Getraenk> getraenke;
   DateTime timestamp;
+  bool billPayed;
 
-  Rechnung({this.id, this.speisen, this.getraenke, this.timestamp});
+  Rechnung({this.id, this.speisen, this.getraenke, this.timestamp, this.billPayed});
 
   factory Rechnung.fromJson(Map<String, dynamic> json){
     var speisenJson = json['speisen'] as List;
@@ -19,6 +20,7 @@ class Rechnung{
       timestamp: DateTime.parse(json['timestamp']),
       speisen: _speisen,
       getraenke: _getraenke,
+      billPayed: json['billPayed'],
     );
   }
 
