@@ -54,18 +54,38 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<Restaurant> restaurants = snapshot.data;
-                      restaurants.sort((a, b) =>
-                          a.entfernung.compareTo(b.entfernung));
-                      return Container(
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: restaurants.length,
-                          itemBuilder: (context, index) {
-                            Restaurant restaurant = restaurants[index];
-                            return RestaurantCardWidget(restaurant: restaurant);
-                          },
-                        ),
-                      );
+                      if(restaurants.length > 0){
+                        restaurants.sort((a, b) =>
+                            a.entfernung.compareTo(b.entfernung));
+                        return Container(
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: restaurants.length,
+                            itemBuilder: (context, index) {
+                              Restaurant restaurant = restaurants[index];
+                              return RestaurantCardWidget(restaurant: restaurant);
+                            },
+                          ),
+                        );
+                      } else {
+                        return Container(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                          child: Column(
+                            children: <Widget>[
+                              Icon(
+                                Icons.sentiment_dissatisfied,
+                                size: 160,
+                                color: Theme.of(context).accentColor,
+                              ),
+                              Text(
+                                "In Deiner Nähe nutzt noch kein Restaurant unsere App.\n\nWir geben unser Bestes, um auch Restaurants in deiner Nähe für unsere App zu Gewinnen!",
+                                style: Theme.of(context).textTheme.headline5,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     } else if (snapshot.hasError) {
                       print(snapshot.error.toString());
                       if (snapshot.error.toString() ==
@@ -83,7 +103,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
                         );
                       }
                       else if (snapshot.error.toString() ==
-                          'Exception: ' + keineRestaurantsGefunden) {
+                          'Exception: ' + keineRestaurantsGefundenTimeout) {
                         return Column(
                           children: <Widget>[
                             Text(snapshot.error.toString()),
@@ -129,7 +149,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
 
       futureRestaurantsNearby = fetchRestaurantsNearby(currentPosition)
           .timeout(Duration(seconds: 15), onTimeout: (){
-            throw Exception(keineRestaurantsGefunden);
+            throw Exception(keineRestaurantsGefundenTimeout);
           }
       );
 

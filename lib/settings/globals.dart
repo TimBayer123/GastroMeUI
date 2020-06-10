@@ -8,7 +8,7 @@ bool loggedIn = false;
 
 int maxDistanceReloadRestaurants = 10*1000;
 String keinZugriffAufStandort = "Gaststätten in deiner Nähe konnten nicht geladen werden...\nGastroMe hat keinen Zugriff auf den Standort Deines Gerätes!";
-String keineRestaurantsGefunden = "Wir haben keine Restaurants in Deiner Nähe finden können...";
+String keineRestaurantsGefundenTimeout = "Die Suche nach Restaurants in Deiner Nähe dauert zu lange. Prüfe deine Internetverbindung.";
 
 //final String gastroMeApiUrl = "http://10.0.2.2:5000"; //Local Emulator
 //final String gastroMeApiUrl = "http://192.168.178.44:5000"; //Local Android Device
