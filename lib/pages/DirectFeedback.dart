@@ -10,9 +10,7 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
 class DirectFeedback extends StatefulWidget {
-  String restaurantName;
 
-  DirectFeedback({this.restaurantName});
   @override
   _DirectFeedbackState createState() => _DirectFeedbackState();
 }
@@ -44,7 +42,7 @@ class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProvid
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
-                child: Text(widget.restaurantName, style: Theme.of(context).textTheme.headline1),
+                child: Text(restaurant.name, style: Theme.of(context).textTheme.headline1),
               ),
               Text('Feedback an Personal', style: Theme.of(context).textTheme.headline2),
               SizedBox(height: 20),

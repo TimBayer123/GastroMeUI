@@ -4,13 +4,18 @@ import 'package:gastrome/settings/globals.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
-class HeadlineWidget extends StatelessWidget {
+class HeadlineWidget extends StatefulWidget {
   String title;
   String subtitle;
   bool callWaiterButton;
 
   HeadlineWidget({this.title, this.subtitle, this.callWaiterButton});
 
+  @override
+  _HeadlineWidgetState createState() => _HeadlineWidgetState();
+}
+
+class _HeadlineWidgetState extends State<HeadlineWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,17 +31,18 @@ class HeadlineWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(title,
+                        Text(widget.title,
                           style: Theme.of(context).textTheme.headline1, textAlign: TextAlign.left,),
-                        if(subtitle != null) Text(subtitle,
+                        if(widget.subtitle != null) Text(widget.subtitle,
                           style: Theme.of(context).textTheme.headline2, textAlign: TextAlign.left,)
                       ],
                     ),
                 )
             ),
-            if(callWaiterButton) InkWell(
+            if(widget.callWaiterButton) InkWell(
               onTap: (){
                 callWaiter();
+                showConfirmationDialog();
               },
               child: Container(
                   alignment: Alignment.centerRight,
@@ -51,6 +57,7 @@ class HeadlineWidget extends StatelessWidget {
       ),
     );
   }
+
   Future<void> callWaiter() async{
 
 
@@ -84,5 +91,29 @@ class HeadlineWidget extends StatelessWidget {
       }
       // DONE
 
+  }
+
+  Future<void> showConfirmationDialog(){
+    // set up the AlertDialog
+    AlertDialog confirmationDialog = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      title: Text("Kellner gerufen"),
+      content: Text("Ein Kellner macht sich in Kürze auf den Weg zu dir"),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return confirmationDialog;
+      },
+    );
+    closeConfirmationDialog();
+  }
+
+  Future<void> closeConfirmationDialog(){
+    Future.delayed(Duration(seconds: 2)).then((value) => Navigator.pop(context));
   }
 }

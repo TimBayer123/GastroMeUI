@@ -46,6 +46,7 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
       Menu(showFoodNotDrinks: true, speisekarte: widget.speisekarte),
       Menu(showFoodNotDrinks: false, speisekarte: widget.speisekarte),
       BillOverview(),
+      //PlaceholderWidget(Colors.red),
       FeedbackSelection(restaurantName: widget.restaurantName,),
     ];
     pageController = PageController();

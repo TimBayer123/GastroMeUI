@@ -25,6 +25,9 @@ class _CheckOutDialogState extends State<CheckOutDialog> {
   @override
   Widget build(BuildContext context) {
     return new AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
       title: new Text('Bist du dir sicher?'),
       content: loggedIn ? new Text(widget.text) : new Text("Möchtest du die GastroMe App wirklich verlassen?"),
       actions: <Widget>[
