@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gastrome/settings/globals.dart';
+import 'package:gastrome/widgets/BewertungAuswahlWidget.dart';
+import 'package:gastrome/widgets/BewertungenWidget.dart';
 import 'package:gastrome/widgets/FeedbackOverlay.dart';
 import 'package:gastrome/widgets/FullWidthButton.dart';
 import 'package:gastrome/widgets/WarningDialog.dart';
@@ -42,33 +45,19 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
                 padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
                 child: Text(restaurant.name, style: Theme.of(context).textTheme.headline1),
               ),
-              Text('Feedback an Personal', style: Theme.of(context).textTheme.headline2),
+              Text('Externe Bewertung', style: Theme.of(context).textTheme.headline2),
               SizedBox(height: 20),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: <BoxShadow>[
-                    new BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 3,
-                      offset: new Offset(0.0, 2.0),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Container(
-                    height: 42,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
-                      border:Border.all(
-                          color: Theme.of(context).accentColor,
-                          width: 1
-                      ),
-                    ),
-                  ),
-                ),
+
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  BewertungAuswahlWidget(text: 'Essen'),
+                  BewertungAuswahlWidget(text: 'Atmosphäre'),
+                  BewertungAuswahlWidget(text: 'Service'),
+                  BewertungAuswahlWidget(text: 'Preise'),
+                  BewertungAuswahlWidget(text: 'Sonderwünsche'),
+
+                ],
               ),
 
               SizedBox(height: 20),
@@ -82,8 +71,8 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
                   child: TextField(
                     controller: textController,
                     autocorrect: true,
-                    minLines: 6,
-                    maxLines: 6,
+                    minLines: 5,
+                    maxLines: 5,
                     decoration: InputDecoration.collapsed(hintText: "Gebe hier dein Feedback ab"),
                     keyboardType: TextInputType.multiline,
                     focusNode: textfieldNode,
@@ -108,7 +97,8 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
                   FeedbackOverlay.overlayEntry=null;
 
                 },
-              )
+              ),
+              SizedBox(height: 20),
 
             ],
           ),

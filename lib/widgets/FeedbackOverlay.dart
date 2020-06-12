@@ -85,6 +85,7 @@ class _FeedbackOverlayState extends State<FeedbackOverlay>
                                     onTap: () {
                                       animationController.reverse();
                                       FeedbackOverlay.overlayEntry = null;
+                                      FocusScope.of(context).requestFocus(FocusNode());
                                     },
                                     child: Container(
                                       color: Colors.transparent,
