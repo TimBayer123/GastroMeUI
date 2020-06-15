@@ -20,4 +20,14 @@ class Bewertung{
                 sonderwuensche: json['sonderwuensche']);
         return null;
     }
+
+    Map<String, dynamic> toJson() =>
+        {
+             'id' : id,
+             'essen' : essen,
+             'atmosphaere' : atmosphaere,
+             'service' : service,
+             'preise' :  preise,
+             'sonderwuensche' :  sonderwuensche,
+        };
 }
