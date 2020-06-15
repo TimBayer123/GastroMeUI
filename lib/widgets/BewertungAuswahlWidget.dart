@@ -2,22 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gastrome/widgets/BewertungenWidget.dart';
 
-class BewertungAuswahlWidget extends StatefulWidget {
+class BewertungAuswahlWidget extends StatelessWidget {
+  final Function(int value) onValueSelect;
   String text;
-  BewertungAuswahlWidget({this.text});
-  @override
-  _BewertungAuswahlWidgetState createState() => _BewertungAuswahlWidgetState();
-}
-
-class _BewertungAuswahlWidgetState extends State<BewertungAuswahlWidget> {
+  int value;
+  BewertungAuswahlWidget({this.text, this.onValueSelect, this.value});
   GlobalKey _keyBewertungsWidget = GlobalKey();
-  static int value = 0;
-
-  @override
-  void initState() {
-    value=0;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +16,15 @@ class _BewertungAuswahlWidgetState extends State<BewertungAuswahlWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(widget.text,style: Theme.of(context).textTheme.headline4,),
+          Text(text,style: Theme.of(context).textTheme.headline4,),
           Listener(
               onPointerDown: (PointerDownEvent event) {
                 print(event.position);
                 checkTap(event);
-                setState(() {});
+                onValueSelect(value);
               },
               child: Container(
-                height: 28,
+                  height: 28,
                   key: _keyBewertungsWidget,
                   child: BewertungWidget(anzahl: value))),
         ],
@@ -67,8 +57,6 @@ class _BewertungAuswahlWidgetState extends State<BewertungAuswahlWidget> {
     else if (event.position.dx > unit4 && event.position.dx < unit5)
       value = 5;
 
+  }
 }
 
-
-
-}

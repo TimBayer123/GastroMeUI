@@ -54,4 +54,10 @@ class _FullWidthButtonState extends State<FullWidthButton> {
     setState(() {});
   }
 
+  @override
+  void setState(fn) {
+    if(mounted){
+      super.setState(fn);
+    }
+  }
 }

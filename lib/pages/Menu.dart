@@ -33,7 +33,7 @@ class _MenuState extends State<Menu> {
         child: Container(
             child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: widget.speisekarte.speisen.length,
+                itemCount: widget.showFoodNotDrinks ? widget.speisekarte.speisen.length : widget.speisekarte.getraenke.length,
                 itemBuilder: widget.showFoodNotDrinks
                     ? (context, index) {
                         Speise speise = widget.speisekarte.speisen[index];

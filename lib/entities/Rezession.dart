@@ -18,4 +18,11 @@ class Rezession{
             anmerkung: json['anmerkung']);
         return null;
     }
+
+    Map<String, dynamic> toJson() =>
+        {
+            'restaurantId': restaurant.id,
+            'bewertung': bewertung,
+            'anmerkung' : anmerkung
+        };
 }
