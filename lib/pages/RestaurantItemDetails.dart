@@ -21,6 +21,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
   double containerHeight;
+  bool showRezessionen = false;
 
   @override
   void initState() {
@@ -89,6 +90,75 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                 Expanded(
                                   child: Stack(
                                     children: <Widget>[
+                                      Container(
+                                        //width: MediaQuery.of(context).size.width - 60,
+                                        child: ListView(
+                                          padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+                                          scrollDirection: Axis.vertical,
+                                          //crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              widget.restaurant.name,
+                                              style: Theme.of(context).textTheme.headline1,
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            BewertungenWidget(restaurant: widget.restaurant,
+                                               onRezessionenClick: (bool showRezessionen){
+                                                    this.showRezessionen == true ?
+                                                      this.showRezessionen = false :
+                                                        this.showRezessionen = true;
+                                                    setState(() {});
+                                                    return this.showRezessionen;
+                                               }),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            AnimatedContainer(
+                                              duration: Duration(seconds: 1),
+                                              color: Colors.orange,
+                                              height: showRezessionen ? 400 : 0,
+                                              curve: Curves.fastOutSlowIn,
+                                            ),
+                                            Container(
+                                              height: 80,
+                                              child: ListView(
+                                                shrinkWrap: true,
+                                                padding: EdgeInsets.all(0),
+                                                children: <Widget>[
+                                                  Text(
+                                                    widget.restaurant.beschreibung.replaceAll("\r", "").replaceAll("\n", ""),
+                                                    style: Theme.of(context).textTheme.bodyText1,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            RestaurantMapsWidget(widget.restaurant),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: <Widget>[
+                                                Text(
+                                                  "Speisekarte einsehen ",
+                                                  style: Theme.of(context).textTheme.headline4,
+                                                ),
+                                                Icon(
+                                                  Icons.keyboard_arrow_down,
+                                                  size: 20,
+                                                  color: Colors.black54,
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                       Positioned(
                                           top: 10,
                                           right: 10,
@@ -112,64 +182,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                             ),
                                           )
                                       ),
-                                      Positioned(
-                                        top: 30,
-                                        left: 30,
-                                        child: Container(
-                                          width: MediaQuery.of(context).size.width - 60,
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(
-                                                widget.restaurant.name,
-                                                style: Theme.of(context).textTheme.headline1,
-                                              ),
-                                              SizedBox(
-                                                height: 20,
-                                              ),
-                                              BewertungenWidget(restaurant: widget.restaurant),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Container(
-                                                height: 80,
-                                                child: ListView(
-                                                  shrinkWrap: true,
-                                                  padding: EdgeInsets.all(0),
-                                                  children: <Widget>[
-                                                    Text(
-                                                      widget.restaurant.beschreibung.replaceAll("\r", "").replaceAll("\n", ""),
-                                                      style: Theme.of(context).textTheme.bodyText1,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              RestaurantMapsWidget(widget.restaurant),
-                                              SizedBox(
-                                                height: 20,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                children: <Widget>[
-                                                  Text(
-                                                    "Speisekarte einsehen ",
-                                                    style: Theme.of(context).textTheme.headline4,
-                                                  ),
-                                                  Icon(
-                                                    Icons.keyboard_arrow_down,
-                                                    size: 20,
-                                                    color: Colors.black54,
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
+
                                     ],
                                   ),
                                 ),
