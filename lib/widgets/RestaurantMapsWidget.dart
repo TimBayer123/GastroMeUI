@@ -108,11 +108,9 @@ class _RestaurantMapsWidget extends State<RestaurantMapsWidget> with SingleTicke
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: 30,
-      right: 30,
-      top: 330,
-      bottom: 50,
+    return Container(
+      height: 210,
+      width: MediaQuery.of(context).size.width,
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(10)),
         child: FutureBuilder(

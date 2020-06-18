@@ -112,8 +112,6 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                             ),
                                           )
                                       ),
-                                      RestaurantMapsWidget(widget.restaurant),
-
                                       Positioned(
                                         top: 30,
                                         left: 30,
@@ -127,25 +125,31 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                                 style: Theme.of(context).textTheme.headline1,
                                               ),
                                               SizedBox(
-                                                height: 10,
+                                                height: 20,
                                               ),
                                               BewertungenWidget(restaurant: widget.restaurant),
                                               SizedBox(
                                                 height: 10,
                                               ),
-                                              Text(
-                                                widget.restaurant.beschreibung.replaceAll("\r", "").replaceAll("\n", ""),
-                                                overflow: TextOverflow.ellipsis,
-                                                style: Theme.of(context).textTheme.bodyText1,
-                                                maxLines: 5,
-                                              ),
-                                              Icon(
-                                                Icons.keyboard_arrow_down,
-                                                size: 20,
-                                                color: Colors.black54,
+                                              Container(
+                                                height: 80,
+                                                child: ListView(
+                                                  shrinkWrap: true,
+                                                  padding: EdgeInsets.all(0),
+                                                  children: <Widget>[
+                                                    Text(
+                                                      widget.restaurant.beschreibung.replaceAll("\r", "").replaceAll("\n", ""),
+                                                      style: Theme.of(context).textTheme.bodyText1,
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                               SizedBox(
-                                                height: 210,
+                                                height: 10,
+                                              ),
+                                              RestaurantMapsWidget(widget.restaurant),
+                                              SizedBox(
+                                                height: 20,
                                               ),
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.center,
