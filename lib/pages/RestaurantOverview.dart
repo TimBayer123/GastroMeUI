@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Restaurant.dart';
+import 'package:gastrome/widgets/FullWidthButton.dart';
 import 'package:gastrome/widgets/HeadlineWidget.dart';
 import 'package:gastrome/settings/globals.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +17,7 @@ class RestaurantOverview extends StatefulWidget {
 
 class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTickerProviderStateMixin  {
   Future<List<Restaurant>> futureRestaurantsNearby;
+  List<Restaurant> restaurants;
 
   final Geolocator geolocator = Geolocator();
   var locationOptions = LocationOptions(accuracy: LocationAccuracy.high,
@@ -24,6 +26,8 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
   Position lastSavedPosition;
 
   AnimationController controller;
+
+  String dropdownValue = 'Entfernung';
 
   @override
   void initState() {
@@ -46,17 +50,45 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
     return Container(
       child: Column(
         children: [
-          HeadlineWidget(title: 'Restaurants', subtitle: "für dich", callWaiterButton: false),
+          Stack(
+            children: <Widget>[
+              HeadlineWidget(title: 'Restaurants', subtitle: "für dich", callWaiterButton: false),
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                height: 85,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.bottomRight,
+                child: DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: Icon(Icons.arrow_drop_down),
+                  iconSize: 24,
+                  style: TextStyle(color: Colors.black),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      dropdownValue = newValue;
+                      sortRestaurants();
+                    });
+                  },
+                  items: <String>['Entfernung', 'Bewertung']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
           Expanded(
             child: Container(
               child: FutureBuilder(
                   future: futureRestaurantsNearby,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      List<Restaurant> restaurants = snapshot.data;
+                      restaurants = snapshot.data;
                       if(restaurants.length > 0){
-                        restaurants.sort((a, b) =>
-                            a.entfernung.compareTo(b.entfernung));
+                        sortRestaurants();
                         return Container(
                           child: ListView.builder(
                             scrollDirection: Axis.vertical,
@@ -227,6 +259,18 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
           updateDistanceBetweenRestaurantsAndDevice(position);
         });
       }
+    }
+  }
+
+  void sortRestaurants(){
+    if(restaurants != null && restaurants.length > 0){
+      if(dropdownValue == "Entfernung")
+        restaurants.sort((a, b) =>
+            a.entfernung.compareTo(b.entfernung));
+      else
+        restaurants.sort((a, b) =>
+            b.getGesamtbewertung().compareTo(a.getGesamtbewertung()));
+      restaurants.forEach((element) {print(element.getGesamtbewertung().toString());});
     }
   }
 
