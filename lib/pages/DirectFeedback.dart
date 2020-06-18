@@ -8,6 +8,7 @@ import 'package:gastrome/widgets/WarningDialog.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
+import 'package:http/http.dart' as http;
 
 class DirectFeedback extends StatefulWidget {
 
@@ -111,18 +112,12 @@ class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProvid
               FullWidthButton(
                 buttonText: 'Absenden',
                 function: (){
-                  textController.text!="" ?
-                    sendFeedback(tabController.index, textController.text) :
-                  showDialog(
-                      context: context,
-                      builder: (context) => WarningDialog(
-                        text: "Du hast keine Anmerkung verfasst. Bitte verfasse zuerst eine Anmerkung vor dem Senden",
-                        textJa: "Okei",
-                        textNein: "",
-                      )
-                  )?? false;
-                  FeedbackOverlay.overlayEntry.remove();
-                  FeedbackOverlay.overlayEntry=null;
+                  if(textController.text!=""){
+                    sendFeedback(tabController.index, textController.text);
+                    sendFeedbackToBackend(textController.text, tabController.index);
+                  } else{
+                    showConfirmationDialog("Du hast keine Anmerkung verfasst, bitte versuche es erneut");
+                  }
 
                 },
               )
@@ -207,6 +202,56 @@ class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProvid
       }
     }
     // DONE
+  }
+
+  Future<bool> sendFeedbackToBackend(String anmerkung, int index) async{
+    String tag = index!=0 ? (index!=1 ? 'Sonstiges' : 'Essen') : 'Service';
+
+    var response = await http.post(gastroMeApiUrl + '/feedback/add/?restaurantId='+restaurant.id+'&kategorie='+tag+'&anmerkung='+anmerkung,
+        headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue , 'Content-Type' : 'application/json'});
+    print(response.statusCode);
+    if(response.statusCode == 200){
+      showConfirmationDialog('Dein Feedback wurde erfolgreich übermittelt. Vielen Dank');
+      print('erfolgreich versendet');
+
+    } else {
+      showConfirmationDialog('Dein Feedback konnte leider nicht erfolgreich übermittelt werden. Es ist ein Fehler aufgetreten. Bitte versuchen sie es erneut');
+    }
+
+    return true;
+  }
+
+  Future<void> showConfirmationDialog(String text){
+    // set up the AlertDialog
+    AlertDialog confirmationDialog = AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      title: Text("Feedback bearbeitet"),
+      content: Text(text),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return confirmationDialog;
+      },
+    );
+    closeConfirmationDialog();
+  }
+
+  Future<void> closeConfirmationDialog(){
+    // Future.delayed(Duration(seconds: 2)).then((value) => Navigator.pop(context));
+    FeedbackOverlay.overlayEntry.remove();
+    FeedbackOverlay.overlayEntry=null;
+  }
+
+  @override
+  void setState(fn) {
+    if(mounted){
+      super.setState(fn);
+    }
   }
 
 }
