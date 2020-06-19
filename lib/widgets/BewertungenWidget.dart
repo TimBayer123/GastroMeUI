@@ -2,11 +2,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gastrome/entities/Restaurant.dart';
+import 'package:gastrome/pages/RestaurantItemDetails.dart';
 
-class BewertungenWidget extends StatelessWidget {
+class BewertungenWidget extends StatefulWidget {
   Restaurant restaurant;
+  bool Function(bool) onRezessionenClick;
 
-  BewertungenWidget({this.restaurant});
+  BewertungenWidget({this.restaurant, this.onRezessionenClick});
+
+  @override
+  _BewertungenWidgetState createState() => _BewertungenWidgetState();
+}
+
+class _BewertungenWidgetState extends State<BewertungenWidget> {
+  bool showRezessionen = false;
+
+  @override
+  void initState() {
+    showRezessionen = false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context){
@@ -22,7 +37,7 @@ class BewertungenWidget extends StatelessWidget {
             ),
             Column(
               children: <Widget>[
-                BewertungWidget(anzahl: restaurant.getEssensBewertung(),),
+                BewertungWidget(anzahl: widget.restaurant.getEssensBewertung(),),
               ],
             ),
           ],
@@ -37,7 +52,7 @@ class BewertungenWidget extends StatelessWidget {
             ),
             Column(
               children: <Widget>[
-                BewertungWidget(anzahl: restaurant.getAtmosphaereBewertung(),),
+                BewertungWidget(anzahl: widget.restaurant.getAtmosphaereBewertung(),),
               ],
             ),
           ],
@@ -52,7 +67,7 @@ class BewertungenWidget extends StatelessWidget {
             ),
             Column(
               children: <Widget>[
-                BewertungWidget(anzahl: restaurant.getServiceBewertung(),),
+                BewertungWidget(anzahl: widget.restaurant.getServiceBewertung(),),
               ],
             ),
           ],
@@ -67,7 +82,7 @@ class BewertungenWidget extends StatelessWidget {
             ),
             Column(
               children: <Widget>[
-                BewertungWidget(anzahl: restaurant.getPreiseBewertung(),),
+                BewertungWidget(anzahl: widget.restaurant.getPreiseBewertung(),),
               ],
             ),
           ],
@@ -82,7 +97,7 @@ class BewertungenWidget extends StatelessWidget {
             ),
             Column(
               children: <Widget>[
-                BewertungWidget(anzahl: restaurant.getSonderwuenscheBewertung(),),
+                BewertungWidget(anzahl: widget.restaurant.getSonderwuenscheBewertung(),),
               ],
             ),
           ],
@@ -90,19 +105,26 @@ class BewertungenWidget extends StatelessWidget {
         SizedBox(
           height: 5,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Text(
-              "Rezessionen anzeigen",
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-            Icon(
-              Icons.keyboard_arrow_down,
-              size: 14,
-              color: Colors.black54,
-            )
-          ],
+        GestureDetector(
+          onTap: (){
+            setState(() {
+              showRezessionen = widget.onRezessionenClick(showRezessionen);
+            });
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Text(
+                showRezessionen ? "Rezessionen anzeigen" : "Rezessionen ausblenden",
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+              Icon(
+                showRezessionen ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                size: 14,
+                color: Colors.black54,
+              )
+            ],
+          ),
         )
       ],
     );
