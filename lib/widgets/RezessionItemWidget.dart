@@ -18,7 +18,9 @@ class RezessionItemWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Text(rezession.anmerkung, style: Theme.of(context).textTheme.bodyText1),
+                child: Padding(
+                    padding: EdgeInsets.fromLTRB(0,0,5,0),
+                    child: Text(rezession.anmerkung, style: Theme.of(context).textTheme.bodyText1)),
               ),
               Expanded(
 

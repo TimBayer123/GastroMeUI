@@ -169,7 +169,9 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                               onTap: (){
                                                 setState(() {
                                                   this.showSpeisekarte == true ? this.showSpeisekarte = false : this.showSpeisekarte = true;
+                                                  this.showSpeisekarte ? scrollController.animateTo(0, duration: Duration(seconds:1), curve: Curves.fastOutSlowIn):null;
                                                 });
+
                                               },
                                               child: Row(
                                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -188,12 +190,11 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                               ),
                                             ),
                                             AnimatedContainer(
-                                              duration: Duration(seconds: 1),
-                                              height: showSpeisekarte ? 580 : 0,
+                                              duration: Duration(milliseconds: 10),
+                                              height: showSpeisekarte ? 560 : 0,
                                               curve: Curves.fastOutSlowIn,
                                               onEnd: (){
-                                                //TODO: Funktioniert noch nicht!!
-                                                //scrollController.animateTo(double.maxFinite, duration: Duration(seconds: 1), curve: Curves.easeOut);
+                                                scrollController.animateTo(540, duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
                                               },
                                               child: MenuLogedOutWidget(restaurant: widget.restaurant),
                                             ),

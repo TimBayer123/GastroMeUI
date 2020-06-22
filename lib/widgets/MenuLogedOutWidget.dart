@@ -51,147 +51,152 @@ class _MenuLogedOutWidgetState extends State<MenuLogedOutWidget> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        elevation: 0.0,
-        flexibleSpace: Center(
-          child: SafeArea(
-            child: TabBar(
-              controller: tabController,
-              indicatorColor: Theme.of(context).accentColor,
-              indicatorPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-              onTap: (int index) {
-                changeTab = true;
-              },
-              tabs: [
-                Tab(
-                    icon: Icon(Icons.fastfood,
-                        color: !showFood
-                            ? Colors.black54
-                            : Theme.of(context).accentColor)),
-                Tab(
-                    icon: Icon(Icons.local_cafe,
-                        color: showFood
-                            ? Colors.black54
-                            : Theme.of(context).accentColor)),
-              ]
+    return SingleChildScrollView(
+      child: Container(
+        height: 700,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            elevation: 0.0,
+            flexibleSpace: Center(
+              child: SafeArea(
+                child: TabBar(
+                  controller: tabController,
+                  indicatorColor: Theme.of(context).accentColor,
+                  indicatorPadding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  onTap: (int index) {
+                    changeTab = true;
+                  },
+                  tabs: [
+                    Tab(
+                        icon: Icon(Icons.fastfood,
+                            color: !showFood
+                                ? Colors.black54
+                                : Theme.of(context).accentColor)),
+                    Tab(
+                        icon: Icon(Icons.local_cafe,
+                            color: showFood
+                                ? Colors.black54
+                                : Theme.of(context).accentColor)),
+                  ]
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-      body: TabBarView(
-        controller: tabController,
-        children: <Widget>[
-          Column(
+          body: TabBarView(
+            controller: tabController,
             children: <Widget>[
-              SizedBox(height: 10,),
-              FutureBuilder(
-                future: futureSpeisekarte,
-                builder: (context, snapshot){
-                  if(snapshot.hasData){
-                    Speisekarte speisekarte = snapshot.data;
-                    if(speisekarte.speisen.length > 0)
-                      return Container(
-                        height: MediaQuery.of(context).size.height - 280,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: speisekarte.speisen.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index){
-                            Speise speise = speisekarte.speisen[index];
-                            return MenuCardWidget(speise: speise);
-                          },
-                        ),
-                      );
-                    else
-                      return Container(
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Text(
-                          "Dieses Restaurant bietet leider keine Speisen an.",
-                          style: Theme.of(context).textTheme.headline5,
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                  } else {
-                    return Container(
-                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Column(
-                        children: <Widget>[
-                          Icon(
-                            Icons.sentiment_dissatisfied,
-                            size: 160,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          Text(
-                            "Wir konnten keine Speisekarte laden.\n\nBitte prüfe Deine Internetverbindung.",
-                            style: Theme.of(context).textTheme.headline5,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                },
-              )
-            ],
-          ),
-          Column(
-            children: <Widget>[
-              SizedBox(height: 10,),
-              FutureBuilder(
-                future: futureSpeisekarte,
-                builder: (context, snapshot){
-                  if(snapshot.hasData){
-                    Speisekarte speisekarte = snapshot.data;
-                    if(speisekarte.getraenke.length > 0)
-                      return Container(
-                        height: MediaQuery.of(context).size.height - 280,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: speisekarte.getraenke.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index){
-                            Getraenk getraenk = speisekarte.getraenke[index];
-                            return MenuCardWidget(getraenk: getraenk);
-                          },
-                        ),
-                      );
-                    else
-                      return Container(
-                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Text(
-                              "Dieses Restaurant bietet leider keine Getränke an.",
+              Column(
+                children: <Widget>[
+                  SizedBox(height: 10,),
+                  FutureBuilder(
+                    future: futureSpeisekarte,
+                    builder: (context, snapshot){
+                      if(snapshot.hasData){
+                        Speisekarte speisekarte = snapshot.data;
+                        if(speisekarte.speisen.length > 0)
+                          return Container(
+                            height: MediaQuery.of(context).size.height - 250,
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: speisekarte.speisen.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index){
+                                Speise speise = speisekarte.speisen[index];
+                                return MenuCardWidget(speise: speise);
+                              },
+                            ),
+                          );
+                        else
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: Text(
+                              "Dieses Restaurant bietet leider keine Speisen an.",
                               style: Theme.of(context).textTheme.headline5,
                               textAlign: TextAlign.center,
                             ),
-                      );
-                  } else {
-                    return Container(
-                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                      child: Column(
-                        children: <Widget>[
-                          Icon(
-                            Icons.sentiment_dissatisfied,
-                            size: 160,
-                            color: Theme.of(context).accentColor,
+                          );
+                      } else {
+                        return Container(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                          child: Column(
+                            children: <Widget>[
+                              Icon(
+                                Icons.sentiment_dissatisfied,
+                                size: 160,
+                                color: Theme.of(context).accentColor,
+                              ),
+                              Text(
+                                "Wir konnten keine Speisekarte laden.\n\nBitte prüfe Deine Internetverbindung.",
+                                style: Theme.of(context).textTheme.headline5,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
-                          Text(
-                            "Wir konnten keine Speisekarte laden.\n\nBitte prüfe Deine Internetverbindung.",
-                            style: Theme.of(context).textTheme.headline5,
-                            textAlign: TextAlign.center,
+                        );
+                      }
+                    },
+                  )
+                ],
+              ),
+              Column(
+                children: <Widget>[
+                  SizedBox(height: 10,),
+                  FutureBuilder(
+                    future: futureSpeisekarte,
+                    builder: (context, snapshot){
+                      if(snapshot.hasData){
+                        Speisekarte speisekarte = snapshot.data;
+                        if(speisekarte.getraenke.length > 0)
+                          return Container(
+                            height: MediaQuery.of(context).size.height - 250,
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: speisekarte.getraenke.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index){
+                                Getraenk getraenk = speisekarte.getraenke[index];
+                                return MenuCardWidget(getraenk: getraenk);
+                              },
+                            ),
+                          );
+                        else
+                          return Container(
+                            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                            child: Text(
+                                  "Dieses Restaurant bietet leider keine Getränke an.",
+                                  style: Theme.of(context).textTheme.headline5,
+                                  textAlign: TextAlign.center,
+                                ),
+                          );
+                      } else {
+                        return Container(
+                          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                          child: Column(
+                            children: <Widget>[
+                              Icon(
+                                Icons.sentiment_dissatisfied,
+                                size: 160,
+                                color: Theme.of(context).accentColor,
+                              ),
+                              Text(
+                                "Wir konnten keine Speisekarte laden.\n\nBitte prüfe Deine Internetverbindung.",
+                                style: Theme.of(context).textTheme.headline5,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  }
-                },
-              )
+                        );
+                      }
+                    },
+                  )
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
