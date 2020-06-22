@@ -145,10 +145,12 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(item.name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline1),
+                                            Flexible(
+                                              child: Text(item.name,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline1),
+                                            ),
                                             item.vegan
                                                 ? VeganIcon()
                                                 : item.vegie
