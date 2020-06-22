@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Restaurant.dart';
 import 'package:gastrome/widgets/BewertungenWidget.dart';
 import 'package:gastrome/widgets/RestaurantMapsWidget.dart';
+import 'package:gastrome/widgets/RezessionenWidget.dart';
 
 class RestaurantItemDetails extends StatefulWidget {
   static OverlayEntry overlayEntry;
@@ -25,6 +26,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
 
   @override
   void initState() {
+    showRezessionen = false;
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     super.initState();
@@ -117,9 +119,11 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                             ),
                                             AnimatedContainer(
                                               duration: Duration(seconds: 1),
-                                              color: Colors.orange,
-                                              height: showRezessionen ? 400 : 0,
+                                              height: showRezessionen ? (RezessionenWidget.rezessionenKey.currentContext!=null?(RezessionenWidget.rezessionenKey.currentContext.findRenderObject() as RenderBox).size.height:0) : 0,
                                               curve: Curves.fastOutSlowIn,
+                                              child: RezessionenWidget(
+                                                restaurantId: widget.restaurant.id,
+                                              ),
                                             ),
                                             Container(
                                               height: 80,

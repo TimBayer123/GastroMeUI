@@ -115,11 +115,11 @@ class _BewertungenWidgetState extends State<BewertungenWidget> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text(
-                showRezessionen ? "Rezessionen anzeigen" : "Rezessionen ausblenden",
+                !showRezessionen ? "Rezessionen anzeigen" : "Rezessionen ausblenden",
                 style: Theme.of(context).textTheme.bodyText2,
               ),
               Icon(
-                showRezessionen ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                !showRezessionen ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
                 size: 14,
                 color: Colors.black54,
               )

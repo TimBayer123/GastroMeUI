@@ -199,5 +199,12 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
     }
   }
 
+  @override
+  void setState(fn) {
+    if(mounted){
+      super.setState(fn);
+    }
+  }
+
 }
 
