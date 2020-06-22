@@ -93,18 +93,28 @@ class _MenuLogedOutWidgetState extends State<MenuLogedOutWidget> with TickerProv
                 builder: (context, snapshot){
                   if(snapshot.hasData){
                     Speisekarte speisekarte = snapshot.data;
-                    return Container(
-                      height: MediaQuery.of(context).size.height - 280,
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: speisekarte.speisen.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index){
-                          Speise speise = speisekarte.speisen[index];
-                          return MenuCardWidget(speise: speise);
-                        },
-                      ),
-                    );
+                    if(speisekarte.speisen.length > 0)
+                      return Container(
+                        height: MediaQuery.of(context).size.height - 280,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: speisekarte.speisen.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index){
+                            Speise speise = speisekarte.speisen[index];
+                            return MenuCardWidget(speise: speise);
+                          },
+                        ),
+                      );
+                    else
+                      return Container(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        child: Text(
+                          "Dieses Restaurant bietet leider keine Speisen an.",
+                          style: Theme.of(context).textTheme.headline5,
+                          textAlign: TextAlign.center,
+                        ),
+                      );
                   } else {
                     return Container(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -136,18 +146,28 @@ class _MenuLogedOutWidgetState extends State<MenuLogedOutWidget> with TickerProv
                 builder: (context, snapshot){
                   if(snapshot.hasData){
                     Speisekarte speisekarte = snapshot.data;
-                    return Container(
-                      height: MediaQuery.of(context).size.height - 280,
-                      child: ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: speisekarte.getraenke.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index){
-                          Getraenk getraenk = speisekarte.getraenke[index];
-                          return MenuCardWidget(getraenk: getraenk);
-                        },
-                      ),
-                    );
+                    if(speisekarte.getraenke.length > 0)
+                      return Container(
+                        height: MediaQuery.of(context).size.height - 280,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: speisekarte.getraenke.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index){
+                            Getraenk getraenk = speisekarte.getraenke[index];
+                            return MenuCardWidget(getraenk: getraenk);
+                          },
+                        ),
+                      );
+                    else
+                      return Container(
+                        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        child: Text(
+                              "Dieses Restaurant bietet leider keine Getränke an.",
+                              style: Theme.of(context).textTheme.headline5,
+                              textAlign: TextAlign.center,
+                            ),
+                      );
                   } else {
                     return Container(
                       padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
