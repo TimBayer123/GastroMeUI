@@ -60,7 +60,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          height: MediaQuery.of(context).size.height - 55,
+          height: loggedIn ? MediaQuery.of(context).size.height - 55 : MediaQuery.of(context).size.height - 75,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -92,7 +92,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                             topLeft: const Radius.circular(40.0),
                             topRight: const Radius.circular(40.0)),
                         child: Container(
-                          height: MediaQuery.of(context).size.height - 100,
+                          height: loggedIn ? MediaQuery.of(context).size.height - 100 : MediaQuery.of(context).size.height - 120,
                           child: Column(
                             children: [
                               AspectRatio(
@@ -230,7 +230,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                           ],
                                         ),
                                         SizedBox(height: 20,),
-                                        item is Getraenk ?
+                                        item is Getraenk && loggedIn ?
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             mainAxisAlignment: MainAxisAlignment.center,
