@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Restaurant.dart';
 import 'package:gastrome/widgets/BewertungenWidget.dart';
+import 'package:gastrome/widgets/MenuLogedOutWidget.dart';
 import 'package:gastrome/widgets/RestaurantMapsWidget.dart';
 
 class RestaurantItemDetails extends StatefulWidget {
@@ -20,13 +21,17 @@ class RestaurantItemDetails extends StatefulWidget {
 class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
+  ScrollController scrollController;
   double containerHeight;
   bool showRezessionen = false;
+  bool showSpeisekarte = false;
+  bool showBeschreibung = false;
 
   @override
   void initState() {
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    scrollController = new ScrollController();
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
@@ -93,6 +98,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                       Container(
                                         //width: MediaQuery.of(context).size.width - 60,
                                         child: ListView(
+                                          controller: scrollController,
                                           padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
                                           scrollDirection: Axis.vertical,
                                           //crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,17 +127,31 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                               height: showRezessionen ? 400 : 0,
                                               curve: Curves.fastOutSlowIn,
                                             ),
-                                            Container(
-                                              height: 80,
-                                              child: ListView(
-                                                shrinkWrap: true,
-                                                padding: EdgeInsets.all(0),
-                                                children: <Widget>[
-                                                  Text(
-                                                    widget.restaurant.beschreibung.replaceAll("\r", "").replaceAll("\n", ""),
-                                                    style: Theme.of(context).textTheme.bodyText1,
-                                                  ),
-                                                ],
+                                            AnimatedContainer(
+                                              duration: Duration(seconds: 1),
+                                              curve: Curves.fastOutSlowIn,
+                                              child: GestureDetector(
+                                                onTap: (){
+                                                  setState(() {
+                                                    this.showBeschreibung ? this.showBeschreibung = false : this.showBeschreibung = true;
+                                                  });
+                                                },
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    Text(
+                                                      widget.restaurant.beschreibung.replaceAll("\r", "").replaceAll("\n", ""),
+                                                      style: Theme.of(context).textTheme.bodyText1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: showBeschreibung == true ? 100 : 5,
+                                                    ),
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Text(showBeschreibung ? "weniger" : "mehr", style: Theme.of(context).textTheme.bodyText1,),
+                                                        Icon(showBeschreibung ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, color: Colors.black, size: 14,)
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                             SizedBox(
@@ -141,20 +161,37 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                             SizedBox(
                                               height: 20,
                                             ),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              crossAxisAlignment: CrossAxisAlignment.end,
-                                              children: <Widget>[
-                                                Text(
-                                                  "Speisekarte einsehen ",
-                                                  style: Theme.of(context).textTheme.headline4,
-                                                ),
-                                                Icon(
-                                                  Icons.keyboard_arrow_down,
-                                                  size: 20,
-                                                  color: Colors.black54,
-                                                )
-                                              ],
+                                            GestureDetector(
+                                              onTap: (){
+                                                setState(() {
+                                                  this.showSpeisekarte == true ? this.showSpeisekarte = false : this.showSpeisekarte = true;
+                                                });
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: <Widget>[
+                                                  Text(
+                                                    showSpeisekarte ? "Speisekarte ausblenden " : "Speisekarte einsehen ",
+                                                    style: Theme.of(context).textTheme.headline4,
+                                                  ),
+                                                  Icon(
+                                                    showSpeisekarte ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                                    size: 20,
+                                                    color: Colors.black54,
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            AnimatedContainer(
+                                              duration: Duration(seconds: 1),
+                                              height: showSpeisekarte ? 580 : 0,
+                                              curve: Curves.fastOutSlowIn,
+                                              onEnd: (){
+                                                //TODO: Funktioniert noch nicht!!
+                                                //scrollController.animateTo(double.maxFinite, duration: Duration(seconds: 1), curve: Curves.easeOut);
+                                              },
+                                              child: MenuLogedOutWidget(restaurant: widget.restaurant),
                                             ),
                                           ],
                                         ),

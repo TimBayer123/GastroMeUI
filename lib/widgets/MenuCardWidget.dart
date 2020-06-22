@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Getraenk.dart';
 import 'package:gastrome/entities/Speise.dart';
 import 'package:gastrome/pages/MenuItemDetails.dart';
+import 'package:gastrome/widgets/MarqueeWidget.dart';
 import 'package:gastrome/widgets/VeganVegieIcons.dart';
 
 class MenuCardWidget extends StatefulWidget {
@@ -59,9 +60,20 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(item.name, style: Theme.of(context).textTheme.headline5),
+                            MarqueeWidget(
+                              direction: Axis.horizontal,
+                              child: Text(
+                                  item.name,
+                                  style: Theme.of(context).textTheme.headline5
+                              ),
+                            ),
                             SizedBox(height: 5),
-                            Text(item.beschreibung, style: Theme.of(context).textTheme.bodyText1),
+                            Text(
+                                item.beschreibung,
+                                maxLines: 4,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.bodyText1
+                            ),
                           ],
                         ),
                       ),

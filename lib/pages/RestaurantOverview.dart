@@ -270,7 +270,6 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
       else
         restaurants.sort((a, b) =>
             b.getGesamtbewertung().compareTo(a.getGesamtbewertung()));
-      restaurants.forEach((element) {print(element.getGesamtbewertung().toString());});
     }
   }
 
