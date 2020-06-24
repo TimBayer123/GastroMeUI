@@ -46,7 +46,7 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
           children: [
             Text("Rechnung", style: Theme.of(context).textTheme.headline5,),
             SizedBox(height: 20,),
-            ((rechnungGlobal != null) && (rechnungGlobal.speisen != 0 || rechnungGlobal.getraenke != 0)) ?
+            ((rechnungGlobal != null) && (rechnungGlobal.speisen != 0 || rechnungGlobal.getraenkOrders != 0)) ?
               Expanded(
                 child: FutureBuilder(
                     future: futureRechnung,
@@ -55,7 +55,9 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
                         Rechnung rechnung = snapshot.data;
                         List<SpeisekartenItem> items = new List();
                         items.addAll(rechnung.speisen);
-                        items.addAll(rechnung.getraenke);
+                        rechnung.getraenkOrders.forEach((order) {
+                          items.add(order.getraenk);
+                        });
                         return Container(
                           child: ListView.builder(
                             scrollDirection: Axis.vertical,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gastrome/settings/globals.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
+import 'package:http/http.dart' as http;
 
 class HeadlineWidget extends StatefulWidget {
   String title;
@@ -82,6 +83,7 @@ class _HeadlineWidgetState extends State<HeadlineWidget> {
 
       try {
         final sendReport = await send(body, smtpServer);
+        callWaiterUpdateDB();
         print('Message sent: ' + sendReport.toString());
       } on MailerException catch (e) {
         print('Message not sent.');
@@ -90,7 +92,17 @@ class _HeadlineWidgetState extends State<HeadlineWidget> {
         }
       }
       // DONE
+  }
 
+  Future<void> callWaiterUpdateDB() async {
+    var response = await http.patch(gastroMeApiUrl + '/tisch/' + tischId + '/kellner',
+    headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue });
+
+    if(response.statusCode == 200){
+      //TODO Handle Success
+    } else {
+      //TODO Handle Error
+    }
   }
 
   Future<void> showConfirmationDialog(){

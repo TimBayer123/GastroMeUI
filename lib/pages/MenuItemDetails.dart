@@ -335,7 +335,6 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
       animationController.forward();
       Navigator.pop(context);
       //TODO Animation: Betrag zu Rechnung hinzugefügt.
-      print(rechnung.getraenke.length);
     } else {
       //TODO Handle Error
     }
