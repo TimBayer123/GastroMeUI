@@ -16,21 +16,21 @@ import 'package:gastrome/widgets/LoginWidget.dart';
 
 import 'package:gastrome/widgets/PlaceholderWidget.dart';
 
-class MainLayout extends StatefulWidget {
+class Home extends StatefulWidget {
   Speisekarte speisekarte;
   int navBarindex;
   String restaurantName = 'Café Simple';
 
-  MainLayout({this.navBarindex, this.speisekarte});
+  Home({this.navBarindex, this.speisekarte});
 
-  static _MainLayoutState of(BuildContext context) =>
+  static _HomeState of(BuildContext context) =>
       context.findAncestorStateOfType();
 
   @override
-  _MainLayoutState createState() => _MainLayoutState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
   PageController pageController;
   bool showNavBar = true;
   int currentNavIndex;

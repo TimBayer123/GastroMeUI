@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:gastrome/MainLayout.dart';
-import 'package:gastrome/pages/Loading.dart';
+import 'package:gastrome/Home.dart';
 import 'package:gastrome/settings/globals.dart';
 
 void main() {
@@ -31,10 +28,9 @@ void main() {
           bodyText2: TextStyle(fontSize: 11.0, fontFamily: 'Lato', color: Colors.black54),
       ),
     ),
-    initialRoute: '/main',
+    initialRoute: '/',
     routes: {
-      '/': (context) => Loading(),
-      '/main': (context) => MainLayout(),
+      '/': (context) => Home(),
     },
   ));
 }

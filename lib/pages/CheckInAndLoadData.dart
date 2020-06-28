@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:gastrome/MainLayout.dart';
+import 'package:gastrome/Home.dart';
 import 'package:gastrome/entities/Restaurant.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:gastrome/pages/QrCodeScanner.dart';
@@ -63,7 +63,7 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
             if (snapshot.hasData && futureRestaurant!=null) {
               setGlobalDetails(snapshot.data[0]);
               loadedSpeisekarte = snapshot.data[1];
-              return MainLayout(navBarindex: 0, speisekarte: loadedSpeisekarte);
+              return Home(navBarindex: 0, speisekarte: loadedSpeisekarte);
             } else if (snapshot.hasError) {
               return Center(child: Text("${snapshot.error}", style:Theme.of(context).textTheme.headline4));
             }
