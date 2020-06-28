@@ -33,6 +33,7 @@ class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProvid
 
   //Funktionsweise: Diese Methode liefert die Oberfläche des Direct Feedback-Screens
   //Rückgabewert: Die Methode liefert die gesamte Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Scaffold(

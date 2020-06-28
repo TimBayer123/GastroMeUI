@@ -46,6 +46,7 @@ class _CheckInAndLoadDataState extends State<CheckInAndLoadData>{
 
   //Funktionsweise: Diese Methode liefert die Oberfläche des Ladescreens
   //Rückgabewert: Die Methode liefert die gesamte Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Container(

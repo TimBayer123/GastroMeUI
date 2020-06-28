@@ -33,6 +33,7 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
 
   //Funktionsweise: Diese Methode liefert die Oberfläche des externen Feedback-Screens
   //Rückgabewert: Die Methode liefert die gesamte Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Scaffold(
