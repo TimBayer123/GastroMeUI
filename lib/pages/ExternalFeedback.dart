@@ -1,19 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gastrome/entities/Bewertung.dart';
-import 'package:gastrome/entities/Rezession.dart';
 import 'package:gastrome/settings/globals.dart';
 import 'package:gastrome/widgets/BewertungAuswahlWidget.dart';
-import 'package:gastrome/widgets/BewertungenWidget.dart';
 import 'package:gastrome/widgets/FeedbackOverlay.dart';
 import 'package:gastrome/widgets/FullWidthButton.dart';
-import 'package:gastrome/widgets/WarningDialog.dart';
 import 'package:keyboard_actions/keyboard_action.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:keyboard_actions/keyboard_actions_config.dart';
 import 'package:http/http.dart' as http;
+
+//Autor: Tim Bayer
+//Diese Klasse stellt den externen Feedback-Screen bereit
 
 class ExternalFeedback extends StatefulWidget {
   @override
@@ -26,7 +23,7 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
   TabController tabController;
   int essen = 0, atmosphaere = 0, service = 0, preise = 0, sonderwuensche = 0;
 
-
+//Funktionsweise: Diese Methode wird bei Initialisierung des Screens ausgeführt. Dabei wird ein TextController und ein TabConrtoller initialisiert
   @override
   void initState() {
     textController = new TextEditingController();
@@ -34,18 +31,18 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
     super.initState();
   }
 
+  //Funktionsweise: Diese Methode liefert die Oberfläche des externen Feedback-Screens
+  //Rückgabewert: Die Methode liefert die gesamte Oberfläche in Form eines Widgets
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+        //Die KeyboardActions passen die OnScreen-Tastatur an. Es wird ein "Fertig" Button obehalb der Tastatur platziert.
         child: KeyboardActions(
           config: _buildConfig(context),
           child: ListView(
-
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
@@ -53,7 +50,8 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
               ),
               Text('Externe Bewertung', style: Theme.of(context).textTheme.headline2),
               SizedBox(height: 20),
-
+              //In diesem Widget können die Kategorien bewertet werden
+              //Dies ist über einen Klick auf den jeweiligen Stern möglich
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -99,6 +97,7 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
               SizedBox(height: 20),
               Text('Anmerkung', style: Theme.of(context).textTheme.headline5),
               SizedBox(height: 10),
+              //In diesem Widget befindet sich das Text Feld der Anmerkung
               Card(
                 color: Colors.white,
                 elevation: 2,
@@ -118,6 +117,7 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
               SizedBox(height: 20),
               FullWidthButton(
                 buttonText: 'Absenden',
+                //Bei Klick des Buttons wird das Feedback abgesendet
                 function: (){
                   sendFeedback(textController.text);
                 },
@@ -138,8 +138,8 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
     super.dispose();
   }
 
-  /// Creates the [KeyboardActionsConfig] to hook up the fields
-  /// and their focus nodes to our [FormKeyboardActions].
+  //Funktionsweise; In dieser Methode wird die Tastaur-Konfiguration erstellt
+  //Rückgabewert: Es wird ein Konfigurationsobjekt zurückgeliefert
   KeyboardActionsConfig _buildConfig(BuildContext context) {
     return KeyboardActionsConfig(
       keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
@@ -172,6 +172,9 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
     );
   }
 
+  //Funktionsweise: In dieser Methode wird das Feedback an das Backend gesendet. Dies geschieht asynchron
+  //Übergabeparameter: Die Anmerkung, die gesendet werden soll wird übergeben
+  //Rückgabewert: Es wird ein Future bool geliefert, ob das Senden erfolgreich war
   Future<bool> sendFeedback(String anmerkung) async{
     if(anmerkung=="" || essen==0 || service==0 || atmosphaere ==0 || sonderwuensche==0 || preise==0){
       showConfirmationDialog("Du hast deine Bewertung leider unvollständig abgeschickt. Bitte versuche es erneut");
@@ -195,6 +198,8 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
     return true;
   }
 
+//Funktionsweise: Diese Methode erstellt ein AlertDialog, der angezeigt werden kann
+  //Übergabeparameter: Es wird der Texgt übergeben, der angezeigt wird.
   Future<void> showConfirmationDialog(String text){
     // set up the AlertDialog
     AlertDialog confirmationDialog = AlertDialog(
@@ -215,12 +220,14 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
     closeConfirmationDialog();
   }
 
+  //Funktionsweise: Diese Methode schließt den AlertDialog.
   Future<void> closeConfirmationDialog(){
    // Future.delayed(Duration(seconds: 2)).then((value) => Navigator.pop(context));
     FeedbackOverlay.overlayEntry.remove();
     FeedbackOverlay.overlayEntry=null;
   }
 
+  //Funktionsweise: Diese Methode überschreibt die setState Methode, es wird geprüft ob der Inhalt noch angezeigt wird, ansonsten würde dies zu einem Fehler führen
   @override
   void setState(fn) {
     if(mounted){
