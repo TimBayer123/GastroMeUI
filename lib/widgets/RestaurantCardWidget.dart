@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Restaurant.dart';
 import 'package:gastrome/pages/RestaurantItemDetails.dart';
 
+//Autor: Tim Riebesam
+//Diese Klasse stellt das ListenObjekt dar, welches in der Klasse RestaurantOverview.dart verwendet wird. Es beeinhaltet Informationen über das jeweilige Restausrant
+
 class RestaurantCardWidget extends StatefulWidget {
   final Restaurant restaurant;
 
-  const RestaurantCardWidget ({ Key key, this.restaurant }): super(key: key);
+  //Der Konstruktor der Klasse besteht aus dem Restaurant
+  const RestaurantCardWidget ({this.restaurant });
 
   @override
   _RestaurantCardWidgetState createState() => _RestaurantCardWidgetState();
@@ -17,6 +21,11 @@ class _RestaurantCardWidgetState extends State<RestaurantCardWidget>{
     super.initState();
   }
 
+  //Funktionsweise: Diese Methode liefert die Oberfläche des RestaurantCardWidget
+  //Die Methode besitzt keine tiefere Logik, es werden ausschließlich die Daten des Restaurant-Objektes in entsprechenden UI-Objekten angezeigt.
+  //Allerdings wird bei einem Klick auf das erzeugte Objekt die Methode showDetailsOverlay aufgerufen. Der BuildContext wird dabei weitergereicht.
+  //Rückgabewert: Die Methode liefert die gesamte Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -102,8 +111,9 @@ class _RestaurantCardWidgetState extends State<RestaurantCardWidget>{
     );
   }
 
+  //Funktionsweise: Diese Methode sorgt dafür, dass die Klasse RestaurantItemDetails als Overlay angezeigt wird.
+  //Übergabeparameter: Der BuildContext wird übergeben
   void showDetailsOverlay(BuildContext context) {
-    print(RestaurantItemDetails.overlayEntry);
     if(widget.restaurant!=null && RestaurantItemDetails.overlayEntry==null){
       RestaurantItemDetails.overlayEntry = OverlayEntry(builder: (context) => RestaurantItemDetails(restaurant: widget.restaurant));
       Overlay.of(context).insert(RestaurantItemDetails.overlayEntry);
