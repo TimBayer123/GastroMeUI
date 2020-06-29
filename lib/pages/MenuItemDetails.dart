@@ -12,10 +12,13 @@ import 'package:gastrome/entities/Rechnung.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
+//Autor: Tim Bayer
+//Diese Klasse stellt die Oberfläche einer Speisen- oder Getränkeübersicht dar. Sie übermittelt zudem die Getränkebestellung an das Backend und per Email an das Restaurant
 class MenuItemDetails extends StatefulWidget {
   static OverlayEntry overlayEntry;
   Getraenk getraenk;
   Speise speise;
+  //Der Konstruktor der Klasse, es wird die anzuzeigende Speise oder Getränk übergeben
   MenuItemDetails({this.speise, this.getraenk});
 
   @override
@@ -32,6 +35,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
   AnimationController animationController;
   double containerHeight;
 
+  //Funktionsweise: Diese Methode prüft bei Initialisierung ob eine Speise oder ein Getränk übergeben wurde. Ebenso wird ein AnimationController instantiiert
   @override
   void initState() {
     if (widget.speise != null)
@@ -41,6 +45,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     super.initState();
+    //Diese Methode wird ausgeführt, sobald alle Widgets vollständig geladen sind
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         animationController.forward();
@@ -48,12 +53,16 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
     });
   }
 
+//Funktionsweise: Die Dispose Methode beendet die erstellten Controller, um den Speicherplatz freizugeben
   @override
   void dispose() {
     animationController.dispose();
     super.dispose();
   }
 
+  //Funktionsweise: Diese Methode liefert die Oberfläche der Speisen- oder Getränkeübersicht
+  //Rückgabewert: Die Methode liefert die gesamte Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -64,6 +73,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              //Animation, die die Seite einfliegen lässt
               SizeTransition(
                 sizeFactor: animationController,
                 axis: Axis.vertical,
@@ -74,6 +84,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                       color: Colors.transparent,
                       height: 5,
                     ),
+                    //Schatten unter der Speisen-/Getränkeübersicht
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: new BorderRadius.only(
@@ -99,6 +110,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                 aspectRatio: 3 / 1.5,
                                 child: Stack(
                                   children: [
+                                    //Das Bild der Speise oder des Getränks
                                     Container(
                                       decoration: new BoxDecoration(
                                         image: new DecorationImage(
@@ -112,6 +124,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                         top: 10,
                                         right: 10,
                                         child: GestureDetector(
+                                          //Wird das Overlay geschlossen, schließt sich die Übersicht animiert nach unten
                                           onTap: () {
                                             animationController.reverse();
                                             MenuItemDetails.overlayEntry=null;
@@ -177,6 +190,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                                   .headline4),
                                         ),
                                         Row(
+                                          //Hier werden die ALlergene angezeigt. Ist das ensprechende Allergen enthalten wird ein Icon angezeigt, ansonsten eine leere Box mit Größe 0
                                           children: [
                                             item.allergene.toString().contains(
                                                     "Glutenhaltiges Getreide")
@@ -230,6 +244,7 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
                                           ],
                                         ),
                                         SizedBox(height: 20,),
+                                        //Hier können Getränke über einen Button bestellt werden
                                         item is Getraenk && loggedIn ?
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -275,6 +290,8 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
     );
   }
 
+  //Funktionsweise: Es wird ein Bestätigungsdialog angezeigt, ob das Getränk bestellt werden möchte.
+  //Übergabeparameter: Es wird das zu bestellende Getränk übergeben
   void orderGetraenkDialogBox(Getraenk getraenk){
     Widget cancelButton = FlatButton(
       child: Text("Abbrechen"),
@@ -311,6 +328,8 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
     );
   }
 
+  //Funktionsweise: Es wird die Rechnung für einen Tisch über eine Get-Request asynchron geladen.
+  //Rückgabewert: Es wird das Rechnungsobjekt als Future zurückgeliefert
   Future<Rechnung> getRechnungForTisch() async {
     var response = await http.get(gastroMeApiUrl + '/tisch/' + tischId + '/currentRechnung',
         headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue });
@@ -324,6 +343,8 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
     }
   }
 
+  //Funktionsweise: Es wird ein Getränk über eine Patch-Request bestellt bzw. der Rechnung des Tisches hinzugefügt
+  //Übergabeparameter: Es wird das zu bestellende Getränk übergeben
   void orderGetraenk(Getraenk getraenk) async {
     var response = await http.patch(gastroMeApiUrl + '/rechnung/' + (await getRechnungForTisch()).id + '/add/getraenk',
         body: getraenk.id,
@@ -340,6 +361,8 @@ class _MenuItemDetailsState extends State<MenuItemDetails>
     }
   }
 
+  //Funktionsweise: Es wird die Getränkebestellung an die hinterlegte Email-Adresse gesendet.
+  //Übergabeparameter: Es wird das zu bestellende Getränk und die Rechnung übergeben
   void sendMailGetraenkOrder(Getraenk getraenk, Rechnung rechnung) async {
     String subject = 'Bestellung von ' + getraenk.name + " für Tisch-Nr. " + tischId;
     final smtpServer = gmail(EmailUsername, EmailPassword);

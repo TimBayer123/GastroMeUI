@@ -6,7 +6,7 @@ import 'package:gastrome/widgets/MenuLogedOutWidget.dart';
 import 'package:gastrome/widgets/RestaurantMapsWidget.dart';
 import 'package:gastrome/widgets/RezessionenWidget.dart';
 
-//Autor: Tim Riebesam
+//Autor: Tim Riebesam, Tim Bayer
 //Diese Klasse stellt den Restaurant-Detail-Screen dar. Es werden alle Informationen des Restaurants angezeigt.
 
 class RestaurantItemDetails extends StatefulWidget {
