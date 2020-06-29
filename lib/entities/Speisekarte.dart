@@ -1,9 +1,6 @@
-import 'package:gastrome/entities/Allergen.dart';
 import 'package:gastrome/entities/Getraenk.dart';
 import 'package:gastrome/entities/Restaurant.dart';
 import 'package:gastrome/entities/Speise.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class Speisekarte{
   final String id;

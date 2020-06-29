@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'dart:math';
-
 import 'package:gastrome/entities/Rezession.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:gastrome/entities/Standort.dart';

@@ -11,6 +11,10 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailer/smtp_server/gmail.dart';
 
+//Autor: Tim Riebesam
+//Diese Klasse stellt den Rechnung-Screen dar. Es wird die aktuelle Rechnung des eingeloggten Tisches geladen und angezeigt.
+//Das Bezahlen der Rechnung ist ebenfalls möglich. Es wird jedoch nur die aktuelle Rechnung als "bezahlt" gekennzeichnet.
+
 class BillOverview extends StatefulWidget {
   @override
   _BillOverviewState createState() => _BillOverviewState();
@@ -21,9 +25,12 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
   double sum = 0;
   AnimationController controller;
 
+  //Funktionsweise: Diese Methode ruft bei Initialisierung die Methoden zum Laden der Rechnung auf.
   @override
   void initState() {
+    //Während Initialisierung soll die Rechnung geladen werden. hierfür wird die Methode loadRechnung() aufgerufen.
     loadRechnung();
+    //AnimationController wird initialisiert für HeartbeatProgressIndicator. repeat(reverse: true) damit dieser die Animation ständig wiederholt im Verlauf Vor-Zurück-Vor-Zurück-... und nicht nur Vor-Reset-Vor-Reset-...
     controller = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
     controller.repeat(reverse: true);
@@ -36,6 +43,9 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
     super.dispose();
   }
 
+  //Funktionsweise: Diese Methode liefert die Oberfläche der Rechnung
+  //Rückgabewert: Die Methode liefert die gesamte Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,11 +56,15 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
           children: [
             Text("Rechnung", style: Theme.of(context).textTheme.headline5,),
             SizedBox(height: 20,),
+            //Wenn Rechnung Global gesetzt und Speisen oder Getränke auf der Rechnung vorhanden, dann lade Rechnung über FutureBuilder (z.B. in CheckInAndLoadData.dart beschrieben)
+            //rechnung Global wird in MenuItemDetails.dart gesetzt, wenn ein Getränk bestellt wird.
+            //Wenn Bedinung nicht erfüllt, zeige Text mit Info, dass Rechnung keine Bestellungen aufweist.
             ((rechnungGlobal != null) && (rechnungGlobal.speisen != 0 || rechnungGlobal.getraenkOrders != 0)) ?
               Expanded(
                 child: FutureBuilder(
                     future: futureRechnung,
                     builder: (context, snapshot) {
+                      //Wenn FutureBuilder erfolgreich, zeige Rechnung, ansonsten zeige Lade-Spinner oder bei Error eine Fehlermeldung.
                       if (snapshot.hasData){
                         Rechnung rechnung = snapshot.data;
                         List<SpeisekartenItem> items = new List();
@@ -59,6 +73,7 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
                           items.add(order.getraenk);
                         });
                         return Container(
+                          //Liste aus den Rechnungsitems wird gebaut und angezeigt. Durch ListView scrollable
                           child: ListView.builder(
                             scrollDirection: Axis.vertical,
                             itemCount: items.length,
@@ -75,7 +90,7 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
                           ),
                         );
                       } else if (snapshot.hasError) {
-
+                        return Text("Bei Laden Deiner Rechnung ist etwas Schiefgelaufen...");
                       }
                       //Default Loading Spinner
                       return Column(
@@ -125,12 +140,14 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
                     ),
                     SizedBox(height: 6,),
                     Row(
+                      //Summe aller Bestellungen anzeigen
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Text(sum.toStringAsFixed(2).replaceAll(".", ",") + " €", style: Theme.of(context).textTheme.headline4,)
                       ],
                     ),
                     SizedBox(height: 10,),
+                    //Button um Rechnung zu bezahlen, ruft die Methode payBill() auf.
                     FullWidthButton(buttonText: "Rechnung bezahlen", function: () => {
                       payBill()
                     }),
@@ -142,6 +159,7 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
     );
   }
 
+  //Funktionsweise: Diese Methode lädt die Rechnung über die Methode fetchRechnung() und berechnet die Summe der aktuellen Rechnung.
   Future<void> loadRechnung() async {
     setState(() {
       sum = 0;
@@ -153,6 +171,7 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
     });
   }
 
+  //Funktionsweise: Diese Methode lädt die Rechnung über einen GET Request aus dem Backend.
   Future<Rechnung> fetchRechnung() async {
     final response = await http.get(gastroMeApiUrl + '/tisch/ ' + tischId + '/currentRechnung',
         headers: {
@@ -166,6 +185,9 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
     }
   }
 
+
+  //Funktionsweise: Diese Methode sendet einen PATCH Request an das Backend, mit der Information, dass die Rechnung bezahlt wurde.
+  // Bei Erfolgreicher übertragung wird eine Mail an das Restaurant gesendet und die Rechnung neu geladen, bzw. eine neue Rechnung durch das Backend erstellt.
   void payBill() async {
     var response = await http.patch(gastroMeApiUrl + '/rechnung/' + rechnungGlobal.id + '/pay',
       headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue });
@@ -176,10 +198,12 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
       loadRechnung();
       print("Rechnung bezahlt: " + rechnung.billPayed.toString());
     } else {
+      print("Etwas ist schiefgelaufen...");
       //TODO Handle Error
     }
   }
 
+  //Funktionsweise: Diese Methode sendet eine Mail an die am Restaurant-Objekt hinterlegte Email-Adresse mit der Information, dass die Rechnung für einen Tisch bezahlt wurde.
   void sendMailBillPayed() async {
     String subject = 'Rechnung von Tisch: ' + tischId + " bezahlt!";
     final smtpServer = gmail(EmailUsername, EmailPassword);

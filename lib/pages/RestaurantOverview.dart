@@ -10,6 +10,9 @@ import 'package:gastrome/widgets/RestaurantCardWidget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 
+//Autor: Tim Riebesam
+//Diese Klasse stellt den Restaurant-Listen-Screen dar. Es werden alle Restaurants aus dem näheren Umkreis geladen und angezeigt.
+
 class RestaurantOverview extends StatefulWidget {
   @override
   _RestaurantOverviewState createState() => _RestaurantOverviewState();
@@ -24,17 +27,17 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
       distanceFilter: 10);
 
   Position lastSavedPosition;
-
   AnimationController controller;
-
   String dropdownValue = 'Entfernung';
 
+  //Funktionsweise: Diese Methode ruft bei Initialisierung die Methoden zum Laden der Restaurants auf hört auf Veränderungen des Standorts des Geräts.
   @override
   void initState() {
+    //Lade Rstaurants und listener für Änderungen der Geräteposition
     fetchRestaurantsAndListenOnPositionChange();
+    //AnimationController wird initialisiert für HeartbeatProgressIndicator. repeat(reverse: true) damit dieser die Animation ständig wiederholt im Verlauf Vor-Zurück-Vor-Zurück-... und nicht nur Vor-Reset-Vor-Reset-...
     controller = AnimationController(
         duration: const Duration(milliseconds: 2000), vsync: this);
-
     controller.repeat(reverse: true);
     super.initState();
   }
@@ -45,6 +48,9 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
     super.dispose();
   }
 
+  //Funktionsweise: Diese Methode liefert die Oberfläche des Restaurant-Listen-Screen zurück
+  //Rückgabewert: Die Methode liefert die gesamte Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,6 +64,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
                 height: 85,
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.bottomRight,
+                //DropdownButton mit den Auswahlmöglichkeiten Entfernung und Bewertung. Bei Auswahl einer Option wird die Restaurantliste neu sortiert, entsprechend der Auswahl, durch den Aufruf der Funktion sortRestaurants().
                 child: DropdownButton<String>(
                   value: dropdownValue,
                   icon: Icon(Icons.arrow_drop_down),
@@ -82,11 +89,14 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
           ),
           Expanded(
             child: Container(
+              // FutureBuilder beschrieben in z.B. CheckInAndLoadData.dart
               child: FutureBuilder(
                   future: futureRestaurantsNearby,
                   builder: (context, snapshot) {
+                    // Wenn RestaurantDaten geladen, erstelle Liste aus diesen Daten. Ansonsten zeige Lade-Spinner oder bei Error zeige Fehlermeldung.
                     if (snapshot.hasData) {
                       restaurants = snapshot.data;
+                      // Wenn Rückgabe tatsächliche Daten enthält, zeige Liste, ansonsten Zeige Meldung, dass keine Restaurants in der Nähe verfügbar sind.
                       if(restaurants.length > 0){
                         sortRestaurants();
                         return Container(
@@ -95,6 +105,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
                             itemCount: restaurants.length,
                             itemBuilder: (context, index) {
                               Restaurant restaurant = restaurants[index];
+                              // Zeige für jedes Restaruant ein RestaurantCardWidget in der Liste an.
                               return RestaurantCardWidget(restaurant: restaurant);
                             },
                           ),
@@ -119,7 +130,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
                         );
                       }
                     } else if (snapshot.hasError) {
-                      print(snapshot.error.toString());
+                      // Fehlerbehandlung abhängig von Error-Meldung.
                       if (snapshot.error.toString() ==
                           'Exception: ' + keinZugriffAufStandort) {
                         return Column(
@@ -171,6 +182,9 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
     );
   }
 
+  // Funktionsweise: Diese Methode fordert vom Benutzer den Zugriff auf den Standort. Speichert anschließend diesen Standort als letzten bekannten Standort ab und nutzt diese Positionsdaten um die Restaurants in der Nähe zu Laden über den Aufruf der Methode fetchRestaurantsNearby()
+  // Weiter lauscht die Anwendung absofort auf Änderungen des Standorts und ruft die beiden Methoden updateDistanceBetweenRestaurantsAndDevice() und updateRestaurantsList() auf, sobald sich der Standort der Geräts ändert.
+  // Rückgabewert: Die Methode liefert ein Future ohne Rückgabewert zurück.
   Future<void> fetchRestaurantsAndListenOnPositionChange() async {
     if (await Permission.location.request().isGranted) {
       Position currentPosition = await (Geolocator().getCurrentPosition());
@@ -195,6 +209,9 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
     }
   }
 
+  // Funktionsweise: Diese Methode sendet einen GET Request ans Backend und erhält eine Liste der Restaurants im Umkreis der übergebenen längen- und breitengrade.
+  // Bei erfolgreichem Aufruf wird die Liste der Restaurants zurückgegeben und die Methode updateRestaurantDistance() für jedes Restaurant aufgerufen.
+  // Rückgabewert: Die Methode liefert ein Future mit einer Liste von Restaurants zurück.
   Future<List<Restaurant>> fetchRestaurantsNearby(Position currentPosition) async {
     final response = await http.get(gastroMeApiUrl + '/restaurant/all?' +
         'lat=' + currentPosition.latitude.toString() +
@@ -220,6 +237,8 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
     }
   }
 
+  // Funktionsweise: Diese Methode ruft für jedes Restaurant in der Liste des Future futureRestaurantsNearby die Methode updateRestaurantDistance() auf.
+  // Rückgabewert: Die Methode liefert ein Future ohne Rückgabewert zurück.
   Future<void> updateDistanceBetweenRestaurantsAndDevice(position) async {
     futureRestaurantsNearby.then((restaurants) async {
       for(Restaurant restaurant in restaurants)
@@ -227,8 +246,10 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
       });
   }
 
-
-  Future<bool> updateRestaurantDistance(restaurant, position) async {
+  // Funktionsweise: Diese Methode erwartet die Übergabe eines Restaurants und einer Position. Die Methode errechnet die Entfernung zwischen dem Restaurant und der übergebenen Position und speichert diese Entfernung anschließend in der Variable entfernung des Restaurants.
+  // Diese Methode wird verwendet um die Entfernung zwischen dem Restaurant und dem Gerät zu speichern, da es sich bei dem Übergabeparameter Position immer um den aktuellen Standort des Gerätes handelt
+  // Rückgabewert: Die Methode liefert ein Future ohne Rückgabewert zurück.
+  Future<void> updateRestaurantDistance(restaurant, position) async {
     double currentDistance = await Geolocator().distanceBetween(
         restaurant.standort.breitengrad,
         restaurant.standort.laengengrad,
@@ -238,9 +259,12 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
     setState(() {
       restaurant.entfernung = currentDistance;
     });
-    return true;
   }
 
+  // Funktionsweise: Diese Methode erwartet die Übergabe einer Position. Die Methode errechnet die Entfernung zwischen der Position und der letzten gespeicherten Position.
+  // Ist die Entfernung der letzten bekannten Position zur übergebenen, bzw aktuellen Position (da diese Methode durch jede Veränderung der Geräteposition aufgerugen wird) größer als der definierte Maximalwert (siehe globals.dart), wird die aktuelle Position als neue gepsiechertePosition definiert.
+  // Außerdem wird die Restaurantliste durch den Aufruf futureRestaurantsNearby = fetchRestaurantsNearby(currentPosition) und der Methode updateDistanceBetweenRestaurantsAndDevice(position) aktualisiert.
+  // Rückgabewert: Die Methode liefert ein Future ohne Rückgabewert zurück.
   Future<void>updateRestaurantsList(position) async {
     if(lastSavedPosition != null){
       double currentDistanceToLastSavedLocation = await Geolocator().distanceBetween(
@@ -262,6 +286,8 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
     }
   }
 
+  // Funktionsweise: Diese Methode sortiert die im ListView angezeigten Restaurants, davon abhängig welche Sortierung der Benutzer ausgewählt hat.
+  // Rückgabewert: Die Methode liefert ein Future ohne Rückgabewert zurück.
   void sortRestaurants(){
     if(restaurants != null && restaurants.length > 0){
       if(dropdownValue == "Entfernung")

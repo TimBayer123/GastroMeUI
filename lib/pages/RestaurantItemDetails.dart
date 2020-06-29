@@ -6,9 +6,13 @@ import 'package:gastrome/widgets/MenuLogedOutWidget.dart';
 import 'package:gastrome/widgets/RestaurantMapsWidget.dart';
 import 'package:gastrome/widgets/RezessionenWidget.dart';
 
+//Autor: Tim Riebesam
+//Diese Klasse stellt den Restaurant-Detail-Screen dar. Es werden alle Informationen des Restaurants angezeigt.
+
 class RestaurantItemDetails extends StatefulWidget {
   static OverlayEntry overlayEntry;
   Restaurant restaurant;
+  //Der Konstruktor der Klasse besteht aus dem Restaurant
   RestaurantItemDetails({this.restaurant});
 
   @override
@@ -48,6 +52,9 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
     super.dispose();
   }
 
+  //Funktionsweise: Diese Methode liefert die Oberfläche des Restaurant-Detail-Screen zurück
+  //Rückgabewert: Die Methode liefert die gesamte Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -112,6 +119,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                             SizedBox(
                                               height: 20,
                                             ),
+                                            //Einbindung des BewertungenWidget
                                             BewertungenWidget(restaurant: widget.restaurant,
                                                onRezessionenClick: (bool showRezessionen){
                                                     this.showRezessionen == true ?
@@ -127,6 +135,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                               duration: Duration(seconds: 1),
                                               height: showRezessionen ? (RezessionenWidget.rezessionenKey.currentContext!=null?(RezessionenWidget.rezessionenKey.currentContext.findRenderObject() as RenderBox).size.height:0) : 0,
                                               curve: Curves.fastOutSlowIn,
+                                              //Einbindung des RezessionenWidget
                                               child: RezessionenWidget(
                                                 restaurantId: widget.restaurant.id,
                                               ),
@@ -134,6 +143,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                             AnimatedContainer(
                                               duration: Duration(seconds: 1),
                                               curve: Curves.fastOutSlowIn,
+                                              //Auf dem nachfolgenden Bereich liegt ein GestureDetector, bei einer Berührnug bzw. Tap auf diesem Bereich wird eine Funktion getriggert. In diesem Fall wird der Text der Restaurantbeschreibung ausgeklappt bzw. geschlossen.
                                               child: GestureDetector(
                                                 onTap: (){
                                                   setState(() {
@@ -161,10 +171,12 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                             SizedBox(
                                               height: 10,
                                             ),
+                                            //Einbindung des RestaurantMapsWidget
                                             RestaurantMapsWidget(widget.restaurant),
                                             SizedBox(
                                               height: 20,
                                             ),
+                                            //Weiterer GestureDetector für ausklappen der Speisekarte im ausgeloggten Modus
                                             GestureDetector(
                                               onTap: (){
                                                 setState(() {
@@ -196,6 +208,7 @@ class _RestaurantItemDetailsState extends State<RestaurantItemDetails>
                                               onEnd: (){
                                                 scrollController.animateTo(540, duration: Duration(seconds: 1), curve: Curves.fastOutSlowIn);
                                               },
+                                              //Einbindung des MenuLogedOutWidget.
                                               child: MenuLogedOutWidget(restaurant: widget.restaurant),
                                             ),
                                           ],

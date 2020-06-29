@@ -1,6 +1,4 @@
 import 'Getraenk.dart';
-import 'Rechnung.dart';
-import 'Speise.dart';
 
 class GetraenkOrder{
   final String id;

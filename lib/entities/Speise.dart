@@ -4,7 +4,6 @@ import 'package:gastrome/entities/Allergen.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:gastrome/entities/SpeisekartenItem.dart';
 import 'package:http/http.dart' as http;
-import 'package:image/image.dart' as I;
 
 class Speise extends SpeisekartenItem {
   final String id;

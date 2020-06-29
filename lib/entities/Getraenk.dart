@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:gastrome/entities/Allergen.dart';
-import 'package:gastrome/entities/Speise.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:gastrome/entities/SpeisekartenItem.dart';
 

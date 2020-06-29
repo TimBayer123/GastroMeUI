@@ -1,6 +1,4 @@
 import 'package:gastrome/entities/GetraenkOrder.dart';
-
-import 'Getraenk.dart';
 import 'Speise.dart';
 
 class Rechnung{

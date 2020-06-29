@@ -1,11 +1,6 @@
 import 'dart:typed_data';
-import 'package:flutter/rendering.dart';
 import 'package:gastrome/entities/Getraenk.dart';
 import 'package:gastrome/entities/Speise.dart';
-import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 
 class Allergen{
   final String id;

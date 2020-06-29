@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
+// Autor: leodriesch
+// from: https://stackoverflow.com/questions/51772543/how-to-make-a-text-widget-act-like-marquee-when-the-text-overflows-in-flutter
+
 class MarqueeWidget extends StatefulWidget {
   final Widget child;
   final Axis direction;
