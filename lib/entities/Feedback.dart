@@ -1,5 +1,8 @@
 import 'Restaurant.dart';
 
+//Autor: Tim Bayer
+//Die Feedback Entität ist äquivalent zur Entität in der Backend Anwendung
+
 class Feedback{
   final String id;
   String kategorie;

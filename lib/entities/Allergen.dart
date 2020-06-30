@@ -2,6 +2,9 @@ import 'dart:typed_data';
 import 'package:gastrome/entities/Getraenk.dart';
 import 'package:gastrome/entities/Speise.dart';
 
+//Autor: Tim Bayer, Tim Riebesam
+//Die Allergen Entität ist äquivalent zur Entität in der Backend Anwendung
+
 class Allergen{
   final String id;
   List<Speise> speisen;
@@ -12,6 +15,7 @@ class Allergen{
 
   Allergen({this.id, this.speisen, this.getraenke, this.name, this.bezeichnung, this.symbol});
 
+  //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
   factory Allergen.fromJson(Map<String, dynamic> json){
     if(json != null)
       return Allergen(

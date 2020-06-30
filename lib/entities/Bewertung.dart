@@ -1,3 +1,6 @@
+//Autor: Tim Bayer, Tim Riebesam
+//Die Bewertung Entität ist äquivalent zur Entität in der Backend Anwendung
+
 class Bewertung{
     final String id;
     int essen;
@@ -9,6 +12,7 @@ class Bewertung{
     Bewertung({this.id, this.essen, this.atmosphaere, this.service, this.preise,
         this.sonderwuensche});
 
+    //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
     factory Bewertung.fromJson(dynamic json){
         if(json != null)
             return Bewertung(
@@ -20,14 +24,4 @@ class Bewertung{
                 sonderwuensche: json['sonderwuensche']);
         return null;
     }
-
-    Map<String, dynamic> toJson() =>
-        {
-             'id' : id,
-             'essen' : essen,
-             'atmosphaere' : atmosphaere,
-             'service' : service,
-             'preise' :  preise,
-             'sonderwuensche' :  sonderwuensche,
-        };
 }

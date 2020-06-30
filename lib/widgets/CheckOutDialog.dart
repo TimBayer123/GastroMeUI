@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:gastrome/settings/globals.dart';
 import 'package:http/http.dart' as http;
 
-//Autor: Tim Bayer
+//Autor: Tim Bayer, Tim Riebesam
 //Diese Klasse implementiert einen Dialog, der beim Check Out angezeigt wird
 
 class CheckOutDialog extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gastrome/entities/Bewertung.dart';
 
-//Autor: Tim Bayer (Logik+ Aufbau: Tim Riebesam)
+//Autor: Tim Bayer, Tim Riebesam
 //Diese Klasse stellt die selbe Oberfläche wie das BewertungenWidget dar, jedoch stark verkleinert.
 //Daher stammt die Logik und der Aufbau von Tim Riebesam
 

@@ -1,5 +1,8 @@
 import 'dart:typed_data';
 
+//Autor: Tim Bayer, Tim Bayer
+//Die SpeisekartenItem Entität ist äquivalent zur Entität in der Backend Anwendung
+
 class SpeisekartenItem{
   final String id;
   String name;

@@ -11,7 +11,7 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailer/smtp_server/gmail.dart';
 
-//Autor: Tim Riebesam (Tim Bayer, nur die letzten 4 Zeilen)
+//Autor: Tim Riebesamm, Tim Bayer
 //Diese Klasse stellt den Rechnung-Screen dar. Es wird die aktuelle Rechnung des eingeloggten Tisches geladen und angezeigt.
 //Das Bezahlen der Rechnung ist ebenfalls möglich. Es wird jedoch nur die aktuelle Rechnung als "bezahlt" gekennzeichnet.
 

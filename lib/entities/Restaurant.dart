@@ -4,6 +4,8 @@ import 'package:gastrome/entities/Rezession.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:gastrome/entities/Standort.dart';
 
+//Autor: Tim Riebesam, Tim Bayer
+//Die Restaurant Entität ist äquivalent zur Entität in der Backend Anwendung
 
 class Restaurant{
   final String id;
@@ -94,6 +96,7 @@ class Restaurant{
       return entfernung != null ? (entfernung).round().toString() + " m entfernt" : "";
   }
 
+  //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
   factory Restaurant.fromJson(Map<String, dynamic> json) {
     if(json != null){
       var rezessionenJson = json['rezessionen'] as List;

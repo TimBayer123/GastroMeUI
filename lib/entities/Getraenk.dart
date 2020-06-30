@@ -4,6 +4,9 @@ import 'package:gastrome/entities/Allergen.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:gastrome/entities/SpeisekartenItem.dart';
 
+//Autor: Tim Bayer, Tim Riebesam
+//Die Getraenk Entität ist äquivalent zur Entität in der Backend Anwendung
+
 class Getraenk extends SpeisekartenItem{
     final String id;
     Speisekarte speisekarte;
@@ -11,7 +14,7 @@ class Getraenk extends SpeisekartenItem{
 
   Getraenk(this.id, this.speisekarte, this.allergene, String name, String beschreibung, double preis, Uint8List bild, bool vegie, bool vegan, String erlaeuterung) : super(id, name, beschreibung, preis, bild, vegie, vegan, erlaeuterung);
 
-
+    //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
     factory Getraenk.fromJson(Map<String, dynamic> json){
       var allergeneJson = json['allergene'] as List;
       List<Allergen> _allergene = allergeneJson.map((tagJson) => Allergen.fromJson(tagJson)).toList();
