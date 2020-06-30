@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+//Autor
+//Diese Klassen setzen die Vegan/Vegie Icons zusammen
+
 class VeganIcon extends StatelessWidget {
+
+  //Funktionsweise: Diese Methode liefert die Oberfläche des Vegan-Icons
+  //Rückgabewert: Die Methode liefert die Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,6 +37,9 @@ class VeganIcon extends StatelessWidget {
 }
 
 class VegieIcon extends StatelessWidget {
+  //Funktionsweise: Diese Methode liefert die Oberfläche des Vegie Icons
+  //Rückgabewert: Die Methode liefert die Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Container(
