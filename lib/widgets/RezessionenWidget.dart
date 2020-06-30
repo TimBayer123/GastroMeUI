@@ -7,7 +7,7 @@ import 'package:gastrome/widgets/RezessionItemWidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_indicators/progress_indicators.dart';
 
-//Autor: Tim Bayer
+//Autor: Tim Bayer, Tim Riebesam
 //Diese Klasse zeigt alle Rezessionen eines Restuarants an
 
 class RezessionenWidget extends StatefulWidget {

@@ -12,7 +12,7 @@ import 'package:gastrome/entities/Rechnung.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
-//Autor: Tim Bayer
+//Autor: Tim Bayer, Tim Riebesam
 //Diese Klasse stellt die Oberfläche einer Speisen- oder Getränkeübersicht dar. Sie übermittelt zudem die Getränkebestellung an das Backend und per Email an das Restaurant
 class MenuItemDetails extends StatefulWidget {
   static OverlayEntry overlayEntry;

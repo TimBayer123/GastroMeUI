@@ -10,7 +10,7 @@ import 'package:gastrome/widgets/RestaurantCardWidget.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 
-//Autor: Tim Riebesam
+//Autor: Tim Riebesam, Tim Bayer
 //Diese Klasse stellt den Restaurant-Listen-Screen dar. Es werden alle Restaurants aus dem näheren Umkreis geladen und angezeigt.
 
 class RestaurantOverview extends StatefulWidget {

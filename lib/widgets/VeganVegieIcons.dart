@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-//Autor
+//Autor: Tim Bayer, Tim Riebesam
 //Diese Klassen setzen die Vegan/Vegie Icons zusammen
 
 class VeganIcon extends StatelessWidget {

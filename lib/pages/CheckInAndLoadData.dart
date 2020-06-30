@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:gastrome/settings/globals.dart';
 
-//Autor: Tim Bayer
+//Autor: Tim Bayer, Tim Riebesam
 //Diese Klasse stellt den Lade-Screen nach dem Login dar. Hier werden die Speisekarte und die Restaurantdaten geladen.
 //Ebenso wird dem Tisch des QR Codes ein Gast hinzugefügt.
 

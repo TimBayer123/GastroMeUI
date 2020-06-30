@@ -5,11 +5,14 @@ import 'package:gastrome/pages/MenuItemDetails.dart';
 import 'package:gastrome/widgets/MarqueeWidget.dart';
 import 'package:gastrome/widgets/VeganVegieIcons.dart';
 
+//Autor: Tim Bayer, Tim Riebesam
+//Diese Klasse stellt ein Eintrag in der Speisekarte dar
+
 class MenuCardWidget extends StatefulWidget {
 
   Speise speise;
   Getraenk getraenk;
-
+  //Der Konstruktor der Klasse empfängt eine Speise oder ein Getränk
   MenuCardWidget({this.speise, this.getraenk});
 
   @override
@@ -19,6 +22,7 @@ class MenuCardWidget extends StatefulWidget {
 class _MenuCardWidgetState extends State<MenuCardWidget> {
   var item;
 
+  //Bei Initialisierung wird geprüft, ob das dem Konstruktor eine Speise oder ein Getränk übergeben wurde und entsprechend das Item gesetzt
   @override
   void initState() {
     if(widget.speise!=null)
@@ -27,9 +31,14 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
       item=widget.getraenk;
     super.initState();
   }
+
+  //Funktionsweise: Diese Methode liefert die Oberfläche eines Speisekarteneintrags
+  //Rückgabewert: Die Methode liefert die Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      //Wird auf ein Item geklickt, wird die Detailaufsicht des Items aufgerufen
       onTap: (){
         showDetailsOverlay(context);
       },
@@ -84,6 +93,7 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
                     child: Container(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0,0,8,8),
+                        //Hier werden die Vegan/Vegie Icons eingebunden
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,6 +117,8 @@ class _MenuCardWidgetState extends State<MenuCardWidget> {
     );
   }
 
+  //Funktionsweise: Es werden die Details eines Items in einem Pverlay angezeigt. Dies wird in dieser Methode instantiiert
+  //Übergabeparameter: Es wird der BuildContext übergeben
   void showDetailsOverlay(BuildContext context) {
     if(widget.speise!=null && MenuItemDetails.overlayEntry==null){
       MenuItemDetails.overlayEntry = OverlayEntry(builder: (context) => MenuItemDetails(speise: item));

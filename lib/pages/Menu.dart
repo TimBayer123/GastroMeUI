@@ -4,7 +4,7 @@ import 'package:gastrome/entities/Speise.dart';
 import 'package:gastrome/entities/Speisekarte.dart';
 import 'package:gastrome/widgets/MenuCardWidget.dart';
 
-//Autor: Tim Bayer
+//Autor: Tim Bayer, Tim Riebesam
 //Diese Klasse stellt die Oberfläche der Speisekarte dar. Sie kann Getränke oder Speisen separat darstellen
 class Menu extends StatefulWidget {
   Speisekarte speisekarte;

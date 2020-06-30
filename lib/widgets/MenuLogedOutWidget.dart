@@ -8,7 +8,7 @@ import 'package:gastrome/settings/globals.dart';
 import 'dart:convert';
 import 'MenuCardWidget.dart';
 
-//Autor: Tim Riebesam
+//Autor: Tim Riebesam, Tim Bayer
 //Diese Klasse stellt die Speisekarte in der Klasse MenuItemDetails dar.
 //Es wird die Speisekarte auf dem Backend geladen und die einzelnen Items als Liste dargestellt.
 

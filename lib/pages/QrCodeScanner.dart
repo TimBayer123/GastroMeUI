@@ -5,7 +5,7 @@ import 'package:gastrome/pages/CheckInAndLoadData.dart';
 import 'package:gastrome/settings/globals.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-//Autor: Tim Bayer
+//Autor: Tim Bayer, Tim Riebesam
 //Diese Klasse stellt die Oberfläche des QR-Code Scanners dar
 
 class QrCodeScan extends StatefulWidget {
