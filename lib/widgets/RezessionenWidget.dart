@@ -7,9 +7,14 @@ import 'package:gastrome/widgets/RezessionItemWidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:progress_indicators/progress_indicators.dart';
 
+//Autor: Tim Bayer
+//Diese Klasse zeigt alle Rezessionen eines Restuarants an
+
 class RezessionenWidget extends StatefulWidget {
   static GlobalKey rezessionenKey = GlobalKey();
   String restaurantId;
+
+  //Der Konstruktor der Klasse
   RezessionenWidget({this.restaurantId});
   @override
   _RezessionenWidgetState createState() => _RezessionenWidgetState();
@@ -18,6 +23,7 @@ class RezessionenWidget extends StatefulWidget {
 class _RezessionenWidgetState extends State<RezessionenWidget> {
   Future<List<Rezession>> futureRezessionen;
 
+  //Bei Initialisierung werden die Rezessionen geladen
   @override
   void initState() {
     print('restaurantId: '+widget.restaurantId);
@@ -25,8 +31,12 @@ class _RezessionenWidgetState extends State<RezessionenWidget> {
     super.initState();
   }
 
+  //Funktionsweise: Diese Methode liefert die Oberfläche des RezessionenWidgets
+  //Rückgabewert: Die Methode liefert die Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
+    //Der Inhalt ist in eine ScrollView gewrapped, da das RezessionenWidget dynamisch ein- und ausgeklappt werden kann. Durch die ScrollView kommt es nicht zu einem Overlflow
     return SingleChildScrollView(
       physics: NeverScrollableScrollPhysics(),
       child: Container(
@@ -38,6 +48,7 @@ class _RezessionenWidgetState extends State<RezessionenWidget> {
             Divider(),
             Text('Rezessionen:', style: Theme.of(context).textTheme.headline5,),
             Divider(),
+            //Sind die Rezessionen geladen, werden diese hier angezgeigt
             FutureBuilder(
               future: futureRezessionen,
                 builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
@@ -85,6 +96,8 @@ class _RezessionenWidgetState extends State<RezessionenWidget> {
     );
   }
 
+  //Funktionsweise: Es werden alle Rezessionen eines Restaurants über eine Get-Request geladen
+  //Rückgabeparameter: Es werden alle Rezessionen in Form einer Future zurückgeliefert
   Future<List<Rezession>> fetchRezessionen() async {
     print('Laden läuft');
     final response = await http.get(
