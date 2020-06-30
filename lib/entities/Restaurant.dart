@@ -96,7 +96,7 @@ class Restaurant{
       return entfernung != null ? (entfernung).round().toString() + " m entfernt" : "";
   }
 
-  //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
+  //Diese Factory wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
   factory Restaurant.fromJson(Map<String, dynamic> json) {
     if(json != null){
       var rezessionenJson = json['rezessionen'] as List;

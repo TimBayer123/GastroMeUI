@@ -10,7 +10,7 @@ class PLZ{
 
   PLZ({this.id, this.standorte, this.plz, this.stadt});
 
-  //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
+  //Diese Factory wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
   factory PLZ.fromJson(dynamic json){
     if(json != null)
       return PLZ(

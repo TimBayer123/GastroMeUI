@@ -26,7 +26,7 @@ class Speise extends SpeisekartenItem {
       vegan,
   erlaeuterung);
 
-  //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
+  //Diese Factory wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
   factory Speise.fromJson(Map<String, dynamic> json){
     var allergeneJson = json['allergene'] as List;
     List<Allergen> _allergene = allergeneJson.map((tagJson) => Allergen.fromJson(tagJson)).toList();

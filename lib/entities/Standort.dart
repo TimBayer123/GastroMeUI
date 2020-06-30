@@ -15,7 +15,7 @@ class Standort {
   Standort({this.id, this.restaurant, this.plz, this.strasse, this.hausnummer,
     this.laengengrad, this.breitengrad, this.beschreibung});
 
-  //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
+  //Diese Factory wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
   factory Standort.fromJson(dynamic json){
     if(json != null)
       return Standort(

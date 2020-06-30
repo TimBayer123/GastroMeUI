@@ -12,7 +12,7 @@ class Bewertung{
     Bewertung({this.id, this.essen, this.atmosphaere, this.service, this.preise,
         this.sonderwuensche});
 
-    //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
+    //Diese Factory wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
     factory Bewertung.fromJson(dynamic json){
         if(json != null)
             return Bewertung(

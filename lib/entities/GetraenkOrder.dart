@@ -10,7 +10,7 @@ class GetraenkOrder{
 
   GetraenkOrder({this.id, this.getraenk, this.ausgeliefert});
 
-  //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
+  //Diese Factory wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
   factory GetraenkOrder.fromJson(Map<String, dynamic> json){
     Getraenk _getraenk = Getraenk.fromJson(json['getraenk']);
     return GetraenkOrder(

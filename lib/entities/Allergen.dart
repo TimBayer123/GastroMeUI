@@ -15,7 +15,7 @@ class Allergen{
 
   Allergen({this.id, this.speisen, this.getraenke, this.name, this.bezeichnung, this.symbol});
 
-  //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
+  //Diese Factory wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
   factory Allergen.fromJson(Map<String, dynamic> json){
     if(json != null)
       return Allergen(

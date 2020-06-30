@@ -13,7 +13,7 @@ class Rechnung{
 
   Rechnung({this.id, this.speisen, this.getraenkOrders, this.timestamp, this.billPayed});
 
-  //Diese Methode wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
+  //Diese Factory wandelt das JSON-Objekt in das äquivalente Dart-Objekt um
   factory Rechnung.fromJson(Map<String, dynamic> json){
     var speisenJson = json['speisen'] as List;
     List<Speise> _speisen = speisenJson.map((tagJson) => Speise.fromJson(tagJson)).toList();
