@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:gastrome/settings/globals.dart';
 import 'package:gastrome/widgets/FeedbackOverlay.dart';
 import 'package:gastrome/widgets/FullWidthButton.dart';
+import 'package:gastrome/widgets/InfoDialog.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
@@ -230,28 +231,12 @@ class _DirectFeedbackState extends State<DirectFeedback> with SingleTickerProvid
   //Funktionsweise: Diese Methode erstellt ein AlertDialog, der angezeigt werden kann
   //Übergabeparameter: Es wird der Texgt übergeben, der angezeigt wird.
   Future<void> showConfirmationDialog(String text){
-    // set up the AlertDialog
-    AlertDialog confirmationDialog = AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      title: Text("Feedback bearbeitet"),
-      content: Text(text),
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return confirmationDialog;
-      },
-    );
+   InfoDialog.show(text, "Feedback senden", context);
     closeConfirmationDialog();
   }
 
-  //Funktionsweise: Diese Methode schließt den AlertDialog.
+  //Funktionsweise: Diese Methode schließt das Overlay, welches den Dialog überdeckt
   Future<void> closeConfirmationDialog(){
-    // Future.delayed(Duration(seconds: 2)).then((value) => Navigator.pop(context));
     FeedbackOverlay.overlayEntry.remove();
     FeedbackOverlay.overlayEntry=null;
   }
