@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
+//Autor: Tim Bayer
+//Diese Klasse stellt die Oberfläche des Feedback Overlays dar, welches bei direktem und externem Feedback verwendet wird. Sie stellt sozusagen die Basisfläche der Feedback Pages dar.
+
 class FeedbackOverlay extends StatefulWidget {
   Widget child;
   static OverlayEntry overlayEntry;
 
+  //Der Konstruktor der Klasse erfordert ein beliebiges Widget
   FeedbackOverlay({@required this.child});
   @override
   _FeedbackOverlayState createState() => _FeedbackOverlayState();
@@ -13,11 +17,13 @@ class _FeedbackOverlayState extends State<FeedbackOverlay>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
 
+  //Funktionsweise: Bei Initialisierung wird ein AnimationController initialisiert. Sind alle Widgets geladen, wird eine das Overlay animiert hineingefahren
   @override
   void initState() {
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     super.initState();
+    //Hier wird die Animation ausgeführt wenn alle Widgets geladen sind
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         animationController.forward();
@@ -25,12 +31,16 @@ class _FeedbackOverlayState extends State<FeedbackOverlay>
     });
   }
 
+  //Funktionsweise: Die Dispose Methode beendet die erstellten Controller, um den Speicherplatz freizugeben
   @override
   void dispose() {
     animationController.dispose();
     super.dispose();
   }
 
+  //Funktionsweise: Diese Methode liefert die Oberfläche des Feedback Overlays
+  //Rückgabewert: Die Methode liefert die Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -51,6 +61,7 @@ class _FeedbackOverlayState extends State<FeedbackOverlay>
                       color: Colors.transparent,
                       height: 5,
                     ),
+                    //Schatten des Overlays
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: new BorderRadius.only(
@@ -64,6 +75,7 @@ class _FeedbackOverlayState extends State<FeedbackOverlay>
                           ),
                         ],
                       ),
+                      //Basisfläche des Overlays, es besitzt oben abgerundete Ecken
                       child: ClipRRect(
                         borderRadius: new BorderRadius.only(
                             topLeft: const Radius.circular(40.0),
@@ -82,6 +94,7 @@ class _FeedbackOverlayState extends State<FeedbackOverlay>
                                   top: 10,
                                   right: 10,
                                   child: GestureDetector(
+                                    //Bei Klick auf das Widget wird das Overlay geschlossen. Dies geschieht animiert
                                     onTap: () {
                                       animationController.reverse();
                                       FeedbackOverlay.overlayEntry = null;
@@ -100,13 +113,6 @@ class _FeedbackOverlayState extends State<FeedbackOverlay>
                                       ),
                                     ),
                                   )),
-                             /* Positioned(
-                                top: 80,
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                                  child: Text(widget.restaurantName, style: Theme.of(context).textTheme.headline1,),
-                                ),
-                              )*/
                             ],
                           ),
                         ),

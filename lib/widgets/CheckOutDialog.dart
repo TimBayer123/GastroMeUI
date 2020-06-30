@@ -3,12 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:gastrome/settings/globals.dart';
 import 'package:http/http.dart' as http;
 
+//Autor: Tim Bayer
+//Diese Klasse implementiert einen Dialog, der beim Check Out angezeigt wird
+
 class CheckOutDialog extends StatefulWidget {
   String text = "";
   String textJa = "";
   String textNein = "";
   String tischId;
 
+  //Der Konstruktor der Klasse
   CheckOutDialog({this.text, this.textJa, this.textNein, this.tischId});
 
   @override
@@ -16,12 +20,17 @@ class CheckOutDialog extends StatefulWidget {
 }
 
 class _CheckOutDialogState extends State<CheckOutDialog> {
+
+  //Funktionsweise: Bei Initialisierung wird die Gästeliste des Tisches gelöscht
   @override
   void initState() {
     clearGuests();
     super.initState();
   }
 
+  //Funktionsweise: Diese Methode liefert die Oberfläche des CheckOut Dialogs
+  //Rückgabewert: Die Methode liefert die Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return new AlertDialog(
@@ -48,6 +57,7 @@ class _CheckOutDialogState extends State<CheckOutDialog> {
           behavior: HitTestBehavior.translucent,
           onTap: () {
             widget.tischId!=null ? clearGuests() : null;
+            //Entweder wird der User ausgechekt oder die App geschlossen, abhängig pb man sich im eingecheckten oder ausgecheckten Zustand befindet
             loggedIn ? Navigator.of(context).pop(true) : SystemChannels.platform.invokeMethod('SystemNavigator.pop');
             loggedIn = false;
           },
@@ -62,7 +72,8 @@ class _CheckOutDialogState extends State<CheckOutDialog> {
     );
   }
 
-
+  //Funktionsweise: Diese Methode leert über eine Patch-Request die Gästeliste, dies geschieht asynchron
+  //Rückgabewert: Die Methode liefert einen Future bool, für Kontrollzwecke
   Future<bool> clearGuests() async {
     //await Future.delayed(Duration(seconds: 2));
     final response = await http.patch(

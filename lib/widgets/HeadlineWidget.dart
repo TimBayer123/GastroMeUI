@@ -5,11 +5,15 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:http/http.dart' as http;
 
+//Autor: Tim Riebesam, Tim Bayer
+//Dieses Widget stellt die Kopfzeile jeder Hauptseite dar
+
 class HeadlineWidget extends StatefulWidget {
   String title;
   String subtitle;
   bool callWaiterButton;
 
+  //Der Konstruktor der Klasse besteht aus einem Titel, Untertitel und einem bool, der besagt ob ein Kellner-rufen Button angezeigt wird oder nicht
   HeadlineWidget({this.title, this.subtitle, this.callWaiterButton});
 
   @override
@@ -17,6 +21,10 @@ class HeadlineWidget extends StatefulWidget {
 }
 
 class _HeadlineWidgetState extends State<HeadlineWidget> {
+
+  //Funktionsweise: Diese Methode liefert die Oberfläche des Headline Widgets
+  //Rückgabewert: Die Methode liefert die Oberfläche in Form eines Widgets
+  //Übergabeparameter: Der BuildContext wird implizit übergeben
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -40,7 +48,9 @@ class _HeadlineWidgetState extends State<HeadlineWidget> {
                     ),
                 )
             ),
+            //Ist das callWaiterButton bool true, wird der Kellner-rufen Button angezeigt.
             if(widget.callWaiterButton) InkWell(
+              //Bei onTap wird der Kellner gerufen und ein Bestätigungsdialog angezeigt
               onTap: (){
                 callWaiter();
                 showConfirmationDialog();
@@ -59,30 +69,23 @@ class _HeadlineWidgetState extends State<HeadlineWidget> {
     );
   }
 
+  //Funktionsweise: Hier wird der Kellner gerufen, die Anfrage wird via Email an eine hinterlegte Email-Adresse gesendet
   Future<void> callWaiter() async{
-
 
       String subject = 'Kellner gerufen von Tisch Nr. '+tischId;
 
 
       final smtpServer = gmail(EmailUsername, EmailPassword);
-      // Use the SmtpServer class to configure an SMTP server:
-      // final smtpServer = SmtpServer('smtp.domain.com');
-      // See the named arguments of SmtpServer for further configuration
-      // options.
 
-      // Create our message.
       final body = Message()
         ..from = Address(EmailUsername, 'Waiter Tim')
         ..recipients.add(restaurant.email)
-      //  ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
-      //  ..bccRecipients.add(Address('bccAddress@example.com'))
         ..subject = subject
-      // ..text = 'This is the plain text.\nThis is line 2 of the text part.'
         ..html = "<h1>Kellner gerufen</h1>\n<p>Tisch Nr: "+tischId+"</p>";
 
       try {
         final sendReport = await send(body, smtpServer);
+        //Es wird die Anfrage ebenfalls an das Backend gesendet, in dem der Kellner-gerufen Status aktualisiert wird
         callWaiterUpdateDB();
         print('Message sent: ' + sendReport.toString());
       } on MailerException catch (e) {
@@ -91,9 +94,9 @@ class _HeadlineWidgetState extends State<HeadlineWidget> {
           print('Problem: ${p.code}: ${p.msg}');
         }
       }
-      // DONE
   }
 
+  //Funktionsweise: Es wird eine Patch-Request an das Backend gesendet, die den Kellner-gerufen Status aktualisiert
   Future<void> callWaiterUpdateDB() async {
     var response = await http.patch(gastroMeApiUrl + '/tisch/' + tischId + '/kellner',
     headers: { gastroMeApiAuthTokenName: gastroMeApiAuthTokenValue });
@@ -105,6 +108,7 @@ class _HeadlineWidgetState extends State<HeadlineWidget> {
     }
   }
 
+  //Funktionsweise: Hier wird der spezifische Bestätigungsdialog definiert
   Future<void> showConfirmationDialog(){
     // set up the AlertDialog
     AlertDialog confirmationDialog = AlertDialog(
@@ -125,6 +129,7 @@ class _HeadlineWidgetState extends State<HeadlineWidget> {
     closeConfirmationDialog();
   }
 
+  //Funktionsweise: Hier wird der Bestätigungsdialog geschlossen
   Future<void> closeConfirmationDialog(){
     Future.delayed(Duration(seconds: 2)).then((value) => Navigator.pop(context));
   }
