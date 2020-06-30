@@ -3,6 +3,9 @@ library gastrome;
 import 'package:gastrome/entities/Rechnung.dart';
 import 'package:gastrome/entities/Restaurant.dart';
 
+//Autor: Tim Riebesam, Tim Bayer
+//Diese Klasse stellt globale Variablen bereit
+
 int globalIndex = 2;
 bool loggedIn = false;
 
