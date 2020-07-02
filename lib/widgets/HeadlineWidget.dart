@@ -5,6 +5,8 @@ import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:http/http.dart' as http;
 
+import 'InfoDialog.dart';
+
 //Autor: Tim Riebesam, Tim Bayer
 //Dieses Widget stellt die Kopfzeile jeder Hauptseite dar
 
@@ -53,7 +55,7 @@ class _HeadlineWidgetState extends State<HeadlineWidget> {
               //Bei onTap wird der Kellner gerufen und ein Bestätigungsdialog angezeigt
               onTap: (){
                 callWaiter();
-                showConfirmationDialog();
+                showConfirmationDialog("Ein Kellner macht sich in Kürze auf den Weg zu dir");
               },
               child: Container(
                   alignment: Alignment.centerRight,
@@ -109,28 +111,8 @@ class _HeadlineWidgetState extends State<HeadlineWidget> {
   }
 
   //Funktionsweise: Hier wird der spezifische Bestätigungsdialog definiert
-  Future<void> showConfirmationDialog(){
-    // set up the AlertDialog
-    AlertDialog confirmationDialog = AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      title: Text("Kellner gerufen"),
-      content: Text("Ein Kellner macht sich in Kürze auf den Weg zu dir"),
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return confirmationDialog;
-      },
-    );
-    closeConfirmationDialog();
+  Future<void> showConfirmationDialog(String text){
+    InfoDialog.show(text,"Kellner gerufen", context);
   }
 
-  //Funktionsweise: Hier wird der Bestätigungsdialog geschlossen
-  Future<void> closeConfirmationDialog(){
-    Future.delayed(Duration(seconds: 2)).then((value) => Navigator.pop(context));
-  }
 }

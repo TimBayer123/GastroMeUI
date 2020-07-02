@@ -4,6 +4,7 @@ import 'package:gastrome/settings/globals.dart';
 import 'package:gastrome/widgets/BewertungAuswahlWidget.dart';
 import 'package:gastrome/widgets/FeedbackOverlay.dart';
 import 'package:gastrome/widgets/FullWidthButton.dart';
+import 'package:gastrome/widgets/InfoDialog.dart';
 import 'package:keyboard_actions/keyboard_action.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:keyboard_actions/keyboard_actions_config.dart';
@@ -202,28 +203,12 @@ class _ExternalFeedbackState extends State<ExternalFeedback> with SingleTickerPr
 //Funktionsweise: Diese Methode erstellt ein AlertDialog, der angezeigt werden kann
   //Übergabeparameter: Es wird der Texgt übergeben, der angezeigt wird.
   Future<void> showConfirmationDialog(String text){
-    // set up the AlertDialog
-    AlertDialog confirmationDialog = AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      title: Text("Rezession bearbeitet"),
-      content: Text(text),
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return confirmationDialog;
-      },
-    );
+    InfoDialog.show(text,"Bewertung abgeben", context);
     closeConfirmationDialog();
   }
 
-  //Funktionsweise: Diese Methode schließt den AlertDialog.
+  //Funktionsweise: Diese Methode schließt das Overlay, welches den Dialog überdeckt
   Future<void> closeConfirmationDialog(){
-   // Future.delayed(Duration(seconds: 2)).then((value) => Navigator.pop(context));
     FeedbackOverlay.overlayEntry.remove();
     FeedbackOverlay.overlayEntry=null;
   }

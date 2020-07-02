@@ -6,10 +6,14 @@ import 'package:gastrome/entities/Rechnung.dart';
 import 'package:gastrome/entities/SpeisekartenItem.dart';
 import 'package:gastrome/settings/globals.dart';
 import 'package:gastrome/widgets/FullWidthButton.dart';
+import 'package:gastrome/widgets/InfoDialog.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:mailer/mailer.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:http/http.dart' as http;
 import 'package:mailer/smtp_server/gmail.dart';
+import 'package:square_in_app_payments/in_app_payments.dart';
+import 'package:square_in_app_payments/models.dart';
 
 //Autor: Tim Riebesamm, Tim Bayer
 //Diese Klasse stellt den Rechnung-Screen dar. Es wird die aktuelle Rechnung des eingeloggten Tisches geladen und angezeigt.
@@ -147,9 +151,9 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
                       ],
                     ),
                     SizedBox(height: 10,),
-                    //Button um Rechnung zu bezahlen, ruft die Methode payBill() auf.
+                    //Button um Rechnung zu bezahlen, ruft die Methode pay() auf.
                     FullWidthButton(buttonText: "Rechnung bezahlen", function: () => {
-                      payBill()
+                      sum!=0 ? pay() : InfoDialog.show("Du kannst noch nichts bezahlen, da du noch nichts bestellt hast","Keine Bestellungen vorhanden",context)
                     }),
                   ],
                 ),
@@ -230,6 +234,34 @@ class _BillOverviewState extends State<BillOverview> with SingleTickerProviderSt
     if(mounted){
       super.setState(fn);
     }
+  }
+
+  //Funktionsweise: Es wird über das Square Payment Plugin ein Bezahlterminal geöffnet
+  void pay(){
+    InAppPayments.setSquareApplicationId('sandbox-sq0idb-kqk3Vd5GWctO17PNWcoVJw');
+    InAppPayments.startCardEntryFlow(
+      onCardNonceRequestSuccess: cardNonceRequestSuccess,
+      onCardEntryCancel: cardEntryCancel,
+    );
+  }
+
+  //Funktionsweise: Diese Methode wird ausgeführt, wenn die Eingabe abgebrochen wird. Hier passiert erstmal noch nichts
+  void cardEntryCancel(){
+    print("canceled");
+  }
+
+  //Funktionsweise: Ist die Eingabe erfolgreich werden die Daten weiterverarbeitet. Unter anderem wird die cardEntryComplete Funktion ausgeführt
+  void cardNonceRequestSuccess(CardDetails result){
+    print(result.nonce);
+
+    InAppPayments.completeCardEntry(
+      onCardEntryComplete: cardEntryComplete
+    );
+  }
+
+  //Funktionsweise: Bei erfolgreicher Eingabe wird die Rechnung bezahlt und die payBill() Methode ausgeführt
+  void cardEntryComplete(){
+    payBill();
   }
 
 }

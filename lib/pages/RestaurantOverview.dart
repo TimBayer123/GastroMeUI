@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gastrome/entities/Restaurant.dart';
-import 'package:gastrome/widgets/FullWidthButton.dart';
 import 'package:gastrome/widgets/HeadlineWidget.dart';
 import 'package:gastrome/settings/globals.dart';
 import 'package:geolocator/geolocator.dart';
@@ -188,7 +187,7 @@ class _RestaurantOverviewState extends State<RestaurantOverview> with SingleTick
   Future<void> fetchRestaurantsAndListenOnPositionChange() async {
     if (await Permission.location.request().isGranted) {
       Position currentPosition = await (Geolocator().getCurrentPosition());
-      //Position currentPosition = new Position(latitude: 49, longitude: 8);
+      //Position currentPosition = new Position(latitude: 49, longitude: 8.5);
       setState(() {
         lastSavedPosition = currentPosition;
       });
