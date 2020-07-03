@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gastrome/Home.dart';
 import 'package:gastrome/settings/globals.dart';
 
 void main() {
   loggedIn=false;
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
   runApp(MaterialApp(
     theme: ThemeData(
       accentColor: Color(0xfff29f05),
@@ -33,4 +36,5 @@ void main() {
       '/': (context) => Home(),
     },
   ));
+  });
 }
